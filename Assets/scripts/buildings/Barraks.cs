@@ -2,15 +2,7 @@
 /// Казармы
 /// </summary>
 public class Barraks {
-
-	public enum UnitType {
-		// Воин ближнего боя
-		Warrior,
-		// Воин дальнего боя
-		Archer
-	}
-
-	private UnitType type;
+	private Unit.UnitType type;
 	private float trainingSpeed;
 	private int level;
 
@@ -38,7 +30,7 @@ public class Barraks {
 		}
 	}
 
-	public UnitType Type {
+	public Unit.UnitType Type {
 		get {
 			return type;
 		}

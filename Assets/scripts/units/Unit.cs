@@ -2,14 +2,23 @@
 /// Базовый класс юнита
 /// </summary>
 public class Unit {
-	private int hp = 10;
-	private float armor = 10f;
-	private int attack = 10;
-	private float attackSpeed = 10f;
-	private float speed = 10f;
-	private float attackRange = 10f;
-	private int gold = 10;
-	private int xp = 10;
+	public enum UnitType {
+		// Воин ближнего боя
+		Warrior,
+		// Воин дальнего боя
+		Archer,
+		// Босс
+		Boss
+	}
+
+	private int hp;
+	private float armor;
+	private int attack;
+	private float attackSpeed;
+	private float speed;
+	private float attackRange;
+	private int gold;
+	private int xp;
 
 	/// <summary>
 	/// Количество жизней
@@ -104,6 +113,35 @@ public class Unit {
 		}
 		set {
 			xp = value;
+		}
+	}
+
+	public Unit(UnitType type) {
+		switch (type) {
+		case UnitType.Warrior:
+			Hp = 10;
+			Armor = 0.1f;
+			Attack = 10;
+			AttackSpeed = 10f;
+			Speed = 10f;
+			AttackRange = 3f;
+			break;
+		case UnitType.Archer:
+			Hp = 3;
+			Armor = 0f;
+			Attack = 5;
+			AttackSpeed = 17f;
+			Speed = 10f;
+			AttackRange = 30f;
+			break;
+		case UnitType.Boss:
+			Hp = 50;
+			Armor = 0.5f;
+			Attack = 50;
+			AttackSpeed = 2f;
+			Speed = 2f;
+			AttackRange = 30f;
+			break;
 		}
 	}
 }
