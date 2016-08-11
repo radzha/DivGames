@@ -14,7 +14,17 @@ class EnemySpawner : MonoBehaviour {
 	/// <summary>
 	/// Вероятность появления босса
 	/// </summary>
-	public float bossSpawnProbability = 0.3f;
+	public float bossSpawnProbability = 0.1f;
+
+	/// <summary>
+	/// Вероятность появления воина
+	/// </summary>
+	public float warriorSpawnProbability = 0.45f;
+
+	/// <summary>
+	/// Вероятность появления стрелка
+	/// </summary>
+	public float archerSpawnProbability = 0.45f;
 
 	/// <summary>
 	/// Префабы врагов
@@ -27,6 +37,9 @@ class EnemySpawner : MonoBehaviour {
 		timer = startDelay;
 	}
 
+
+	private readonly float length = 25f / Mathf.Sqrt(2);
+
 	private void Update() {
 		if (timer > 0f) {
 			timer -= Time.deltaTime;
@@ -34,9 +47,10 @@ class EnemySpawner : MonoBehaviour {
 		}
 		timer = trainingSpeed;
 
-		var spawnPoint = new Vector3(transform.position.x + Random.Range(-25f, 25f), 0f, transform.position.z);
-		print(transform.position);
-		var type = Random.Range(0, 1f) < bossSpawnProbability ? 1 : 0;
+		var rand = Random.Range(-length, length); // случайный разброс 
+		var spawnPoint = new Vector3(transform.position.x + rand, 0f, transform.position.z + rand); // рождение юнита в случайном месте споунера
+		var randType = Random.Range(0, 1f);
+		var type = randType < bossSpawnProbability ? 0 : randType < bossSpawnProbability + warriorSpawnProbability ? 1 : 2;
 		Instantiate(enemyPrefabs[type], spawnPoint, Quaternion.identity);
 	}
 

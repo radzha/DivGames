@@ -13,7 +13,7 @@ GameObject:
   - 23: {fileID: 2301804}
   - 114: {fileID: 11449310}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy warrior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
