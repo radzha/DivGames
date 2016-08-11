@@ -1,18 +1,17 @@
-﻿/// <summary>
-/// Диван
-/// </summary>
-public class Divan {
-	private int hp = 100; 
+﻿using UnityEngine;
 
-	/// <summary>
-	/// Количество жизней
-	/// </summary>
-	public int Hp {
-		get {
-			return hp;
+public class Divan : MonoBehaviour {
+
+	private Settings.Divan settings;
+
+	void Awake() {
+		if (Instance == null) {
+			Instance = this;
 		}
-		set {
-			hp = value;
-		}
+		settings = new Settings.Divan(10);
+	}
+
+	public static Divan Instance {
+		get; private set;
 	}
 }
