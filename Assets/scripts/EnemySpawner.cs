@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 class EnemySpawner : MonoBehaviour {
 	/// <summary>
@@ -10,6 +11,11 @@ class EnemySpawner : MonoBehaviour {
 	/// Стартовая задержка производства юнитов
 	/// </summary>
 	public int startDelay = 30;
+
+	/// <summary>
+	/// Максимум врагов на поле
+	/// </summary>
+	public int spawnLimit = 10;
 
 	/// <summary>
 	/// Вероятность появления босса
@@ -31,10 +37,15 @@ class EnemySpawner : MonoBehaviour {
 	/// </summary>
 	public GameObject[] enemyPrefabs;
 
+	public HashSet<GameObject> enemies;
+
 	private float timer;
 
 	private void Awake() {
 		timer = startDelay;
+		if (enemies == null) {
+			enemies = new HashSet<GameObject>();
+		}
 	}
 
 
@@ -47,11 +58,16 @@ class EnemySpawner : MonoBehaviour {
 		}
 		timer = trainingSpeed;
 
+		if (enemies.Count >= spawnLimit) {
+			return;
+		}
+
 		var rand = Random.Range(-length, length); // случайный разброс 
 		var spawnPoint = new Vector3(transform.position.x + rand, 0f, transform.position.z + rand); // рождение юнита в случайном месте споунера
 		var randType = Random.Range(0, 1f);
 		var type = randType < bossSpawnProbability ? 0 : randType < bossSpawnProbability + warriorSpawnProbability ? 1 : 2;
-		Instantiate(enemyPrefabs[type], spawnPoint, Quaternion.identity);
+		GameObject unit = (GameObject)Instantiate(enemyPrefabs [type], spawnPoint, Quaternion.identity);
+		enemies.Add(unit);
 	}
 
 }
