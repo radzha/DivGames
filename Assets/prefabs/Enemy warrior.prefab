@@ -29,7 +29,7 @@ GameObject:
   - 33: {fileID: 3369676}
   - 136: {fileID: 13615270}
   - 23: {fileID: 2301804}
-  - 114: {fileID: 11470310}
+  - 114: {fileID: 11436948}
   m_Layer: 0
   m_Name: Enemy warrior
   m_TagString: Untagged
@@ -130,7 +130,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 150410}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11470310
+--- !u!114 &11436948
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -141,6 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1be272aed00c54697d72fe6426f094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gun: {fileID: 473356}
+  gunAmplitude: 0.5
+  gunFreq: 0.5
 --- !u!136 &13615270
 CapsuleCollider:
   m_ObjectHideFlags: 1
