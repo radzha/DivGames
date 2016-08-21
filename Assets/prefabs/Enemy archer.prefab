@@ -48,6 +48,7 @@ GameObject:
   - 136: {fileID: 13615270}
   - 23: {fileID: 2301804}
   - 114: {fileID: 11406720}
+  - 54: {fileID: 5421034}
   m_Layer: 0
   m_Name: Enemy archer
   m_TagString: Untagged
@@ -195,6 +196,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 150410}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &5421034
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150410}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: Infinity
+  m_AngularDrag: Infinity
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
 --- !u!65 &6557184
 BoxCollider:
   m_ObjectHideFlags: 1
