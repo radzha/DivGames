@@ -41,6 +41,8 @@ public class Enemy : MonoBehaviour {
 		var target = Divan.Instance.transform;
 		var speed = 2f;
 		var distance = Vector3.Distance(transform.position, target.position);
-		transform.position = Vector3.Lerp(transform.position, target.position, speed * Time.deltaTime / distance);
+		var y = transform.position.y;
+		var moveTo = Vector3.Lerp(transform.position, target.position, speed * Time.deltaTime / distance);
+		transform.position = new Vector3(moveTo.x, y, moveTo.z);
 	}
 }

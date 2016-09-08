@@ -66,7 +66,8 @@ class EnemySpawner : MonoBehaviour {
 		var spawnPoint = new Vector3(transform.position.x + rand, 0f, transform.position.z + rand); // рождение юнита в случайном месте споунера
 		var randType = Random.Range(0, 1f);
 		var type = randType < bossSpawnProbability ? 0 : randType < bossSpawnProbability + warriorSpawnProbability ? 1 : 2;
-		GameObject unit = (GameObject)Instantiate(enemyPrefabs [type], spawnPoint, Quaternion.identity);
+		GameObject unit = (GameObject)Instantiate(enemyPrefabs[type], spawnPoint, Quaternion.identity);
+		unit.transform.position = new Vector3(unit.transform.position.x, unit.transform.localScale.y, unit.transform.position.z);
 		enemies.Add(unit);
 	}
 
