@@ -6,7 +6,7 @@ public class Boss : Enemy {
 	private Vector3 initScale;
 	private Vector3 targetScale;
 
-	protected override void Awake() {
+	protected override void PrepareGun() {
 		gunStep = Time.deltaTime * 2 * (gunAmplitude - gun.localScale.x) * gunFreq;
 		initScale = gun.localScale;
 		targetScale = initScale * gunAmplitude;

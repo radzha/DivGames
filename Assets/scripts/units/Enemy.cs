@@ -2,26 +2,49 @@
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
-	private Unit settings;
+	protected Unit settings;
+
+	public Unit Settings {
+		get {
+			return settings;
+		}
+		set {
+			settings = value;
+		}
+	}
 
 	public Transform gun;
 
 	public float gunAmplitude = 1f;
 	public float gunFreq = 0.5f;
+	public	Unit.UnitType unitType;
 
+	protected int health;
 	protected float gunShift = 0f;
 	protected float gunStep;
 	protected bool firingMode = true;
 	private Vector3 gunAxis;
 
 	protected virtual void Awake() {
+		Settings = new Settings.Unit(unitType);
+		health = settings.Hp * 3 / 4;
+		PrepareGun();
+		h = health;
+	}
+
+	protected virtual void PrepareGun() {
 		gunStep = Time.deltaTime * 4 * gunAmplitude * gunFreq;
 		var angle = Mathf.PI * (90f - gun.rotation.eulerAngles.x) / 180f;
 		gunAxis = new Vector3(0f, -Mathf.Sin(angle), Mathf.Cos(angle)).normalized;
 	}
 
+
+	float h;
+
 	protected virtual void Update() {
 		Move();
+		h -= Time.deltaTime;
+		health = (int)h;
 		if (firingMode) {
 			Fire();
 		}
@@ -45,4 +68,9 @@ public class Enemy : MonoBehaviour {
 		var moveTo = Vector3.Lerp(transform.position, target.position, speed * Time.deltaTime / distance);
 		transform.position = new Vector3(moveTo.x, y, moveTo.z);
 	}
+
+	public int GetHealth() {
+		return health;
+	}
+
 }
