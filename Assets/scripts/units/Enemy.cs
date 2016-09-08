@@ -27,9 +27,8 @@ public class Enemy : MonoBehaviour {
 
 	protected virtual void Awake() {
 		Settings = new Settings.Unit(unitType);
-		health = settings.Hp * 3 / 4;
+		health = settings.Hp;
 		PrepareGun();
-		h = health;
 	}
 
 	protected virtual void PrepareGun() {
@@ -38,13 +37,8 @@ public class Enemy : MonoBehaviour {
 		gunAxis = new Vector3(0f, -Mathf.Sin(angle), Mathf.Cos(angle)).normalized;
 	}
 
-
-	float h;
-
 	protected virtual void Update() {
 		Move();
-		h -= Time.deltaTime;
-		health = (int)h;
 		if (firingMode) {
 			Fire();
 		}
