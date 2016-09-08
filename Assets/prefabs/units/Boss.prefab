@@ -13,7 +13,7 @@ GameObject:
   - 23: {fileID: 2301804}
   - 114: {fileID: 11443612}
   - 54: {fileID: 5484084}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}

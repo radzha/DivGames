@@ -417,8 +417,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88f2233d51434f55b732e9274dc0164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rod: {x: 26, y: 29, z: -45}
+  rod: {x: 49, y: 55, z: -86}
   smoothness: 5
   mouseSmoothness: 0.1
   edgeCoeff: 0.2
   switchCameraDelay: 0.2
+--- !u!1 &1932303809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1932303811}
+  - 114: {fileID: 1932303810}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1932303810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1932303809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d90fba7ddc246a1875d7571317fb64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planePrefab: {fileID: 188628, guid: 08999e3308d224006ba34aeee0ba1ee7, type: 2}
+--- !u!4 &1932303811
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1932303809}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5

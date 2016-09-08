@@ -12,7 +12,7 @@ GameObject:
   - 136: {fileID: 13648500}
   - 23: {fileID: 2359464}
   - 114: {fileID: 11494944}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 420614}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Buildings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - 136: {fileID: 13675778}
   - 23: {fileID: 2329896}
   - 114: {fileID: 11449556}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Spawner (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - 65: {fileID: 6565926}
   - 23: {fileID: 2303834}
   - 114: {fileID: 11423054}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Divan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - 33: {fileID: 3313150}
   - 136: {fileID: 13691266}
   - 23: {fileID: 2351442}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Fountain
   m_TagString: Untagged
   m_Icon: {fileID: 0}

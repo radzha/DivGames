@@ -31,7 +31,7 @@ GameObject:
   - 23: {fileID: 2301804}
   - 114: {fileID: 11436948}
   - 54: {fileID: 5421194}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Enemy warrior
   m_TagString: Untagged
   m_Icon: {fileID: 0}

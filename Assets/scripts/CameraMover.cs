@@ -26,7 +26,7 @@ public class CameraMover : MonoBehaviour {
 		screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
 	}
 
-	void Update() {
+	void FixedUpdate() {
 		// Смена режима камеры.
 		if (switchTimer > 0f) {
 			switchTimer -= Time.deltaTime;

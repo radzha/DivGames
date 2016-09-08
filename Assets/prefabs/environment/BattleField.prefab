@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3313244}
   - 64: {fileID: 6430500}
   - 23: {fileID: 2318004}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 411982}
   - 65: {fileID: 6558366}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 404174}
   - 65: {fileID: 6564738}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: External left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - 33: {fileID: 3320464}
   - 64: {fileID: 6458762}
   - 23: {fileID: 2349748}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 408408}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Main colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 497572}
   - 65: {fileID: 6533832}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: External right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 493082}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 484784}
   - 65: {fileID: 6519830}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 425990}
   - 65: {fileID: 6516410}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 433754}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BattleField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
