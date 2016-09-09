@@ -14,9 +14,9 @@ GameObject:
   - 54: {fileID: 5484084}
   - 114: {fileID: 11443612}
   - 114: {fileID: 11413362}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +31,7 @@ GameObject:
   - 4: {fileID: 446280}
   - 33: {fileID: 3349386}
   - 23: {fileID: 2384138}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class MouseManager : MonoBehaviour {
+	public GameObject floor;
 	public GameObject planePrefab;
 
 	private Vector3 clickedPoint = Vector3.zero;
@@ -11,22 +12,42 @@ public class MouseManager : MonoBehaviour {
 	void Update() {
 		if (Input.GetMouseButton(0)) {
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			Physics.Raycast(ray, out hit);
-			if ((hit.point.y) > 0.1f) {
-				Clear();
-				return;
-			}
-			hit.point = new Vector3(hit.point.x, 0.1f, hit.point.z);
-			if (clickedPoint == Vector3.zero) {
-				clickedPoint = hit.point;
-				plane = (GameObject.Instantiate(planePrefab, clickedPoint, Quaternion.identity) as GameObject).transform;
-				plane.localScale = Vector3.zero;
+			// Режим выделения плоскостью или кликом.
+			var planeMode = plane != null;
+			// Если плоскости еще нет нужно проверить ткнули в юнит или нет.
+			if (!planeMode) {
+				Physics.Raycast(ray, out hit);
+				planeMode = !hit.collider.gameObject.CompareTag("Unit");
 			} else {
-				var direction = hit.point - clickedPoint;
-				plane.position = clickedPoint + 0.5f * direction;
-				plane.localScale = new Vector3(direction.x / 10f, 1f, direction.z / 10f);
+				Physics.Raycast(ray, out hit, Mathf.Infinity, Constants.FLOOR_LAYER);
 			}
-			SelectUnits(clickedPoint, hit.point);
+			// Режим множественного выделения плоскостью.
+			if (planeMode) {
+				hit.point = new Vector3(hit.point.x, 0.1f, hit.point.z);
+				if (clickedPoint == Vector3.zero) {
+					clickedPoint = hit.point;
+					plane = (GameObject.Instantiate(planePrefab, clickedPoint, Quaternion.identity) as GameObject).transform;
+					plane.localScale = Vector3.zero;
+				} else {
+					var direction = hit.point - clickedPoint;
+					plane.position = clickedPoint + 0.5f * direction;
+					plane.localScale = new Vector3(direction.x / 10f, 1f, direction.z / 10f);
+				}
+				SelectUnits(clickedPoint, hit.point);
+			} else if (plane == null) {
+				// Режим одиночного выделения кликом.
+				foreach (Enemy unit in EnemySpawner.Instance.enemies) {
+					unit.SetSelected(false);
+				}
+				if (hit.collider.gameObject.CompareTag("Unit")) {
+					foreach (var unit in EnemySpawner.Instance.enemies) {
+						if (unit.gameObject.Equals(hit.collider.gameObject)) {
+							unit.SetSelected(!unit.IsSelected);
+							break;
+						}
+					}
+				}
+			}
 		}
 		if (Input.GetMouseButtonUp(0)) {
 			Clear();
@@ -57,7 +78,9 @@ public class MouseManager : MonoBehaviour {
 
 	void Clear() {
 		clickedPoint = Vector3.zero;
-		Destroy(plane.gameObject);
+		if (plane != null) {
+			Destroy(plane.gameObject);
+		}
 	}
 
 }

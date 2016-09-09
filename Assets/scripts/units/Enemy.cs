@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour {
 	private Vector3 gunAxis;
 	private bool isEnemy = true;
 	private bool isSelected;
+	private RaycastHit hit;
 
 	public Unit Settings {
 		get {
@@ -84,11 +85,10 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
-
 	/// <summary>
 	/// Назначить/снять выделение юнита.
 	/// </summary>
-	public void SetSelected(bool selected){
+	public void SetSelected(bool selected) {
 		selectMarker.SetActive(selected);
 		IsSelected = selected;
 	}

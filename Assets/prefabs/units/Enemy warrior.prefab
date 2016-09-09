@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3359914}
   - 136: {fileID: 13644884}
   - 23: {fileID: 2350616}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Heavy Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,9 +32,9 @@ GameObject:
   - 54: {fileID: 5421194}
   - 114: {fileID: 11436948}
   - 114: {fileID: 11436280}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Enemy warrior
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
