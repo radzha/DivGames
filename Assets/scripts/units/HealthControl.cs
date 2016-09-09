@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Progress;
 
 /// <summary>
 /// Отображение жизни юнита.
@@ -13,10 +14,10 @@ public class HealthControl : MonoBehaviour {
 	private Slider slider;
 	private Image fill;
 
-	private Enemy unit;
+	private Unit unit;
 
 	void Start() {
-		unit = GetComponent<Enemy>();
+		unit = GetComponent<Unit>();
 		var healthControl = Instantiate(healthControlPrefab);
 		healthControl.transform.SetParent(transform);
 		healthControl.transform.localPosition = new Vector3(0f, 2.3f, 0f);

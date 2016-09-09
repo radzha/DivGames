@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Progress;
 
 class EnemySpawner : MonoBehaviour {
 	/// <summary>
@@ -37,7 +38,7 @@ class EnemySpawner : MonoBehaviour {
 	/// </summary>
 	public GameObject[] enemyPrefabs;
 
-	public HashSet<Enemy> enemies;
+	public HashSet<Progress.Unit> enemies;
 
 	private float timer;
 	private readonly float length = 25f / Mathf.Sqrt(2);
@@ -54,7 +55,7 @@ class EnemySpawner : MonoBehaviour {
 		instance = this;
 		timer = startDelay;
 		if (enemies == null) {
-			enemies = new HashSet<Enemy>();
+			enemies = new HashSet<Unit>();
 		}
 	}
 
@@ -75,7 +76,7 @@ class EnemySpawner : MonoBehaviour {
 		var type = randType < bossSpawnProbability ? 0 : randType < bossSpawnProbability + warriorSpawnProbability ? 1 : 2;
 		GameObject unit = (GameObject)Instantiate(enemyPrefabs[type], spawnPoint, Quaternion.identity);
 		unit.transform.position = new Vector3(unit.transform.position.x, unit.transform.localScale.y, unit.transform.position.z);
-		enemies.Add(unit.GetComponent<Enemy>());
+		enemies.Add(unit.GetComponent<Unit>());
 	}
 
 }

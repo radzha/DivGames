@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Progress;
 
 public class MouseManager : MonoBehaviour {
 	public GameObject floor;
@@ -36,7 +37,7 @@ public class MouseManager : MonoBehaviour {
 				SelectUnits(clickedPoint, hit.point);
 			} else if (plane == null) {
 				// Режим одиночного выделения кликом.
-				foreach (Enemy unit in EnemySpawner.Instance.enemies) {
+				foreach (Unit unit in EnemySpawner.Instance.enemies) {
 					unit.SetSelected(false);
 				}
 				if (hit.collider.gameObject.CompareTag("Unit")) {
@@ -60,7 +61,7 @@ public class MouseManager : MonoBehaviour {
 	/// <param name="start">Начальная точка выделения.</param>
 	/// <param name="end">Конечная точка выделения.</param>
 	private void SelectUnits(Vector3 start, Vector3 end) {
-		foreach (Enemy unit in EnemySpawner.Instance.enemies) {
+		foreach (Unit unit in EnemySpawner.Instance.enemies) {
 			unit.SetSelected(IsInArea(unit.transform.position, start, end));
 		}
 	}

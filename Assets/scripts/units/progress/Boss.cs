@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Progress;
 
-public class Boss : Enemy {
+public class Boss : Unit {
 
 	private Vector3 initScale;
 	private Vector3 targetScale;
