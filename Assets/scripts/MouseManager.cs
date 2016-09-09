@@ -76,6 +76,9 @@ public class MouseManager : MonoBehaviour {
 		return leftX <= position.x && position.x <= rightX && leftZ <= position.z && position.z <= rightZ;
 	}
 
+	/// <summary>
+	/// Очистить данные о клике и плоскости.
+	/// </summary>
 	void Clear() {
 		clickedPoint = Vector3.zero;
 		if (plane != null) {
