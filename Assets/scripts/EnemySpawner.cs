@@ -37,19 +37,26 @@ class EnemySpawner : MonoBehaviour {
 	/// </summary>
 	public GameObject[] enemyPrefabs;
 
-	public HashSet<GameObject> enemies;
+	public HashSet<Enemy> enemies;
 
 	private float timer;
+	private readonly float length = 25f / Mathf.Sqrt(2);
 
-	private void Awake() {
-		timer = startDelay;
-		if (enemies == null) {
-			enemies = new HashSet<GameObject>();
+	private static EnemySpawner instance;
+
+	public static EnemySpawner Instance {
+		get{
+			return instance;
 		}
 	}
 
-
-	private readonly float length = 25f / Mathf.Sqrt(2);
+	private void Awake() {
+		instance = this;
+		timer = startDelay;
+		if (enemies == null) {
+			enemies = new HashSet<Enemy>();
+		}
+	}
 
 	private void Update() {
 		if (timer > 0f) {
@@ -68,7 +75,7 @@ class EnemySpawner : MonoBehaviour {
 		var type = randType < bossSpawnProbability ? 0 : randType < bossSpawnProbability + warriorSpawnProbability ? 1 : 2;
 		GameObject unit = (GameObject)Instantiate(enemyPrefabs[type], spawnPoint, Quaternion.identity);
 		unit.transform.position = new Vector3(unit.transform.position.x, unit.transform.localScale.y, unit.transform.position.z);
-		enemies.Add(unit);
+		enemies.Add(unit.GetComponent<Enemy>());
 	}
 
 }

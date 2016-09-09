@@ -251,6 +251,7 @@ MonoBehaviour:
   gunAmplitude: 0.5
   gunFreq: 0.5
   unitType: 1
+  selectMarkerPrefab: {fileID: 111996, guid: db4e2d60db1cd4e4c86dc83a7a41c4a9, type: 2}
 --- !u!114 &11421692
 MonoBehaviour:
   m_ObjectHideFlags: 1
