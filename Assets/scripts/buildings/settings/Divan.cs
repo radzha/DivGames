@@ -3,22 +3,20 @@
 	/// Настройки дивана
 	/// </summary>
 	public class Divan {
-		private int hp;
-
 		/// <summary>
 		/// Количество жизней
 		/// </summary>
 		public int Hp {
-			get {
-				return hp;
-			}
-			set {
-				hp = value;
-			}
+			get;
+			private set;
 		}
 
-		public Divan(int hp) {
-			Hp = hp;
+		public void TakeDamage(float damage) {
+			Hp -= (int)damage;
+		}
+
+		public Divan() {
+			Hp = LevelEditor.Instance.DivanHealth;
 		}
 	}
 }

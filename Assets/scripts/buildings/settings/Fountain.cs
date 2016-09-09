@@ -3,31 +3,25 @@
 	/// Фонтан
 	/// </summary>
 	public class Fountain {
-		private float heroHealSpeed = 10f;
-		private float mignonHealSpeed = 10f;
-
 		/// <summary>
 		/// Скорость восстановления жизней героя
 		/// </summary>
-		public float HeroHealSpeed {
-			get {
-				return heroHealSpeed;
-			}
-			set {
-				heroHealSpeed = value;
-			}
+		public float PlayerCureSpeed {
+			get;
+			private set;		
 		}
 
 		/// <summary>
 		/// Скорость восстановления жизней миньона
 		/// </summary>
-		public float MignonHealSpeed {
-			get {
-				return mignonHealSpeed;
-			}
-			set {
-				mignonHealSpeed = value;
-			}
+		public float MignonCureSpeed {
+			get;
+			private set;
+		}
+
+		public Fountain() {
+			PlayerCureSpeed = LevelEditor.Instance.fountain.playerCureSpeed;
+			MignonCureSpeed = LevelEditor.Instance.fountain.mignonCureSpeed;
 		}
 	}
 }

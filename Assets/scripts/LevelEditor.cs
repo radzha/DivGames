@@ -30,6 +30,23 @@ public class LevelEditor : Singleton<LevelEditor> {
 		public float duration;
 	}
 
+	[System.Serializable]
+	public struct Fountain {
+		public float playerCureSpeed;
+		public float mignonCureSpeed;
+	}
+
+	[System.Serializable]
+	public struct Spawner {
+		public int gold;
+		public float spawnSpeed;
+	}
+
+	[Header("Buildings")]
+	public int DivanHealth;
+	public Fountain fountain;
+	public Spawner[] spawner;
+
 	[Header("Player team")]
 	public UnitSettings[] warrior;
 	public UnitSettings[] archer;
