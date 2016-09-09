@@ -9,7 +9,9 @@
 			// Воин дальнего боя
 			Archer,
 			// Босс
-			Boss
+			Boss,
+			// Игрок
+			Player
 		}
 
 		private int hp;
@@ -117,32 +119,49 @@
 			}
 		}
 
-		public Unit(UnitType type) {
-			switch (type) {
-				case UnitType.Warrior:
-					Hp = 10;
-					Armor = 0.1f;
-					Attack = 10;
-					AttackSpeed = 10f;
-					Speed = 10f;
-					AttackRange = 3f;
-					break;
-				case UnitType.Archer:
-					Hp = 3;
-					Armor = 0f;
-					Attack = 5;
-					AttackSpeed = 17f;
-					Speed = 10f;
-					AttackRange = 30f;
-					break;
-				case UnitType.Boss:
-					Hp = 50;
-					Armor = 0.5f;
-					Attack = 50;
-					AttackSpeed = 2f;
-					Speed = 2f;
-					AttackRange = 30f;
-					break;
+		/// <summary>
+		/// Прочитать настройки из редактора уровней.
+		/// </summary>
+		/// <param name="unitSettings">Набор настроек.</param>
+		/// <param name="level">Уровень.</param>
+		private void ReadSettings(LevelEditor.UnitSettings[] unitSettings, int level) {
+			var unit = unitSettings[level];
+			Hp = unit.hp;
+			Armor = unit.armor;
+			Attack = unit.attack;
+			AttackSpeed = unit.attackSpeed;
+			Speed = unit.speed;
+			AttackRange = unit.attackRange;
+		}
+
+		/// <summary>
+		/// Первичное заполнение настроек в зависимости от типа и принадлежности юнита.
+		/// </summary>
+		public Unit(UnitType type, bool isEnemy) {
+			if (isEnemy) {
+				switch (type) {
+					case UnitType.Warrior:
+						ReadSettings(LevelEditor.Instance.enemyWarrior, 0);
+						break;
+					case UnitType.Archer:
+						ReadSettings(LevelEditor.Instance.enemyArcher, 0);
+						break;
+					case UnitType.Boss:
+						ReadSettings(LevelEditor.Instance.boss, 0);
+						break;
+				}
+			} else {
+				switch (type) {
+					case UnitType.Warrior:
+						ReadSettings(LevelEditor.Instance.warrior, 0);
+						break;
+					case UnitType.Archer:
+						ReadSettings(LevelEditor.Instance.archer, 0);
+						break;
+					case UnitType.Player:
+						ReadSettings(LevelEditor.Instance.player, 0);
+						break;
+				}
 			}
 		}
 	}

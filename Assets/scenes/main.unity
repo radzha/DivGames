@@ -156,6 +156,238 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &457023026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 457023028}
+  - 114: {fileID: 457023027}
+  m_Layer: 0
+  m_Name: LevelEditor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &457023027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 457023026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a84f159441c54e2091a1cf8593c3581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  warrior:
+  - hp: 40
+    armor: 0
+    attack: 6
+    attackSpeed: 6
+    speed: 6
+    attackRange: 2
+    gold: 0
+    xp: 0
+  - hp: 45
+    armor: 0
+    attack: 7
+    attackSpeed: 7
+    speed: 7
+    attackRange: 2
+    gold: 0
+    xp: 0
+  - hp: 50
+    armor: 0.1
+    attack: 8
+    attackSpeed: 8
+    speed: 8
+    attackRange: 3
+    gold: 0
+    xp: 0
+  - hp: 55
+    armor: 0.2
+    attack: 9
+    attackSpeed: 9
+    speed: 9
+    attackRange: 3
+    gold: 0
+    xp: 0
+  - hp: 65
+    armor: 0.3
+    attack: 10
+    attackSpeed: 10
+    speed: 10
+    attackRange: 4
+    gold: 0
+    xp: 0
+  archer:
+  - hp: 15
+    armor: 0
+    attack: 3
+    attackSpeed: 0.5
+    speed: 8
+    attackRange: 20
+    gold: 0
+    xp: 0
+  - hp: 17
+    armor: 0.1
+    attack: 4
+    attackSpeed: 0.7
+    speed: 9
+    attackRange: 24
+    gold: 0
+    xp: 0
+  - hp: 20
+    armor: 0.15
+    attack: 5
+    attackSpeed: 0.8
+    speed: 10
+    attackRange: 27
+    gold: 0
+    xp: 0
+  - hp: 23
+    armor: 0.2
+    attack: 6
+    attackSpeed: 0.9
+    speed: 12
+    attackRange: 30
+    gold: 0
+    xp: 0
+  - hp: 26
+    armor: 0.3
+    attack: 8
+    attackSpeed: 1.2
+    speed: 15
+    attackRange: 36
+    gold: 0
+    xp: 0
+  player:
+  - hp: 500
+    armor: 0.1
+    attack: 10
+    attackSpeed: 1
+    speed: 10
+    attackRange: 3
+    gold: 0
+    xp: 0
+  - hp: 550
+    armor: 0.1
+    attack: 12
+    attackSpeed: 1
+    speed: 12
+    attackRange: 3
+    gold: 0
+    xp: 100
+  - hp: 600
+    armor: 0.15
+    attack: 15
+    attackSpeed: 1.3
+    speed: 14
+    attackRange: 3
+    gold: 0
+    xp: 200
+  - hp: 700
+    armor: 0.2
+    attack: 17
+    attackSpeed: 1.5
+    speed: 15
+    attackRange: 4
+    gold: 0
+    xp: 300
+  - hp: 800
+    armor: 0.25
+    attack: 20
+    attackSpeed: 1.7
+    speed: 19
+    attackRange: 4
+    gold: 0
+    xp: 400
+  enemyWarrior:
+  - hp: 60
+    armor: 0.2
+    attack: 10
+    attackSpeed: 1
+    speed: 10
+    attackRange: 3
+    gold: 3
+    xp: 3
+  enemyArcher:
+  - hp: 20
+    armor: 0.1
+    attack: 5
+    attackSpeed: 0.7
+    speed: 10
+    attackRange: 30
+    gold: 4
+    xp: 4
+  boss:
+  - hp: 500
+    armor: 0.5
+    attack: 50
+    attackSpeed: 0.2
+    speed: 2
+    attackRange: 3
+    gold: 10
+    xp: 10
+  meteoRain:
+  - radius: 30
+    damage: 5
+    cooldown: 30
+  - radius: 35
+    damage: 6
+    cooldown: 28
+  - radius: 40
+    damage: 7
+    cooldown: 26
+  - radius: 45
+    damage: 8
+    cooldown: 23
+  - radius: 50
+    damage: 9
+    cooldown: 20
+  iceArrow:
+  - radius: 30
+    damage: 3
+    slow: 0.5
+    attackSlow: 0.5
+    duration: 20
+  - radius: 35
+    damage: 4
+    slow: 0.6
+    attackSlow: 0.6
+    duration: 22
+  - radius: 40
+    damage: 5
+    slow: 0.7
+    attackSlow: 0.7
+    duration: 24
+  - radius: 45
+    damage: 6
+    slow: 0.8
+    attackSlow: 0.8
+    duration: 26
+  - radius: 50
+    damage: 7
+    slow: 0.9
+    attackSlow: 0.9
+    duration: 30
+--- !u!4 &457023028
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 457023026}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -54.36, y: 9.24, z: 54.840004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
 --- !u!1 &772507189
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,7 +543,9 @@ Prefab:
       propertyPath: m_Name
       value: Spawner archers
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11494944, guid: be01a37ef78324793b384578d4573207, type: 2}
+    - {fileID: 11449556, guid: be01a37ef78324793b384578d4573207, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: be01a37ef78324793b384578d4573207, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1883562916
@@ -427,8 +661,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 1932303811}
   - 114: {fileID: 1932303810}
+  - 114: {fileID: 1932303812}
   m_Layer: 0
-  m_Name: Manager
+  m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -445,7 +680,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87d90fba7ddc246a1875d7571317fb64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floor: {fileID: 0}
   planePrefab: {fileID: 188628, guid: 08999e3308d224006ba34aeee0ba1ee7, type: 2}
 --- !u!4 &1932303811
 Transform:
@@ -460,3 +694,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+--- !u!114 &1932303812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1932303809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4c99d972791845da9384bc5f2c2c5b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemySpawnLimit: 10
+  mignonSpawnLimit: 10

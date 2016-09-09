@@ -3,7 +3,6 @@ using System.Collections;
 using Progress;
 
 public class MouseManager : MonoBehaviour {
-	public GameObject floor;
 	public GameObject planePrefab;
 
 	private Vector3 clickedPoint = Vector3.zero;
@@ -18,6 +17,9 @@ public class MouseManager : MonoBehaviour {
 			// Если плоскости еще нет нужно проверить ткнули в юнит или нет.
 			if (!planeMode) {
 				Physics.Raycast(ray, out hit);
+				if (hit.collider == null) {
+					return;
+				}
 				planeMode = !hit.collider.gameObject.CompareTag("Unit");
 			} else {
 				Physics.Raycast(ray, out hit, Mathf.Infinity, Constants.FLOOR_LAYER);
@@ -37,11 +39,11 @@ public class MouseManager : MonoBehaviour {
 				SelectUnits(clickedPoint, hit.point);
 			} else if (plane == null) {
 				// Режим одиночного выделения кликом.
-				foreach (Unit unit in EnemySpawner.Instance.enemies) {
+				foreach (Unit unit in SpawnersManager.Instance.Units) {
 					unit.SetSelected(false);
 				}
 				if (hit.collider.gameObject.CompareTag("Unit")) {
-					foreach (var unit in EnemySpawner.Instance.enemies) {
+					foreach (var unit in SpawnersManager.Instance.Units) {
 						if (unit.gameObject.Equals(hit.collider.gameObject)) {
 							unit.SetSelected(!unit.IsSelected);
 							break;
@@ -61,7 +63,7 @@ public class MouseManager : MonoBehaviour {
 	/// <param name="start">Начальная точка выделения.</param>
 	/// <param name="end">Конечная точка выделения.</param>
 	private void SelectUnits(Vector3 start, Vector3 end) {
-		foreach (Unit unit in EnemySpawner.Instance.enemies) {
+		foreach (Unit unit in SpawnersManager.Instance.Units) {
 			unit.SetSelected(IsInArea(unit.transform.position, start, end));
 		}
 	}

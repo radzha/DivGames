@@ -43,7 +43,7 @@ public class CameraMover : MonoBehaviour {
 					player = boss.gameObject;
 				}
 			}
-			if (player != null && rod != null) {
+			if (player != null) {
 				var targetPosition = player.transform.position + rod;
 				transform.position = Vector3.Lerp(transform.position, targetPosition, smoothness * Time.deltaTime);
 			}

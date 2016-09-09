@@ -7,7 +7,7 @@ namespace Progress {
 		public Transform gun;
 		public float gunAmplitude = 1f;
 		public float gunFreq = 0.5f;
-		public	Settings.Unit.UnitType unitType;
+		public Settings.Unit.UnitType unitType;
 		public GameObject selectMarkerPrefab;
 
 		protected GameObject selectMarker;
@@ -51,7 +51,7 @@ namespace Progress {
 
 		protected virtual void Awake() {
 			// Настройки в соответствии с типом юнита.
-			Settings = new Settings.Unit(unitType);
+			Settings = new Settings.Unit(unitType, isEnemy);
 			// Начальный запас жизни
 			health = settings.Hp;
 

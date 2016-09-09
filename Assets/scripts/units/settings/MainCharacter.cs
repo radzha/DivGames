@@ -2,8 +2,8 @@
 	public class MainCharacter : Unit {
 		public class Level {
 			/// <summary>
-			/// Уровень (Level) — уровень по порядку, начиная с первого (readonly поле, задается
-			/// автоматически редактором главного персонажа)
+			/// Уровень (Level) — уровень по порядку, начиная с первого 
+			/// (readonly поле, задается автоматически редактором главного персонажа)
 			/// </summary>
 			private readonly int levelNum;
 
@@ -33,7 +33,7 @@
 
 		private Level level;
 
-		public MainCharacter(UnitType type) : base(type) {
+		public MainCharacter(UnitType type) : base(type, false) {
 			level = new Level();
 		}
 
