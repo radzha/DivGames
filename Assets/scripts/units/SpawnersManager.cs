@@ -26,9 +26,13 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 		units = new HashSet<Progress.Unit>();
 	}
 
-//	public HashSet<Unit> GetMignons(){
-//		return Units.Where(u=>u.Settings.GetType() == )
-//	}
+	public HashSet<Unit> Mignons() {
+		return new HashSet<Unit>(Units.Where(u => !u.IsEnemy));
+	}
+
+	public HashSet<Unit> Enemies() {
+		return new HashSet<Unit>(Units.Where(u => u.IsEnemy));
+	}
 
 	public void AddUnit(Unit unit) {
 		units.Add(unit);
