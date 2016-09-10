@@ -11,9 +11,9 @@ GameObject:
   - 33: {fileID: 3310222}
   - 136: {fileID: 13648500}
   - 23: {fileID: 2359464}
-  - 114: {fileID: 11494944}
+  - 114: {fileID: 11492036}
   m_Layer: 2
-  m_Name: Spawner
+  m_Name: Spawner warriors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,9 +45,9 @@ GameObject:
   - 33: {fileID: 3322576}
   - 136: {fileID: 13675778}
   - 23: {fileID: 2329896}
-  - 114: {fileID: 11449556}
+  - 114: {fileID: 11463112}
   m_Layer: 2
-  m_Name: Spawner (1)
+  m_Name: Spawner archers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,6 +83,7 @@ GameObject:
   - 33: {fileID: 3313150}
   - 136: {fileID: 13691266}
   - 23: {fileID: 2351442}
+  - 114: {fileID: 11427642}
   m_Layer: 2
   m_Name: Fountain
   m_TagString: Untagged
@@ -110,7 +111,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 147424}
   m_LocalRotation: {x: 0, y: 0.38268346, z: 0, w: 0.9238795}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 16.7, y: 0, z: -16.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
   m_Children:
@@ -314,7 +315,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30a485623a567b743b36c597cbd41454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11449556
+--- !u!114 &11427642
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 199148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112e303585435454fb8a3e4b68af6953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11463112
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -322,11 +334,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 156018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86c64b7efe696714f8633aa985534ff0, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f740cab015edeb41b76b5fec0b2a0e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
---- !u!114 &11494944
+  trainingSpeed: 0.4
+  spawnUnitTypes: 01000000
+  isEnemy: 0
+--- !u!114 &11492036
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -334,10 +348,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 140876}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86c64b7efe696714f8633aa985534ff0, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f740cab015edeb41b76b5fec0b2a0e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  trainingSpeed: 0.2
+  spawnUnitTypes: 00000000
+  isEnemy: 0
 --- !u!136 &13648500
 CapsuleCollider:
   m_ObjectHideFlags: 1

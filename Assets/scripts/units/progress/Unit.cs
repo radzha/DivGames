@@ -18,7 +18,7 @@ namespace Progress {
 		protected Settings.Unit settings;
 
 		private Vector3 gunAxis;
-		private bool isEnemy = true;
+		public bool IsEnemy = true;
 		private bool isSelected;
 		private RaycastHit hit;
 
@@ -28,15 +28,6 @@ namespace Progress {
 			}
 			set {
 				settings = value;
-			}
-		}
-
-		public bool IsEnemy {
-			get {
-				return isEnemy;
-			}
-			set {
-				isEnemy = value;
 			}
 		}
 
@@ -51,7 +42,7 @@ namespace Progress {
 
 		protected virtual void Awake() {
 			// Настройки в соответствии с типом юнита.
-			Settings = new Settings.Unit(unitType, isEnemy);
+			Settings = new Settings.Unit(unitType, IsEnemy);
 			// Начальный запас жизни
 			health = settings.Hp;
 

@@ -11,7 +11,7 @@ public class EnemiesUI : MonoBehaviour {
 	}
 
 	void Update () {
-		text.text = "Врагов: " + SpawnersManager.Instance.Enemies().Count;
+		text.text = "Врагов: " + SpawnersManager.Instance.EnemiesCount();
 	}
 
 }
