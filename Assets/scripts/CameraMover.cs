@@ -38,9 +38,9 @@ public class CameraMover : MonoBehaviour {
 
 		if (autoMove) {
 			if (player == null) {
-				var boss = GameObject.FindObjectOfType<Boss>();
-				if (boss != null) {
-					player = boss.gameObject;
+				var hero = SpawnersManager.Instance.MainCharacter();
+				if (hero != null) {
+					player = hero.gameObject;
 				}
 			}
 			if (player != null) {

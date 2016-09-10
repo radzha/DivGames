@@ -12,8 +12,8 @@ GameObject:
   - 136: {fileID: 13615270}
   - 23: {fileID: 2301804}
   - 54: {fileID: 5484084}
-  - 114: {fileID: 11443612}
   - 114: {fileID: 11413362}
+  - 114: {fileID: 11403656}
   m_Layer: 0
   m_Name: Main charachter
   m_TagString: Unit
@@ -146,6 +146,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &11403656
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd9b2828f56ce48da8d579577427c3cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 446280}
+  gunAmplitude: 1
+  gunFreq: 0.5
+  unitType: 3
+  selectMarkerPrefab: {fileID: 111996, guid: db4e2d60db1cd4e4c86dc83a7a41c4a9, type: 2}
+  IsEnemy: 0
 --- !u!114 &11413362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -160,23 +177,6 @@ MonoBehaviour:
   ColorMax: {r: 0, g: 1, b: 0, a: 1}
   ColorMin: {r: 1, g: 0, b: 0, a: 1}
   healthControlPrefab: {fileID: 111996, guid: 52258dfb93794440cba86896ac63bb90, type: 2}
---- !u!114 &11443612
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 150410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 106249210ea994328aedfa0cd6c324ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gun: {fileID: 446280}
-  gunAmplitude: 1
-  gunFreq: 0.5
-  unitType: 2
-  selectMarkerPrefab: {fileID: 111996, guid: db4e2d60db1cd4e4c86dc83a7a41c4a9, type: 2}
-  IsEnemy: 0
 --- !u!136 &13615270
 CapsuleCollider:
   m_ObjectHideFlags: 1

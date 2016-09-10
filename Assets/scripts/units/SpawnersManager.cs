@@ -23,21 +23,6 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	// Промежуток между волнами врагов.
 	public int enemyWaveDelay = 10;
 
-	// Вес вероятности появления босса.
-	public int bossSpawnWeight = 2;
-
-	// Вес вероятности появления вражеского воина.
-	public int enemyWarriorSpawnWeight = 5;
-
-	// Вес вероятности появления вражеского стрелка.
-	public int enemyArcherSpawnWeight = 6;
-
-	// Вес вероятности появления воина.
-	public int warriorSpawnWeight = 5;
-
-	// Вес вероятности появления стрелка.
-	public int archerSpawnWeight = 6;
-
 	// Префабы юнитов.
 	[System.Serializable]
 	public struct unitPrefabs {
@@ -90,7 +75,8 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 		}
 	}
 
-	private void Update() {
+	public MainCharacter MainCharacter() { 
+		return Units.FirstOrDefault(u => u.unitType == Settings.Unit.UnitType.Player) as MainCharacter;
 	}
 
 	public HashSet<Unit> Mignons() {
@@ -114,9 +100,7 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	}
 
 	public bool CanSpawn(bool isEnemy) {	
-		print(EnemiesCount() + "/" + MignonsCount());
-		print ("can: " + (waveTimer > 0f && isEnemy ? EnemiesCount() < enemySpawnLimit : MignonsCount() < mignonSpawnLimit));
-		return waveTimer > 0f && isEnemy ? EnemiesCount() < enemySpawnLimit : MignonsCount() < mignonSpawnLimit;
+		return waveTimer > 0f && (isEnemy ? EnemiesCount() < enemySpawnLimit : MignonsCount() < mignonSpawnLimit);
 	}
 
 	public bool CanSpawnType(Settings.Unit.UnitType type) {

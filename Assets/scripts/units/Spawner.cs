@@ -38,14 +38,16 @@ class Spawner : MonoBehaviour {
 		}
 		trainingTimer = trainingSpeed > 0f ? 1 / trainingSpeed : Mathf.Infinity;
 
-		print(SpawnersManager.Instance.CanSpawn(isEnemy));
 		if (!SpawnersManager.Instance.CanSpawn(isEnemy)) {
 			return;
 		}
 
+		var type = RandomType();
+		if (type == Settings.Unit.UnitType.Player && SpawnersManager.Instance.MainCharacter() != null) {
+			return;
+		}
 		var rand = Random.Range(-length, length); // случайный разброс 
 		var spawnPoint = new Vector3(transform.position.x + rand, 0f, transform.position.z + rand); // рождение юнита в случайном месте споунера
-		var type = RandomType();
 		var prefab = SpawnersManager.Instance.UnitPrefabs.First(u => u.isEnemy == isEnemy && u.type == type).prefab;
 		var unit = (GameObject)Instantiate(prefab, spawnPoint, Quaternion.identity);
 		unit.transform.position = new Vector3(unit.transform.position.x, unit.transform.localScale.y, unit.transform.position.z);

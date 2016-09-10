@@ -189,9 +189,9 @@ RectTransform:
   - {fileID: 837725766}
   m_Father: {fileID: 998306472}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -20.15, y: -7.56}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -52.37, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &137103316
@@ -479,7 +479,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 479, y: 282.8}
+  m_AnchoredPosition: {x: -112.7, y: -26.3}
   m_SizeDelta: {x: 204.1, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &469021403
@@ -554,7 +554,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 477.4, y: 256.6}
+  m_AnchoredPosition: {x: -112.7, y: -53.3}
   m_SizeDelta: {x: 218.5, y: 91.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &740082785
@@ -685,7 +685,7 @@ RectTransform:
   m_RootOrder: 3
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 479, y: 235.57}
+  m_AnchoredPosition: {x: -112.7, y: -86.3}
   m_SizeDelta: {x: 204.1, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &837725767
@@ -980,7 +980,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 479, y: 258.4}
+  m_AnchoredPosition: {x: -112.7, y: -56.3}
   m_SizeDelta: {x: 204.1, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1466240341
@@ -1234,14 +1234,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySpawnLimit: 10
   mignonSpawnLimit: 10
-  startDelay: 10
+  startDelay: 0
   enemyWaveDuration: 20
   enemyWaveDelay: 10
-  bossSpawnWeight: 2
-  enemyWarriorSpawnWeight: 5
-  enemyArcherSpawnWeight: 6
-  warriorSpawnWeight: 5
-  archerSpawnWeight: 6
   UnitPrefabs:
   - isEnemy: 1
     type: 0
@@ -1266,4 +1261,4 @@ MonoBehaviour:
   - isEnemy: 0
     type: 3
     weight: 0
-    prefab: {fileID: 150410, guid: 09e4900a927c2b245b1471f820253715, type: 2}
+    prefab: {fileID: 150410, guid: 1b80b3de08bdf4fd3979228ea082f6aa, type: 2}
