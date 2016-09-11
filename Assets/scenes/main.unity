@@ -1126,25 +1126,17 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 195330, guid: be01a37ef78324793b384578d4573207, type: 2}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
+    - target: {fileID: 11499266, guid: be01a37ef78324793b384578d4573207, type: 2}
+      propertyPath: ColorMin.r
+      value: 0.85294116
       objectReference: {fileID: 0}
-    - target: {fileID: 156018, guid: be01a37ef78324793b384578d4573207, type: 2}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
+    - target: {fileID: 11499266, guid: be01a37ef78324793b384578d4573207, type: 2}
+      propertyPath: ColorMin.g
+      value: 0.5017301
       objectReference: {fileID: 0}
-    - target: {fileID: 140876, guid: be01a37ef78324793b384578d4573207, type: 2}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 199148, guid: be01a37ef78324793b384578d4573207, type: 2}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 147424, guid: be01a37ef78324793b384578d4573207, type: 2}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
+    - target: {fileID: 11499266, guid: be01a37ef78324793b384578d4573207, type: 2}
+      propertyPath: ColorMin.b
+      value: 0.7415224
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: be01a37ef78324793b384578d4573207, type: 2}

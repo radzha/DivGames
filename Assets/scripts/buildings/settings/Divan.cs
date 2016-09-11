@@ -2,18 +2,11 @@
 	/// <summary>
 	/// Настройки дивана
 	/// </summary>
-	public class Divan: Damagable {
-		/// <summary>
-		/// Количество жизней
-		/// </summary>
+	public class Divan {
+		/// Количество жизней.
 		public int Hp {
 			get;
 			private set;
-		}
-
-		public int TakeDamage(Progress.Unit unit, float damage) {
-			Hp -= (int)damage;
-			return 0;
 		}
 
 		public Divan() {

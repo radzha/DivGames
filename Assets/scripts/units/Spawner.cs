@@ -7,15 +7,13 @@ using System.Linq;
 /// Производитель юнитов.
 /// </summary>
 class Spawner : MonoBehaviour {
-	/// <summary>
-	/// Скорость тренировки - юнитов в секунду
-	/// </summary>
+	// Скорость тренировки - юнитов в секунду.
 	public float trainingSpeed;
 
+	// Типы юнитов, которые можно здесь производить.
+	public Settings.Unit.UnitType[] spawnUnitTypes = null;
 
-	public Settings.Unit.UnitType[] spawnUnitTypes;
-
-	public bool isEnemy;
+	public bool isEnemy = false;
 
 	private Dictionary<Settings.Unit.UnitType,float> typeChances;
 	private readonly float length = 25f / Mathf.Sqrt(2);

@@ -31,10 +31,10 @@
 			private int gold;
 		}
 
-		private Level level;
+//		private Level level;
 
 		public MainCharacter(UnitType type) : base(type, false) {
-			level = new Level();
+//			level = new Level();
 		}
 
 	}

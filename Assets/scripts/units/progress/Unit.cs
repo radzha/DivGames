@@ -88,7 +88,7 @@ namespace Progress {
 		}
 
 		protected virtual void FixedUpdate() {
-			if (Health <= 0) {
+			if (health <= 0) {
 				Die();
 				return;
 			}
@@ -102,7 +102,7 @@ namespace Progress {
 		}
 
 		public int TakeDamage(Progress.Unit unit, float damage) {
-			Health -= (int)(damage * (1f - settings.Armor));
+			health -= (int)(damage * (1f - settings.Armor));
 			return 0;
 		}
 
@@ -167,7 +167,7 @@ namespace Progress {
 
 		private void MakeDamage() {
 			if (target.aim != null) {
-				Health += target.aim.TakeDamage(this, settings.Attack);
+				health += target.aim.TakeDamage(this, settings.Attack);
 			}
 		}
 
@@ -189,9 +189,12 @@ namespace Progress {
 			transform.position = new Vector3(moveTo.x, y, moveTo.y);
 		}
 
-		public int Health {
-			get{ return health; }
-			protected set{ health = value; }
+		public int Health() {
+			return health; 
+		}
+
+		public int MaxHealth() {
+			return Settings.Hp; 
 		}
 	}
 }

@@ -14,20 +14,32 @@ public class HealthControl : MonoBehaviour {
 	private Slider slider;
 	private Image fill;
 
-	private Unit unit;
+	private Damagable thing;
 
-	void Start() {
-		unit = GetComponent<Unit>();
+	void Awake() {
+		var unitComponent = GetComponent<Unit>();
+		thing = unitComponent != null ? unitComponent as Damagable : GetComponent<Divan>() as Damagable;
 		var healthControl = Instantiate(healthControlPrefab);
-		healthControl.transform.SetParent(transform);
-		healthControl.transform.localPosition = new Vector3(0f, 2.3f, 0f);
+		if (unitComponent != null) {
+			healthControl.transform.SetParent(transform);
+			healthControl.transform.localPosition = new Vector3(0f, 2.3f, 0f);
+		} else {
+			healthControl.transform.SetParent(transform.parent);
+			healthControl.transform.position = transform.position + new Vector3(0f, 4f, 0f);
+			healthControl.transform.localScale = new Vector3(2f,2f,2f);
+//			healthControl.transform.localPosition = new Vector3(0f, 14f, 0f);
+//			healthControl.transform.localRotation = Quaternion.identity;
+//			healthControl.transform.Rotate(new Vector3(-90f,0f,0f));
+//			var scale = transform.localScale;
+//			healthControl.transform.localScale = new Vector3(1f / scale.x, 1f / scale.y, 1f / scale.z);
+		}
 		slider = healthControl.GetComponentInChildren<Slider>();
 		fill = healthControl.transform.Find("Slider/Fill Area/Fill").GetComponent<Image>();
 	}
 
 	void Update() {
-		var health = unit.Health;
-		var maxHealth = unit.Settings.Hp;
+		var health = thing.Health();
+		var maxHealth = thing.MaxHealth();
 		var normalHealth = (float)health / maxHealth;
 		slider.value = normalHealth * 100f;
 		fill.color = Color.Lerp(ColorMin, ColorMax, normalHealth);
