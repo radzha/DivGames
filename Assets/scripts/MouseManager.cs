@@ -8,20 +8,30 @@ public class MouseManager : MonoBehaviour {
 	private Vector3 clickedPoint = Vector3.zero;
 	private Transform plane;
 	private	RaycastHit hit;
+	private bool planeMode;
 
 	void Update() {
-		if (Input.GetMouseButton(0)) {
+		// Нажатие левой кнопки мыши.
+		if (Input.GetMouseButtonDown(0)) {
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			// Режим выделения плоскостью или кликом.
-			var planeMode = plane != null;
 			// Если плоскости еще нет нужно проверить ткнули в юнит или нет.
+			Physics.Raycast(ray, out hit);
+			if (hit.collider == null) {
+				return;
+			}
+			planeMode = !hit.collider.gameObject.CompareTag("Unit");
 			if (!planeMode) {
-				Physics.Raycast(ray, out hit);
-				if (hit.collider == null) {
-					return;
+				// Режим одиночного выделения кликом.
+				if (hit.collider.gameObject.CompareTag("Unit")) {
+					foreach (var unit in SpawnersManager.Instance.Units) {
+						unit.SetSelected(unit.gameObject.Equals(hit.collider.gameObject));
+					}
 				}
-				planeMode = !hit.collider.gameObject.CompareTag("Unit");
-			} else {
+			}
+		} else if (Input.GetMouseButton(0)) {
+			// Удерживание левой кнопки мыши.
+			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			if (planeMode) {
 				Physics.Raycast(ray, out hit, Mathf.Infinity, Constants.FLOOR_LAYER);
 			}
 			// Режим множественного выделения плоскостью.
@@ -37,20 +47,7 @@ public class MouseManager : MonoBehaviour {
 					plane.localScale = new Vector3(direction.x / 10f, 1f, direction.z / 10f);
 				}
 				SelectUnits(clickedPoint, hit.point);
-			} else if (plane == null) {
-				// Режим одиночного выделения кликом.
-				foreach (Unit unit in SpawnersManager.Instance.Units) {
-					unit.SetSelected(false);
-				}
-				if (hit.collider.gameObject.CompareTag("Unit")) {
-					foreach (var unit in SpawnersManager.Instance.Units) {
-						if (unit.gameObject.Equals(hit.collider.gameObject)) {
-							unit.SetSelected(!unit.IsSelected);
-							break;
-						}
-					}
-				}
-			}
+			} 
 		}
 		if (Input.GetMouseButtonUp(0)) {
 			Clear();
@@ -58,13 +55,13 @@ public class MouseManager : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Выделить юнитов, попавших в зону выделения.
+	/// Выделить (своих) юнитов, попавших в зону выделения.
 	/// </summary>
 	/// <param name="start">Начальная точка выделения.</param>
 	/// <param name="end">Конечная точка выделения.</param>
 	private void SelectUnits(Vector3 start, Vector3 end) {
-		foreach (Unit unit in SpawnersManager.Instance.Units) {
-			unit.SetSelected(IsInArea(unit.transform.position, start, end));
+		foreach (Unit unit in SpawnersManager.Instance.Units){
+			unit.SetSelected(unit.IsEnemy? false : IsInArea(unit.transform.position, start, end));
 		}
 	}
 

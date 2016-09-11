@@ -34,6 +34,9 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 
 	public unitPrefabs[] UnitPrefabs;
 
+	public delegate void OnUnitSelected(Unit unit, bool isSelected);
+
+	public OnUnitSelected onUnitSelected;
 
 	// Все созданные юниты игры.
 	private HashSet<Unit> units;

@@ -25,6 +25,7 @@ namespace Progress {
 		public GameObject selectMarkerPrefab;
 		public Target target;
 		public bool isDead;
+		public int level;
 
 		protected GameObject selectMarker;
 		protected int health;
@@ -98,6 +99,7 @@ namespace Progress {
 
 		private void Die() {
 			SpawnersManager.Instance.Units.Remove(this);
+			SetSelected(false);
 			Destroy(gameObject);
 		}
 
@@ -110,8 +112,12 @@ namespace Progress {
 		/// Назначить/снять выделение юнита.
 		/// </summary>
 		public void SetSelected(bool selected) {
+			if (isSelected == selected) {
+				return;
+			}
 			selectMarker.SetActive(selected);
 			IsSelected = selected;
+			SpawnersManager.Instance.onUnitSelected(this, selected);
 		}
 
 		private void DefineTarget() {
@@ -195,6 +201,26 @@ namespace Progress {
 
 		public int MaxHealth() {
 			return Settings.Hp; 
+		}
+
+		public string PrettyType() {
+			var type = "";
+			switch (unitType) {
+				case global::Settings.Unit.UnitType.Archer:
+					type = "стрелок";
+					break;
+				case global::Settings.Unit.UnitType.Warrior:
+					type = "воин";
+					break;
+				case global::Settings.Unit.UnitType.Boss:
+					type = "босс";
+					break;
+				case global::Settings.Unit.UnitType.Player:
+					type = "герой";
+					break;
+			}
+			var own = IsEnemy ? "Вражеский" : "Наш";
+			return own + " " + type;
 		}
 	}
 }
