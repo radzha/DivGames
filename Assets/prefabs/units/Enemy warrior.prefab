@@ -32,6 +32,7 @@ GameObject:
   - 54: {fileID: 5421194}
   - 114: {fileID: 11436948}
   - 114: {fileID: 11436280}
+  - 95: {fileID: 9561412}
   m_Layer: 0
   m_Name: Enemy warrior
   m_TagString: Unit
@@ -147,6 +148,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!95 &9561412
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150410}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 30ea68b3f7f7c43bca2434518549d2c7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &11436280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -177,6 +195,10 @@ MonoBehaviour:
   gunFreq: 0.5
   unitType: 0
   selectMarkerPrefab: {fileID: 111996, guid: db4e2d60db1cd4e4c86dc83a7a41c4a9, type: 2}
+  isDead: 0
+  level: 0
+  IsEnemy: 1
+  animator: {fileID: 0}
 --- !u!136 &13615270
 CapsuleCollider:
   m_ObjectHideFlags: 1

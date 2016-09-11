@@ -3,6 +3,12 @@
 namespace Progress {
 	public class Divan : Singleton<Divan>, Damagable {
 
+		public static bool gameStop;
+
+		public delegate void onGameEnd(bool win);
+
+		public event onGameEnd OnGameEnd;
+
 		private Settings.Divan settings;
 		private int health;
 
@@ -20,8 +26,24 @@ namespace Progress {
 		}
 
 		public int TakeDamage(Progress.Unit unit, float damage) {
+			if (IsDead()) {
+				return 0;
+			}
 			health -= (int)damage;
+			if (health <= 0) {
+				Die();
+			}
 			return 0;
+		}
+
+		public void Die() {
+			gameObject.SetActive(false);
+			OnGameEnd(false);
+			gameStop = true;
+		}
+
+		public bool IsDead() {
+			return health <= 0;
 		}
 
 	}

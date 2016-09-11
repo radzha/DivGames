@@ -11,6 +11,9 @@ public class MouseManager : MonoBehaviour {
 	private bool planeMode;
 
 	void Update() {
+		if (Divan.gameStop) {
+			return;
+		}
 		// Нажатие левой кнопки мыши.
 		if (Input.GetMouseButtonDown(0)) {
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -60,8 +63,8 @@ public class MouseManager : MonoBehaviour {
 	/// <param name="start">Начальная точка выделения.</param>
 	/// <param name="end">Конечная точка выделения.</param>
 	private void SelectUnits(Vector3 start, Vector3 end) {
-		foreach (Unit unit in SpawnersManager.Instance.Units){
-			unit.SetSelected(unit.IsEnemy? false : IsInArea(unit.transform.position, start, end));
+		foreach (Unit unit in SpawnersManager.Instance.Units) {
+			unit.SetSelected(unit.IsEnemy ? false : IsInArea(unit.transform.position, start, end));
 		}
 	}
 

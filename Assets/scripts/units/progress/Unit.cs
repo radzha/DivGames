@@ -26,6 +26,7 @@ namespace Progress {
 		public Target target;
 		public bool isDead;
 		public int level;
+		public Animator animator;
 
 		protected GameObject selectMarker;
 		protected int health;
@@ -38,6 +39,7 @@ namespace Progress {
 		public bool IsEnemy = true;
 		private bool isSelected;
 		private RaycastHit hit;
+		private bool gameStop;
 
 		public Settings.Unit Settings {
 			get {
@@ -66,6 +68,29 @@ namespace Progress {
 			target = new Target(IsEnemy ? Divan.Instance as Damagable : Fountain.Instance as Damagable, false);
 			PrepareSelectMarker();
 			PrepareGun();
+
+			Divan.Instance.OnGameEnd -= OnGameEnd;
+			Divan.Instance.OnGameEnd += OnGameEnd;
+
+			animator = GetComponent<Animator>();
+		}
+
+		private void OnDestroy() {
+			Divan.Instance.OnGameEnd -= OnGameEnd;
+		}
+
+		private void OnGameEnd(bool playerWin) {
+			gameStop = true;
+			target.aim = null;
+			if (playerWin && !IsEnemy || !playerWin && IsEnemy) {
+				Hurray();
+			}
+		}
+
+
+		private void Hurray() {
+			animator.applyRootMotion = false;
+			animator.SetTrigger("hurray");
 		}
 
 		/// <summary>
@@ -89,6 +114,10 @@ namespace Progress {
 		}
 
 		protected virtual void FixedUpdate() {
+			if (gameStop) {
+				return;
+			}
+
 			if (health <= 0) {
 				Die();
 				return;
@@ -97,7 +126,7 @@ namespace Progress {
 			Move();
 		}
 
-		private void Die() {
+		public void Die() {
 			SpawnersManager.Instance.Units.Remove(this);
 			SetSelected(false);
 			Destroy(gameObject);
@@ -201,6 +230,10 @@ namespace Progress {
 
 		public int MaxHealth() {
 			return Settings.Hp; 
+		}
+
+		public bool IsDead() {
+			return health <= 0;
 		}
 
 		public string PrettyType() {

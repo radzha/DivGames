@@ -24,9 +24,10 @@ public class HealthControl : MonoBehaviour {
 			healthControl.transform.SetParent(transform);
 			healthControl.transform.localPosition = new Vector3(0f, 2.3f, 0f);
 		} else {
-			healthControl.transform.SetParent(transform.parent);
-			healthControl.transform.position = transform.position + new Vector3(0f, 4f, 0f);
-			healthControl.transform.localScale = new Vector3(2f, 2f, 2f);
+			healthControl.transform.SetParent(transform);
+			healthControl.transform.position = transform.position + new Vector3(0f, 1.9f, 0f);
+			healthControl.transform.localScale = new Vector3(0.15f, 0.5f, 1f);
+			healthControl.transform.rotation = Quaternion.Euler(new Vector3(90f, 135f, 0f));
 		}
 		slider = healthControl.GetComponentInChildren<Slider>();
 		fill = healthControl.transform.Find("Slider/Fill Area/Fill").GetComponent<Image>();

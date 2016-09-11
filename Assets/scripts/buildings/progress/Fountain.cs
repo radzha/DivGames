@@ -20,5 +20,13 @@ namespace Progress {
 		public int MaxHealth() {
 			return int.MaxValue;
 		}
+
+		public void Die() {
+			// Фонтан неразрушим.
+		}
+
+		public bool IsDead() {
+			return false;
+		}
 	}
 }

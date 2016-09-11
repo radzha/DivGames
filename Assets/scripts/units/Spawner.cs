@@ -43,6 +43,10 @@ class Spawner : MonoBehaviour {
 	}
 
 	private void Update() {
+		if (Divan.gameStop) {
+			return;
+		}
+
 		if (IsMainCharacterSpawner() && SpawnersManager.Instance.MainCharacter() != null) {
 			return;
 		}

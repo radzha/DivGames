@@ -100,7 +100,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 195330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.44, y: 0.5, z: -0}
+  m_LocalPosition: {x: 9.39, y: 0.5, z: -0}
   m_LocalScale: {x: 3, y: 1, z: 10}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -143,7 +143,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156018}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.65, y: 1, z: 10}
+  m_LocalPosition: {x: 15.65, y: 1, z: 20}
   m_LocalScale: {x: 5, y: 1, z: 5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -156,7 +156,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 140876}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.65, y: 1, z: -10}
+  m_LocalPosition: {x: 15.65, y: 1, z: -20}
   m_LocalScale: {x: 5, y: 1, z: 5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -381,8 +381,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f2c923d15ea43b1b3ff2001eb669ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ColorMax: {r: 0, g: 1, b: 0, a: 1}
-  ColorMin: {r: 1, g: 0, b: 0, a: 1}
+  ColorMax: {r: 0.08012543, g: 0.41911763, b: 0.08012543, a: 1}
+  ColorMin: {r: 0.9705882, g: 0, b: 0.16911457, a: 1}
   healthControlPrefab: {fileID: 111996, guid: 52258dfb93794440cba86896ac63bb90, type: 2}
 --- !u!136 &13648500
 CapsuleCollider:
