@@ -64,7 +64,7 @@ GameObject:
   - 33: {fileID: 3329450}
   - 65: {fileID: 6565926}
   - 23: {fileID: 2303834}
-  - 114: {fileID: 11423054}
+  - 114: {fileID: 11499266}
   m_Layer: 2
   m_Name: Divan
   m_TagString: Untagged
@@ -319,17 +319,6 @@ MonoBehaviour:
   trainingSpeed: 1
   spawnUnitTypes: 03000000
   isEnemy: 0
---- !u!114 &11423054
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 195330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30a485623a567b743b36c597cbd41454, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11427642
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -369,6 +358,20 @@ MonoBehaviour:
   trainingSpeed: 0.2
   spawnUnitTypes: 00000000
   isEnemy: 0
+--- !u!114 &11499266
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f2c923d15ea43b1b3ff2001eb669ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ColorMax: {r: 0, g: 1, b: 0, a: 1}
+  ColorMin: {r: 1, g: 0, b: 0, a: 1}
+  healthControlPrefab: {fileID: 111996, guid: 52258dfb93794440cba86896ac63bb90, type: 2}
 --- !u!136 &13648500
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -1,14 +1,30 @@
 ﻿using Settings;
 using UnityEngine;
+using System.Linq;
 
 namespace Progress {
-	public class Unit : MonoBehaviour {
+	public class Unit : MonoBehaviour, Damagable {
+		public class Target {
+			public Damagable aim;
+			public bool isUnit;
+
+			public void SetTarget(Damagable aim, bool isUnit = true) {
+				this.aim = aim;
+				this.isUnit = isUnit;
+			}
+
+			public Target(Damagable aim, bool isUnit) {
+				SetTarget(aim, isUnit);
+			}
+		}
 
 		public Transform gun;
 		public float gunAmplitude = 1f;
 		public float gunFreq = 0.5f;
 		public Settings.Unit.UnitType unitType;
 		public GameObject selectMarkerPrefab;
+		public Target target;
+		public bool isDead;
 
 		protected GameObject selectMarker;
 		protected int health;
@@ -46,6 +62,7 @@ namespace Progress {
 			// Начальный запас жизни
 			health = settings.Hp;
 
+			target = new Target(IsEnemy ? Divan.Instance as Damagable : Fountain.Instance as Damagable, false);
 			PrepareSelectMarker();
 			PrepareGun();
 		}
@@ -70,11 +87,23 @@ namespace Progress {
 			gunAxis = new Vector3(0f, -Mathf.Sin(angle), Mathf.Cos(angle)).normalized;
 		}
 
-		protected virtual void Update() {
-			Move();
-			if (firingMode) {
-				Fire();
+		protected virtual void FixedUpdate() {
+			if (Health <= 0) {
+				Die();
+				return;
 			}
+			DefineTarget();
+			Move();
+		}
+
+		private void Die() {
+			SpawnersManager.Instance.Units.Remove(this);
+			Destroy(gameObject);
+		}
+
+		public int TakeDamage(Progress.Unit unit, float damage) {
+			Health -= (int)(damage * (1f - settings.Armor));
+			return 0;
 		}
 
 		/// <summary>
@@ -83,6 +112,34 @@ namespace Progress {
 		public void SetSelected(bool selected) {
 			selectMarker.SetActive(selected);
 			IsSelected = selected;
+		}
+
+		private void DefineTarget() {
+			if (IsEnemy) {
+				if (SpawnersManager.Instance.MignonsCount() == 0) {
+					target.SetTarget(Divan.Instance as Damagable, false);
+				} else {
+					target.SetTarget(FindOpponent(this), true);
+				}
+			} else {
+				if (SpawnersManager.Instance.EnemiesCount() == 0) {
+					target.SetTarget(Fountain.Instance as Damagable, false);
+				} else {
+					target.SetTarget(FindOpponent(this), true);
+				}
+			}
+		}
+
+		private Damagable FindOpponent(Unit unit) {
+			var opponents = unit.IsEnemy ? SpawnersManager.Instance.Mignons() : SpawnersManager.Instance.Enemies();
+			var closest = opponents.Aggregate((agg, next) => DistanceSqr(next.gameObject, gameObject) < DistanceSqr(agg.gameObject, gameObject) ? next : agg);
+			return closest;
+		}
+
+		public float DistanceSqr(GameObject g1, GameObject g2) {
+			var xDist = g1.transform.position.x - g2.transform.position.x;
+			var zDist = g1.transform.position.z - g2.transform.position.z;
+			return xDist * xDist + zDist + zDist;
 		}
 
 		protected virtual void Fire() {
@@ -95,17 +152,46 @@ namespace Progress {
 			gun.position += gunStep * gunAxis;
 		}
 
-		protected void Move() {
-			var target = Divan.Instance.transform;
-			var speed = 2f;
-			var distance = Vector3.Distance(transform.position, target.position);
-			var y = transform.position.y;
-			var moveTo = Vector3.Lerp(transform.position, target.position, speed * Time.deltaTime / distance);
-			transform.position = new Vector3(moveTo.x, y, moveTo.z);
+		protected float timerAttack;
+
+		protected void Attack() {
+			if (timerAttack <= 0f) {
+				Fire();
+				MakeDamage();
+				timerAttack = 1f / settings.AttackSpeed;
+			} else {
+				firingMode = false;
+				timerAttack -= Time.deltaTime;
+			}
 		}
 
-		public int GetHealth() {
-			return health;
+		private void MakeDamage() {
+			if (target.aim != null) {
+				Health += target.aim.TakeDamage(this, settings.Attack);
+			}
+		}
+
+		protected void Move() {
+			var speed = settings.Speed;
+			if (target.aim == null) {
+				return;
+			}
+			var targetGo = (target.aim as MonoBehaviour).gameObject;
+			var targetPos = new Vector2(targetGo.transform.position.x, targetGo.transform.position.z);
+			var myPos = new Vector2(transform.position.x, transform.position.z);
+			var distance = Vector2.Distance(myPos, targetPos);
+			if (distance <= settings.AttackRange) {
+				Attack();
+				return;
+			}
+			var moveTo = Vector2.Lerp(myPos, targetPos, speed * Time.deltaTime / distance);
+			var y = transform.position.y;
+			transform.position = new Vector3(moveTo.x, y, moveTo.y);
+		}
+
+		public int Health {
+			get{ return health; }
+			protected set{ health = value; }
 		}
 	}
 }

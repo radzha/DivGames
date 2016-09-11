@@ -386,7 +386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallPrefab: {fileID: 496876, guid: eacd37afafabb4671a5a2446ecbfae5d, type: 2}
-  scale: {x: 5.14, y: 1, z: 2}
+  scale: {x: 5.14, y: 1, z: 0.5}
   position: {x: -18.2, y: 9.24, z: 18.2}
 --- !u!1001 &100100000
 Prefab:

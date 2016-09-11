@@ -6,7 +6,7 @@
 		/// <summary>
 		/// Скорость восстановления жизней героя
 		/// </summary>
-		public float PlayerCureSpeed {
+		public int PlayerCureSpeed {
 			get;
 			private set;		
 		}
@@ -14,7 +14,7 @@
 		/// <summary>
 		/// Скорость восстановления жизней миньона
 		/// </summary>
-		public float MignonCureSpeed {
+		public int MignonCureSpeed {
 			get;
 			private set;
 		}

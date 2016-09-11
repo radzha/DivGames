@@ -32,8 +32,8 @@ public class LevelEditor : Singleton<LevelEditor> {
 
 	[System.Serializable]
 	public struct Fountain {
-		public float playerCureSpeed;
-		public float mignonCureSpeed;
+		public int playerCureSpeed;
+		public int mignonCureSpeed;
 	}
 
 	[System.Serializable]
@@ -51,6 +51,7 @@ public class LevelEditor : Singleton<LevelEditor> {
 	public UnitSettings[] warrior;
 	public UnitSettings[] archer;
 	public UnitSettings[] player;
+	public float[] playerRespawnTime;
 
 	[Header("Enemy team")]
 	public UnitSettings[] enemyWarrior;

@@ -10,7 +10,7 @@ class Spawner : MonoBehaviour {
 	/// <summary>
 	/// Скорость тренировки - юнитов в секунду
 	/// </summary>
-	public float trainingSpeed = 1f;
+	public float trainingSpeed;
 
 
 	public Settings.Unit.UnitType[] spawnUnitTypes;
@@ -22,7 +22,9 @@ class Spawner : MonoBehaviour {
 	private float trainingTimer;
 
 	private void Awake() {
-		trainingTimer = trainingSpeed > 0f ? 1 / trainingSpeed : Mathf.Infinity;
+		var level = 0;
+		trainingSpeed = spawnUnitTypes[0] == Settings.Unit.UnitType.Player ? LevelEditor.Instance.playerRespawnTime[level] : LevelEditor.Instance.spawner[level].spawnSpeed;
+		trainingTimer = spawnUnitTypes[0] == Settings.Unit.UnitType.Player ? 0f : trainingSpeed > 0f ? 1 / trainingSpeed : Mathf.Infinity;
 		typeChances = new Dictionary<Settings.Unit.UnitType, float>();
 		var weightSum = SpawnersManager.Instance.UnitPrefabs.Where(u => u.isEnemy == isEnemy && spawnUnitTypes.Contains(u.type)).Sum(u => u.weight);
 		foreach (var type in spawnUnitTypes) {
@@ -31,21 +33,33 @@ class Spawner : MonoBehaviour {
 		}
 	}
 
+	public int RespawnTime() {
+		if (spawnUnitTypes[0] == Settings.Unit.UnitType.Player) {
+			return SpawnersManager.Instance.MainCharacter() != null ? 0 : trainingTimer > 0f ? (int)trainingTimer : 0;
+		}
+		return 0;
+	}
+
+	private bool IsMainCharacterSpawner() {
+		return spawnUnitTypes[0] == Settings.Unit.UnitType.Player;
+	}
+
 	private void Update() {
+		if (IsMainCharacterSpawner() && SpawnersManager.Instance.MainCharacter() != null) {
+			return;
+		}
+
 		if (trainingTimer > 0f) {
 			trainingTimer -= Time.deltaTime;
 			return;
 		}
 		trainingTimer = trainingSpeed > 0f ? 1 / trainingSpeed : Mathf.Infinity;
 
-		if (!SpawnersManager.Instance.CanSpawn(isEnemy)) {
+		if (!IsMainCharacterSpawner() && !SpawnersManager.Instance.CanSpawn(isEnemy)) {
 			return;
 		}
 
 		var type = RandomType();
-		if (type == Settings.Unit.UnitType.Player && SpawnersManager.Instance.MainCharacter() != null) {
-			return;
-		}
 		var rand = Random.Range(-length, length); // случайный разброс 
 		var spawnPoint = new Vector3(transform.position.x + rand, 0f, transform.position.z + rand); // рождение юнита в случайном месте споунера
 		var prefab = SpawnersManager.Instance.UnitPrefabs.First(u => u.isEnemy == isEnemy && u.type == type).prefab;

@@ -26,7 +26,7 @@ public class HealthControl : MonoBehaviour {
 	}
 
 	void Update() {
-		var health = unit.GetHealth();
+		var health = unit.Health;
 		var maxHealth = unit.Settings.Hp;
 		var normalHealth = (float)health / maxHealth;
 		slider.value = normalHealth * 100f;

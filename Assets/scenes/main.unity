@@ -153,6 +153,42 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 121440, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 176228, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 129326, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 180180, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 165090, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 134950, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 150616, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 192018, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 196002, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3c4363d1eeca34de4b4f3822d54f52ca, type: 2}
   m_IsPrefabParent: 0
@@ -233,15 +269,15 @@ MonoBehaviour:
     mignonCureSpeed: 5
   spawner:
   - gold: 0
-    spawnSpeed: 5
+    spawnSpeed: 0.5
   - gold: 100
-    spawnSpeed: 4
+    spawnSpeed: 0.8
   - gold: 200
-    spawnSpeed: 3
+    spawnSpeed: 1.2
   - gold: 300
-    spawnSpeed: 2
+    spawnSpeed: 1.5
   - gold: 400
-    spawnSpeed: 1
+    spawnSpeed: 2
   warrior:
   - hp: 40
     armor: 0
@@ -365,6 +401,12 @@ MonoBehaviour:
     attackRange: 4
     gold: 0
     xp: 400
+  playerRespawnTime:
+  - 0.1
+  - 0.08
+  - 0.07
+  - 0.06
+  - 0.05
   enemyWarrior:
   - hp: 60
     armor: 0.2
@@ -457,8 +499,9 @@ GameObject:
   - 224: {fileID: 469021402}
   - 222: {fileID: 469021404}
   - 114: {fileID: 469021403}
+  - 114: {fileID: 469021405}
   m_Layer: 5
-  m_Name: TimerUI
+  m_Name: RespawnUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -522,6 +565,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 469021401}
+--- !u!114 &469021405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 469021401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc3c3c52f169f4ba1b3d408bd51e2056, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &740082783
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,6 +1126,26 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 195330, guid: be01a37ef78324793b384578d4573207, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 156018, guid: be01a37ef78324793b384578d4573207, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 140876, guid: be01a37ef78324793b384578d4573207, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 199148, guid: be01a37ef78324793b384578d4573207, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 147424, guid: be01a37ef78324793b384578d4573207, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: be01a37ef78324793b384578d4573207, type: 2}
   m_IsPrefabParent: 0
@@ -1233,7 +1307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpawnLimit: 10
-  mignonSpawnLimit: 10
+  mignonSpawnLimit: 3
   startDelay: 0
   enemyWaveDuration: 20
   enemyWaveDelay: 10
