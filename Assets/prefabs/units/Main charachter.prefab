@@ -12,8 +12,8 @@ GameObject:
   - 136: {fileID: 13615270}
   - 23: {fileID: 2301804}
   - 54: {fileID: 5484084}
-  - 114: {fileID: 11413362}
   - 114: {fileID: 11403656}
+  - 114: {fileID: 11413362}
   - 95: {fileID: 9546956}
   m_Layer: 0
   m_Name: Main charachter
@@ -180,10 +180,10 @@ MonoBehaviour:
   gunFreq: 0.5
   unitType: 3
   selectMarkerPrefab: {fileID: 111996, guid: db4e2d60db1cd4e4c86dc83a7a41c4a9, type: 2}
+  aimMarkerPrefab: {fileID: 111996, guid: 42b3b77c673ae47b18c424c5b84fb79c, type: 2}
   isDead: 0
   level: 0
   IsEnemy: 0
-  animator: {fileID: 0}
 --- !u!114 &11413362
 MonoBehaviour:
   m_ObjectHideFlags: 1

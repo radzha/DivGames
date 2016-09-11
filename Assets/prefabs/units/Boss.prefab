@@ -194,10 +194,10 @@ MonoBehaviour:
   gunFreq: 0.5
   unitType: 2
   selectMarkerPrefab: {fileID: 111996, guid: db4e2d60db1cd4e4c86dc83a7a41c4a9, type: 2}
+  aimMarkerPrefab: {fileID: 111996, guid: 42b3b77c673ae47b18c424c5b84fb79c, type: 2}
   isDead: 0
   level: 0
   IsEnemy: 1
-  animator: {fileID: 0}
 --- !u!136 &13615270
 CapsuleCollider:
   m_ObjectHideFlags: 1

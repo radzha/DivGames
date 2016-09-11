@@ -22,7 +22,8 @@ public class HealthControl : MonoBehaviour {
 		var healthControl = Instantiate(healthControlPrefab);
 		if (unitComponent != null) {
 			healthControl.transform.SetParent(transform);
-			healthControl.transform.localPosition = new Vector3(0f, 2.3f, 0f);
+			var mult = 8f / transform.localScale.y;
+			healthControl.transform.localPosition = new Vector3(0f, mult, 0f);
 		} else {
 			healthControl.transform.SetParent(transform);
 			healthControl.transform.position = transform.position + new Vector3(0f, 1.9f, 0f);

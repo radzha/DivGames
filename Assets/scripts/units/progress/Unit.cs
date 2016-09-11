@@ -3,9 +3,20 @@ using UnityEngine;
 using System.Linq;
 
 namespace Progress {
+	/// <summary>
+	/// Юнит - базовый класс для всех субъектов игры.
+	/// </summary>
 	public class Unit : MonoBehaviour, Damagable {
+		/// <summary>
+		/// Класс, описывающий цель юнита.
+		/// Целью может быть юнит противника или строение:
+		/// - диван (для врагов)
+		/// - фонтан (для миньонов)
+		/// </summary>
 		public class Target {
+			// Цель юнита.
 			public Damagable aim;
+			// Является ли юнитом (или зданием)
 			public bool isUnit;
 
 			public void SetTarget(Damagable aim, bool isUnit = true) {
@@ -18,61 +29,63 @@ namespace Progress {
 			}
 		}
 
-		public Transform gun;
-		public float gunAmplitude = 1f;
-		public float gunFreq = 0.5f;
+		// Тип юнита.
 		public Settings.Unit.UnitType unitType;
+		// Префаб маркера выбора.
 		public GameObject selectMarkerPrefab;
+		// Префаб маркера цели.
+		public GameObject aimMarkerPrefab;
+		// Цель юнита.
 		public Target target;
+		// Мертв ли юнит.
 		public bool isDead;
+		// Уровень юнита.
 		public int level;
-		public Animator animator;
-
-		protected GameObject selectMarker;
-		protected int health;
-		protected float gunShift = 0f;
-		protected float gunStep;
-		protected bool firingMode = false;
-		protected Settings.Unit settings;
-
-		private Vector3 gunAxis;
+		// Орудие юнита.
+		public Transform gun;
+		// Враг ли юнит.
 		public bool IsEnemy = true;
-		private bool isSelected;
-		private RaycastHit hit;
-		private bool gameStop;
 
+		// Маркер выбора.
+		protected GameObject selectMarker;
+		// Маркер цели.
+		protected GameObject aimMarker;
+		// Текущий показатель жизни.
+		protected int health;
+		// Таймер атаки.
+		protected float timerAttack;
+
+		// Контроллер аниматора.
+		private Animator animator;
+
+		// Набор настроек юнита.
 		public Settings.Unit Settings {
-			get {
-				return settings;
-			}
-			set {
-				settings = value;
-			}
+			get;
+			set;
 		}
 
+		// Выделен ли юнит мышью.
 		public bool IsSelected {
-			get {
-				return isSelected;
-			}
-			set {
-				isSelected = value;
-			}
+			get;
+			set;
 		}
 
 		protected virtual void Awake() {
 			// Настройки в соответствии с типом юнита.
 			Settings = new Settings.Unit(unitType, IsEnemy);
-			// Начальный запас жизни
-			health = settings.Hp;
-
+			// Начальный запас жизни.
+			health = Settings.Hp;
+			// Начальная цель - здание.
 			target = new Target(IsEnemy ? Divan.Instance as Damagable : Fountain.Instance as Damagable, false);
-			PrepareSelectMarker();
-			PrepareGun();
+			// Аниматор.
+			animator = GetComponent<Animator>();
 
+			PrepareSelectMarker();
+			PrepareAimMarker();
+
+			// Подписка на конец игры.
 			Divan.Instance.OnGameEnd -= OnGameEnd;
 			Divan.Instance.OnGameEnd += OnGameEnd;
-
-			animator = GetComponent<Animator>();
 		}
 
 		private void OnDestroy() {
@@ -80,14 +93,15 @@ namespace Progress {
 		}
 
 		private void OnGameEnd(bool playerWin) {
-			gameStop = true;
 			target.aim = null;
 			if (playerWin && !IsEnemy || !playerWin && IsEnemy) {
 				Hurray();
 			}
 		}
 
-
+		/// <summary>
+		/// Анимация радости выигрышной стороны.
+		/// </summary>
 		private void Hurray() {
 			animator.applyRootMotion = false;
 			animator.SetTrigger("hurray");
@@ -105,16 +119,18 @@ namespace Progress {
 		}
 
 		/// <summary>
-		/// Подготовка оружия.
+		/// Подготовка маркера цели.
 		/// </summary>
-		protected virtual void PrepareGun() {
-			gunStep = Time.deltaTime * 4 * gunAmplitude * gunFreq;
-			var angle = Mathf.PI * (90f - gun.rotation.eulerAngles.x) / 180f;
-			gunAxis = new Vector3(0f, -Mathf.Sin(angle), Mathf.Cos(angle)).normalized;
+		void PrepareAimMarker() {
+			aimMarker = Instantiate(aimMarkerPrefab);
+			aimMarker.transform.SetParent(transform);
+			var mult = 11f / transform.localScale.y;
+			aimMarker.transform.localPosition = new Vector3(0f, mult, 0f);
+			aimMarker.SetActive(false);
 		}
 
 		protected virtual void FixedUpdate() {
-			if (gameStop) {
+			if (Divan.gameStop) {
 				return;
 			}
 
@@ -122,18 +138,36 @@ namespace Progress {
 				Die();
 				return;
 			}
+
 			DefineTarget();
 			Move();
+			CheckMarker();
 		}
 
+		/// <summary>
+		/// Определяет является ли юнит целью противника и включает/выключает маркер.
+		/// </summary>
+		private void CheckMarker() {
+			aimMarker.SetActive(SpawnersManager.Instance.Units.FirstOrDefault(u => u.IsEnemy != IsEnemy && u.IsSelected && this.Equals(u.target.aim)) != null);
+		}
+
+		/// <summary>
+		/// Похоронные процедуры.
+		/// </summary>
 		public void Die() {
 			SpawnersManager.Instance.Units.Remove(this);
 			SetSelected(false);
 			Destroy(gameObject);
 		}
 
+		/// <summary>
+		/// Принять удар от юнита.
+		/// </summary>
+		/// <returns>Юниты всегда возвращают ноль.</returns>
+		/// <param name="unit">Юнит.</param>
+		/// <param name="damage">Урон.</param>
 		public int TakeDamage(Progress.Unit unit, float damage) {
-			health -= (int)(damage * (1f - settings.Armor));
+			health -= (int)(damage * (1f - Settings.Armor));
 			return 0;
 		}
 
@@ -141,7 +175,7 @@ namespace Progress {
 		/// Назначить/снять выделение юнита.
 		/// </summary>
 		public void SetSelected(bool selected) {
-			if (isSelected == selected) {
+			if (IsSelected == selected) {
 				return;
 			}
 			selectMarker.SetActive(selected);
@@ -149,6 +183,9 @@ namespace Progress {
 			SpawnersManager.Instance.onUnitSelected(this, selected);
 		}
 
+		/// <summary>
+		/// Определить цель юнита.
+		/// </summary>
 		private void DefineTarget() {
 			if (IsEnemy) {
 				if (SpawnersManager.Instance.MignonsCount() == 0) {
@@ -165,12 +202,18 @@ namespace Progress {
 			}
 		}
 
+		/// <summary>
+		/// Найти ближайшую цель юниту.
+		/// </summary>
 		private Damagable FindOpponent(Unit unit) {
 			var opponents = unit.IsEnemy ? SpawnersManager.Instance.Mignons() : SpawnersManager.Instance.Enemies();
 			var closest = opponents.Aggregate((agg, next) => DistanceSqr(next.gameObject, gameObject) < DistanceSqr(agg.gameObject, gameObject) ? next : agg);
 			return closest;
 		}
 
+		/// <summary>
+		/// Квадрат расстояния в двух нужных координатах.
+		/// </summary>
 		public float DistanceSqr(GameObject g1, GameObject g2) {
 			var xDist = g1.transform.position.x - g2.transform.position.x;
 			var zDist = g1.transform.position.z - g2.transform.position.z;
@@ -178,36 +221,34 @@ namespace Progress {
 		}
 
 		protected virtual void Fire() {
-			if (Mathf.Abs(gunShift) <= gunAmplitude) {
-				gunShift += gunStep;
-			} else {
-				gunStep *= -1f;
-				gunShift += gunStep;
-			}
-			gun.position += gunStep * gunAxis;
 		}
 
-		protected float timerAttack;
-
+		/// <summary>
+		/// Атака противника.
+		/// </summary>
 		protected void Attack() {
 			if (timerAttack <= 0f) {
 				Fire();
 				MakeDamage();
-				timerAttack = 1f / settings.AttackSpeed;
+				timerAttack = 1f / Settings.AttackSpeed;
 			} else {
-				firingMode = false;
 				timerAttack -= Time.deltaTime;
 			}
 		}
 
+		/// <summary>
+		/// Непосредственный ущерб противнику, дивану или подпитка жизни из фонтана.
+		/// </summary>
 		private void MakeDamage() {
 			if (target.aim != null) {
-				health += target.aim.TakeDamage(this, settings.Attack);
+				health += target.aim.TakeDamage(this, Settings.Attack);
 			}
 		}
 
+		/// <summary>
+		/// Движение юнита к цели.
+		/// </summary>
 		protected void Move() {
-			var speed = settings.Speed;
 			if (target.aim == null) {
 				return;
 			}
@@ -215,27 +256,40 @@ namespace Progress {
 			var targetPos = new Vector2(targetGo.transform.position.x, targetGo.transform.position.z);
 			var myPos = new Vector2(transform.position.x, transform.position.z);
 			var distance = Vector2.Distance(myPos, targetPos);
-			if (distance <= settings.AttackRange) {
+			// Если юнит на расстоянии атаки, то не двигаться, а атаковать.
+			if (distance <= Settings.AttackRange) {
 				Attack();
 				return;
 			}
-			var moveTo = Vector2.Lerp(myPos, targetPos, speed * Time.deltaTime / distance);
+			var moveTo = Vector2.Lerp(myPos, targetPos, Settings.Speed * Time.deltaTime / distance);
 			var y = transform.position.y;
 			transform.position = new Vector3(moveTo.x, y, moveTo.y);
 		}
 
+		/// <summary>
+		/// Возвращает текущее значение жизни.
+		/// </summary>
 		public int Health() {
 			return health; 
 		}
 
+		/// <summary>
+		/// Максимальное значение жизни.
+		/// </summary>
 		public int MaxHealth() {
 			return Settings.Hp; 
 		}
 
+		/// <summary>
+		/// Мертв ли юнит.
+		/// </summary>
 		public bool IsDead() {
 			return health <= 0;
 		}
 
+		/// <summary>
+		/// Строка, описывающая тип и принадлежность юнита.
+		/// </summary>
 		public string PrettyType() {
 			var type = "";
 			switch (unitType) {
