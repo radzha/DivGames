@@ -221,6 +221,7 @@ namespace Progress {
 		}
 
 		protected virtual void Fire() {
+			animator.SetTrigger("fire");
 		}
 
 		/// <summary>
@@ -264,6 +265,10 @@ namespace Progress {
 			var moveTo = Vector2.Lerp(myPos, targetPos, Settings.Speed * Time.deltaTime / distance);
 			var y = transform.position.y;
 			transform.position = new Vector3(moveTo.x, y, moveTo.y);
+
+			// Повернуться в сторону цели.
+			transform.LookAt(targetGo.transform.position);
+			transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
 		}
 
 		/// <summary>

@@ -189,14 +189,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106249210ea994328aedfa0cd6c324ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 446280}
-  gunAmplitude: 1
-  gunFreq: 0.5
   unitType: 2
   selectMarkerPrefab: {fileID: 111996, guid: db4e2d60db1cd4e4c86dc83a7a41c4a9, type: 2}
   aimMarkerPrefab: {fileID: 111996, guid: 42b3b77c673ae47b18c424c5b84fb79c, type: 2}
   isDead: 0
   level: 0
+  gun: {fileID: 446280}
   IsEnemy: 1
 --- !u!136 &13615270
 CapsuleCollider:

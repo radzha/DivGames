@@ -61,4 +61,6 @@ public class LevelEditor : Singleton<LevelEditor> {
 	[Header("Abilities")]
 	public MeteoRain[] meteoRain;
 	public IceArrow[] iceArrow;
+	public float ArcherFirePeriod = 0.2f;
+
 }

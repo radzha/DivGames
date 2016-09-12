@@ -139,7 +139,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 150410}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: Infinity
   m_AngularDrag: Infinity
   m_UseGravity: 1
@@ -175,14 +175,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd9b2828f56ce48da8d579577427c3cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 446280}
-  gunAmplitude: 1
-  gunFreq: 0.5
   unitType: 3
   selectMarkerPrefab: {fileID: 111996, guid: db4e2d60db1cd4e4c86dc83a7a41c4a9, type: 2}
   aimMarkerPrefab: {fileID: 111996, guid: 42b3b77c673ae47b18c424c5b84fb79c, type: 2}
   isDead: 0
   level: 0
+  gun: {fileID: 446280}
   IsEnemy: 0
 --- !u!114 &11413362
 MonoBehaviour:

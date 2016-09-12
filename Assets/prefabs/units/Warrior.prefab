@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 473356}
   - 33: {fileID: 3359914}
-  - 136: {fileID: 13644884}
   - 23: {fileID: 2350616}
   m_Layer: 0
   m_Name: Heavy Gun
@@ -190,14 +189,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1be272aed00c54697d72fe6426f094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 473356}
-  gunAmplitude: 0.5
-  gunFreq: 0.5
   unitType: 0
   selectMarkerPrefab: {fileID: 111996, guid: db4e2d60db1cd4e4c86dc83a7a41c4a9, type: 2}
   aimMarkerPrefab: {fileID: 111996, guid: 42b3b77c673ae47b18c424c5b84fb79c, type: 2}
   isDead: 0
   level: 0
+  gun: {fileID: 473356}
   IsEnemy: 0
 --- !u!136 &13615270
 CapsuleCollider:
@@ -205,19 +202,6 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 150410}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &13644884
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 116904}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
