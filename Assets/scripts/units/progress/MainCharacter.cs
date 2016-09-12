@@ -18,7 +18,7 @@ namespace Progress {
 
 		protected override void PrepareSelectMarker() {
 			base.PrepareSelectMarker();
-			var image = selectMarker.GetComponentInChildren<Image>();
+			var image = selectMarker.transform.GetChild(0).GetComponent<Image>();
 			image.color = Color.cyan;
 		}
 
@@ -41,11 +41,11 @@ namespace Progress {
 			}
 		}
 
-		public void OnEnable(){
+		public void OnEnable() {
 			CameraManager.Instance.AutoMove = true;
 		}
 
-		public void OnDisable(){
+		public void OnDisable() {
 			CameraManager.Instance.AutoMove = false;
 		}
 
