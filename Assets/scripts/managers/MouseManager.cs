@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Progress;
+using System.Linq;
 
 public class MouseManager : MonoBehaviour {
 	public GameObject planePrefab;
@@ -23,12 +24,10 @@ public class MouseManager : MonoBehaviour {
 				return;
 			}
 			planeMode = !hit.collider.gameObject.CompareTag("Unit");
+			// Режим одиночного выделения кликом.
 			if (!planeMode) {
-				// Режим одиночного выделения кликом.
-				if (hit.collider.gameObject.CompareTag("Unit")) {
-					foreach (var unit in SpawnersManager.Instance.Units) {
-						unit.SetSelected(unit.gameObject.Equals(hit.collider.gameObject));
-					}
+				foreach (var unit in SpawnersManager.Instance.Units) {
+					unit.SetSelected(unit.gameObject.Equals(hit.collider.gameObject));
 				}
 			}
 		} else if (Input.GetMouseButton(0)) {
@@ -56,7 +55,32 @@ public class MouseManager : MonoBehaviour {
 			Clear();
 		} else if (Input.GetMouseButtonDown(1)) {
 			// Нажатие правой кнопки мыши.
-//			var 
+			var selected = SpawnersManager.Instance.UnitsSelected;
+			var player = selected.FirstOrDefault(u => u.unitType == Settings.Unit.UnitType.Player);
+			// Если выделен единственный юнит - главный персонаж.
+			if (selected != null && selected.Count() == 1 && player != null) {
+				var hero = player as MainCharacter;
+				var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				Physics.Raycast(ray, out hit);
+				if (hit.collider == null) {
+					return;
+				}
+				var clicked = hit.collider.gameObject;
+				var damagable = clicked.GetComponent<Damagable>();
+				// Клик по юниту или зданию
+				if (damagable != null) {
+					var isUnit = damagable is Unit;
+					if (!(isUnit && !(damagable as Unit).IsEnemy)) {
+						hero.target.SetTarget(damagable, isUnit);
+						hero.PositionTargetMode = false;
+						return;
+					}
+				} else {
+					hero.target.SetTarget(null);
+					hero.PositionTargetMode = true;
+					hero.PositionTarget = new Vector2(hit.point.x, hit.point.z);
+				}
+			}
 		}
 	}
 

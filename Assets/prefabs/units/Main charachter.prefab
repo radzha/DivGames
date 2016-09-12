@@ -139,7 +139,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 150410}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: Infinity
   m_AngularDrag: Infinity
   m_UseGravity: 1
@@ -182,6 +182,8 @@ MonoBehaviour:
   level: 0
   gun: {fileID: 446280}
   IsEnemy: 0
+  positionTarget: {x: 0, y: 0}
+  positionTargetMode: 0
 --- !u!114 &11413362
 MonoBehaviour:
   m_ObjectHideFlags: 1

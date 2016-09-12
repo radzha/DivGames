@@ -34,7 +34,7 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 
 	public unitPrefabs[] UnitPrefabs;
 
-	public delegate void OnUnitSelected(Unit unit, bool isSelected);
+	public delegate void OnUnitSelected(Unit unit,bool isSelected);
 
 	public OnUnitSelected onUnitSelected;
 
@@ -44,6 +44,13 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	public HashSet<Unit> Units {
 		get {
 			return units;
+		}
+	}
+
+	// Возвращает все выделенные юниты.
+	public IEnumerable<Unit> UnitsSelected {
+		get {
+			return units.Where(u => u.IsSelected);
 		}
 	}
 

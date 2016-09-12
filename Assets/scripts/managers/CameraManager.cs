@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraMover : MonoBehaviour {
+public class CameraManager : Singleton<CameraManager> {
 	// "Палка", на которой держится камера. Определяет фиксированное расстояние до героя.
 	public Vector3 rod;
 	// Сглаживание автоматического перемещения камеры.
@@ -14,7 +14,11 @@ public class CameraMover : MonoBehaviour {
 	public float switchCameraDelay = 0.2f;
 
 	// Включен ли режим автоматического слежения камерой за игроком.
-	private bool autoMove = true;
+	public bool AutoMove { 
+		get;
+		set;
+	}
+
 	// Центр экрана.
 	private Vector3 screenCenter;
 	// Таймер задержки переключения камеры.
@@ -32,11 +36,11 @@ public class CameraMover : MonoBehaviour {
 			switchTimer -= Time.deltaTime;
 		}
 		if (Input.GetKey("c") && switchTimer <= 0f) {
-			autoMove = !autoMove;
+			AutoMove = !AutoMove;
 			switchTimer = switchCameraDelay;
 		}
 
-		if (autoMove) {
+		if (AutoMove) {
 			if (player == null) {
 				var hero = SpawnersManager.Instance.MainCharacter();
 				if (hero != null) {

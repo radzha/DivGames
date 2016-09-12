@@ -70,13 +70,19 @@ namespace Progress {
 			set;
 		}
 
+		public bool IsPlayer {
+			get {
+				return this is MainCharacter;
+			}
+		}
+
 		protected virtual void Awake() {
 			// Настройки в соответствии с типом юнита.
 			Settings = new Settings.Unit(unitType, IsEnemy);
 			// Начальный запас жизни.
 			health = Settings.Hp;
 			// Начальная цель - здание.
-			target = new Target(IsEnemy ? Divan.Instance as Damagable : Fountain.Instance as Damagable, false);
+			target = new Target(IsPlayer ? null : IsEnemy ? Divan.Instance as Damagable : Fountain.Instance as Damagable, false);
 			// Аниматор.
 			animator = GetComponent<Animator>();
 
@@ -186,7 +192,7 @@ namespace Progress {
 		/// <summary>
 		/// Определить цель юнита.
 		/// </summary>
-		private void DefineTarget() {
+		protected virtual void DefineTarget() {
 			if (IsEnemy) {
 				if (SpawnersManager.Instance.MignonsCount() == 0) {
 					target.SetTarget(Divan.Instance as Damagable, false);
@@ -227,7 +233,7 @@ namespace Progress {
 		/// <summary>
 		/// Атака противника.
 		/// </summary>
-		protected void Attack() {
+		protected virtual void Attack() {
 			if (timerAttack <= 0f) {
 				Fire();
 				MakeDamage();
@@ -246,11 +252,20 @@ namespace Progress {
 			}
 		}
 
+		public bool AimTriggered { 
+			get;
+			set;
+		}
+
+		private bool IsInRange(float distance) {
+			return distance <= Settings.AttackRange || AimTriggered;
+		}
+
 		/// <summary>
 		/// Движение юнита к цели.
 		/// </summary>
-		protected void Move() {
-			if (target.aim == null) {
+		protected virtual void Move() {
+			if (target.aim == null || target.aim as MonoBehaviour == null) {
 				return;
 			}
 			var targetGo = (target.aim as MonoBehaviour).gameObject;
@@ -258,7 +273,7 @@ namespace Progress {
 			var myPos = new Vector2(transform.position.x, transform.position.z);
 			var distance = Vector2.Distance(myPos, targetPos);
 			// Если юнит на расстоянии атаки, то не двигаться, а атаковать.
-			if (distance <= Settings.AttackRange) {
+			if (IsInRange(distance)) {
 				Attack();
 				return;
 			}
