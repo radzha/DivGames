@@ -110,7 +110,7 @@ namespace Progress {
 		/// <summary>
 		/// Подготовка маркера выделения юнита.
 		/// </summary>
-		void PrepareSelectMarker() {
+		protected virtual void PrepareSelectMarker() {
 			selectMarker = Instantiate(selectMarkerPrefab);
 			selectMarker.transform.SetParent(transform);
 			selectMarker.transform.localPosition = new Vector3(0f, -0.95f, 0f);

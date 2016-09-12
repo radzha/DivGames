@@ -51,9 +51,12 @@ public class MouseManager : MonoBehaviour {
 				}
 				SelectUnits(clickedPoint, hit.point);
 			} 
-		}
-		if (Input.GetMouseButtonUp(0)) {
+		} else if (Input.GetMouseButtonUp(0)) {
+			// Отпускание левой кнопки мыши.
 			Clear();
+		} else if (Input.GetMouseButtonDown(1)) {
+			// Нажатие правой кнопки мыши.
+//			var 
 		}
 	}
 
