@@ -57,9 +57,7 @@ public class MouseManager : MonoBehaviour {
 			// Нажатие правой кнопки мыши.
 			var selected = SpawnersManager.Instance.UnitsSelected;
 			var player = selected.FirstOrDefault(u => u.unitType == Settings.Unit.UnitType.Player);
-			// Если выделен единственный юнит - главный персонаж.
-			if (selected != null && selected.Count() == 1 && player != null) {
-				var hero = player as MainCharacter;
+			if (selected != null) {
 				var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				Physics.Raycast(ray, out hit);
 				if (hit.collider == null) {
@@ -67,18 +65,35 @@ public class MouseManager : MonoBehaviour {
 				}
 				var clicked = hit.collider.gameObject;
 				var damagable = clicked.GetComponent<Damagable>();
-				// Клик по юниту или зданию
-				if (damagable != null) {
-					var isUnit = damagable is Unit;
-					if (!(isUnit && !(damagable as Unit).IsEnemy)) {
-						hero.target.SetTarget(damagable, isUnit);
-						hero.PositionTargetMode = false;
-						return;
+
+				// Если выделен единственный юнит - главный персонаж.
+				if (selected.Count() == 1 && player != null) {
+					var hero = player as MainCharacter;
+					// Клик по юниту или зданию
+					if (damagable != null) {
+						var isUnit = damagable is Unit;
+						if (!(isUnit && !(damagable as Unit).IsEnemy)) {
+							hero.target.SetTarget(damagable, isUnit);
+							hero.PositionTargetMode = false;
+							return;
+						}
+					} else {
+						hero.target.SetTarget(null);
+						hero.PositionTargetMode = true;
+						hero.PositionTarget = new Vector2(hit.point.x, hit.point.z);
 					}
 				} else {
-					hero.target.SetTarget(null);
-					hero.PositionTargetMode = true;
-					hero.PositionTarget = new Vector2(hit.point.x, hit.point.z);
+					// Выделена группа юнитов.
+					if (damagable != null) {
+						var isUnit = damagable is Unit;
+						if (!(isUnit && !(damagable as Unit).IsEnemy)) {
+							foreach (var unit in selected) {
+								unit.IsHandMoving = true;
+								unit.target.SetTarget(damagable, isUnit);
+							}
+							return;
+						}
+					}
 				}
 			}
 		}

@@ -36,7 +36,6 @@ namespace Progress {
 			var unit = other.gameObject.GetComponent<Unit>();
 			if (unit != null && this.Equals(unit.target.aim)) {
 				unit.AimTriggered = true;
-				print(other.gameObject);
 			}
 		}
 
@@ -47,7 +46,6 @@ namespace Progress {
 			var unit = other.gameObject.GetComponent<Unit>();
 			if (unit != null) {
 				unit.AimTriggered = false;
-				print("leave: " + other.gameObject);
 			}
 		}
 	}

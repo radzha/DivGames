@@ -70,6 +70,12 @@ namespace Progress {
 			set;
 		}
 
+		// Находится ли юнит на ручном управлении.
+		public bool IsHandMoving {
+			get;
+			set;
+		}
+
 		public bool IsPlayer {
 			get {
 				return this is MainCharacter;
@@ -199,7 +205,7 @@ namespace Progress {
 				} else {
 					target.SetTarget(FindOpponent(this), true);
 				}
-			} else {
+			} else if (!IsHandMoving) {
 				if (SpawnersManager.Instance.EnemiesCount() == 0) {
 					target.SetTarget(Fountain.Instance as Damagable, false);
 				} else {
@@ -266,6 +272,7 @@ namespace Progress {
 		/// </summary>
 		protected virtual void Move() {
 			if (target.aim == null || target.aim as MonoBehaviour == null) {
+				IsHandMoving = false;
 				return;
 			}
 			var targetGo = (target.aim as MonoBehaviour).gameObject;

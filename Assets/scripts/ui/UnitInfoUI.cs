@@ -21,7 +21,8 @@ public class UnitInfoUI : MonoBehaviour {
 	}
 
 	private void OnUnitSelected(Unit unit, bool isSelected) {
-		if (this.unit == unit && this.isSelected == isSelected) {
+		if (this.unit == unit && this.isSelected == isSelected
+		    || this.unit != unit && !isSelected) {
 			return;
 		}
 		this.unit = unit;
