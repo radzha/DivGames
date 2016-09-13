@@ -13,6 +13,10 @@ namespace Progress {
 			return unit is MainCharacter ? settings.PlayerCureSpeed : settings.MignonCureSpeed;
 		}
 
+		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow) {
+			return TakeDamage(unit, damage);
+		}
+
 		public int Health() {
 			return int.MaxValue;
 		}

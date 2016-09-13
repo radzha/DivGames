@@ -28,6 +28,7 @@ public class LevelEditor : Singleton<LevelEditor> {
 		public float slow;
 		public float attackSlow;
 		public float duration;
+		public float cooldown;
 	}
 
 	[System.Serializable]

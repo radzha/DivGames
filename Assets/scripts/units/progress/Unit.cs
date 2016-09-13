@@ -1,6 +1,7 @@
 ﻿using Settings;
 using UnityEngine;
 using System.Linq;
+using UnityEditor;
 
 namespace Progress {
 	/// <summary>
@@ -53,7 +54,7 @@ namespace Progress {
 		// Текущий показатель жизни.
 		protected int health;
 		// Таймер атаки.
-		protected float timerAttack;
+		protected float attackTimer;
 
 		// Контроллер аниматора.
 		private Animator animator;
@@ -83,10 +84,7 @@ namespace Progress {
 		}
 
 		protected virtual void Awake() {
-			// Настройки в соответствии с типом юнита.
-			Settings = new Settings.Unit(unitType, IsEnemy);
-			// Начальный запас жизни.
-			health = Settings.Hp;
+			SettingsRead();
 			// Начальная цель - здание.
 			target = new Target(IsPlayer ? null : IsEnemy ? Divan.Instance as Damagable : Fountain.Instance as Damagable, false);
 			// Аниматор.
@@ -99,6 +97,19 @@ namespace Progress {
 			Divan.Instance.OnGameEnd -= OnGameEnd;
 			Divan.Instance.OnGameEnd += OnGameEnd;
 		}
+
+		/// <summary>
+		/// Чтение первоначальных настроек юнита.
+		/// </summary>
+		private void SettingsRead() {
+			Settings = new Settings.Unit(unitType, IsEnemy);
+			health = Settings.Hp;
+			speed = Settings.Speed;
+			attackSpeed = Settings.AttackSpeed;
+		}
+
+		protected float speed;
+		protected float attackSpeed;
 
 		private void OnDestroy() {
 			Divan.Instance.OnGameEnd -= OnGameEnd;
@@ -156,6 +167,10 @@ namespace Progress {
 			CheckMarker();
 		}
 
+		protected virtual void Update() {
+			attackTimer -= Time.deltaTime;
+		}
+
 		/// <summary>
 		/// Определяет является ли юнит целью противника и включает/выключает маркер.
 		/// </summary>
@@ -178,9 +193,23 @@ namespace Progress {
 		/// <returns>Юниты всегда возвращают ноль.</returns>
 		/// <param name="unit">Юнит.</param>
 		/// <param name="damage">Урон.</param>
-		public int TakeDamage(Progress.Unit unit, float damage) {
+		public int TakeDamage(Unit unit, float damage) {
 			health -= (int)(damage * (1f - Settings.Armor));
 			return 0;
+		}
+
+		/// <summary>
+		/// Принять удар от абилки "ледяная стрела"
+		/// </summary>
+		/// <param name="unit">Атакующий юнит.</param>
+		/// <param name="damage">Урон.</param>
+		/// <param name="slow">Коэффициент замедления.</param>
+		/// <param name="attackSlow">Коэффициент замедления атаки.</param>
+		/// <returns></returns>
+		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow) {
+			speed *= 1 - slow;
+			attackSpeed *= 1 - attackSlow;
+			return TakeDamage(unit, damage);
 		}
 
 		/// <summary>
@@ -240,30 +269,48 @@ namespace Progress {
 		/// Атака противника.
 		/// </summary>
 		protected virtual void Attack() {
-			if (timerAttack <= 0f) {
-				Fire();
-				MakeDamage();
-				timerAttack = 1f / Settings.AttackSpeed;
-			} else {
-				timerAttack -= Time.deltaTime;
+			if (AttackTimer > 0f) {
+				return;
+			}
+			AttackTimer = CoolDown;
+			Fire();
+			MakeDamage();
+		}
+
+		public virtual float CoolDown {
+			get {
+				return 1f / attackSpeed;
 			}
 		}
 
 		/// <summary>
-		/// Непосредственный ущерб противнику, дивану или подпитка жизни из фонтана.
+		/// Непосредственный ущерб юниту, дивану или подпитка жизни из фонтана.
 		/// </summary>
-		private void MakeDamage() {
-			if (target.aim != null) {
-				health += target.aim.TakeDamage(this, Settings.Attack);
+		protected virtual void MakeDamage() {
+			if (target.aim == null) {
+				return;
 			}
+			health += target.aim.TakeDamage(this, Settings.Attack);
 		}
 
-		public bool AimTriggered { 
+		public bool AimTriggered {
 			get;
 			set;
 		}
 
-		private bool IsInRange(float distance) {
+		protected virtual float AttackTimer {
+			get {
+				return attackTimer;
+			}
+			set {
+				attackTimer = value;
+			}
+		}
+
+		/// <summary>
+		/// Попал ли юнит в зону атаки.
+		/// </summary>
+		protected virtual bool IsInRange(float distance) {
 			return distance <= Settings.AttackRange || AimTriggered;
 		}
 
@@ -271,11 +318,11 @@ namespace Progress {
 		/// Движение юнита к цели.
 		/// </summary>
 		protected virtual void Move() {
-			if (target.aim == null || target.aim as MonoBehaviour == null) {
+			if ((MonoBehaviour)target.aim == null) {
 				IsHandMoving = false;
 				return;
 			}
-			var targetGo = (target.aim as MonoBehaviour).gameObject;
+			var targetGo = ((MonoBehaviour)target.aim).gameObject;
 			var targetPos = new Vector2(targetGo.transform.position.x, targetGo.transform.position.z);
 			var myPos = new Vector2(transform.position.x, transform.position.z);
 			var distance = Vector2.Distance(myPos, targetPos);
@@ -284,7 +331,7 @@ namespace Progress {
 				Attack();
 				return;
 			}
-			var moveTo = Vector2.Lerp(myPos, targetPos, Settings.Speed * Time.deltaTime / distance);
+			var moveTo = Vector2.Lerp(myPos, targetPos, speed * Time.deltaTime / distance);
 			var y = transform.position.y;
 			transform.position = new Vector3(moveTo.x, y, moveTo.y);
 
@@ -297,14 +344,14 @@ namespace Progress {
 		/// Возвращает текущее значение жизни.
 		/// </summary>
 		public int Health() {
-			return health; 
+			return health;
 		}
 
 		/// <summary>
 		/// Максимальное значение жизни.
 		/// </summary>
 		public int MaxHealth() {
-			return Settings.Hp; 
+			return Settings.Hp;
 		}
 
 		/// <summary>
@@ -320,18 +367,18 @@ namespace Progress {
 		public string PrettyType() {
 			var type = "";
 			switch (unitType) {
-				case global::Settings.Unit.UnitType.Archer:
-					type = "стрелок";
-					break;
-				case global::Settings.Unit.UnitType.Warrior:
-					type = "воин";
-					break;
-				case global::Settings.Unit.UnitType.Boss:
-					type = "босс";
-					break;
-				case global::Settings.Unit.UnitType.Player:
-					type = "герой";
-					break;
+			case global::Settings.Unit.UnitType.Archer:
+				type = "стрелок";
+				break;
+			case global::Settings.Unit.UnitType.Warrior:
+				type = "воин";
+				break;
+			case global::Settings.Unit.UnitType.Boss:
+				type = "босс";
+				break;
+			case global::Settings.Unit.UnitType.Player:
+				type = "герой";
+				break;
 			}
 			var own = IsEnemy ? "Вражеский" : "Наш";
 			return own + " " + type;

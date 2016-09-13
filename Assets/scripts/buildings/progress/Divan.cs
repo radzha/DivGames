@@ -25,7 +25,7 @@ namespace Progress {
 			return settings.Hp; 
 		}
 
-		public int TakeDamage(Progress.Unit unit, float damage) {
+		public int TakeDamage(Unit unit, float damage) {
 			if (IsDead()) {
 				return 0;
 			}
@@ -34,6 +34,10 @@ namespace Progress {
 				Die();
 			}
 			return 0;
+		}
+
+		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow) {
+			return TakeDamage(unit, damage);
 		}
 
 		public void Die() {

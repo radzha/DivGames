@@ -5,7 +5,6 @@ using System.Linq;
 
 public class MouseManager : MonoBehaviour {
 	public GameObject planePrefab;
-	public Texture2D iceCursorTexture;
 
 	private Vector3 clickedPoint = Vector3.zero;
 	private Transform plane;
@@ -25,11 +24,6 @@ public class MouseManager : MonoBehaviour {
 			Clear();
 		} else if (Input.GetMouseButtonDown(1)) {
 			RightButtonAction();
-		}
-		if (Input.GetKeyDown("l")) {
-			CursorMode cursorMode = CursorMode.Auto;
-			Vector2 hotSpot = Vector2.zero;
-			Cursor.SetCursor(iceCursorTexture, hotSpot, cursorMode);
 		}
 	}
 

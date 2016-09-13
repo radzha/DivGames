@@ -534,31 +534,36 @@ MonoBehaviour:
     damage: 9
     cooldown: 20
   iceArrow:
-  - radius: 30
+  - radius: 300
     damage: 3
-    slow: .5
+    slow: 1
     attackSlow: .5
     duration: 20
-  - radius: 35
+    cooldown: 30
+  - radius: 350
     damage: 4
     slow: .600000024
     attackSlow: .600000024
     duration: 22
-  - radius: 40
+    cooldown: 28
+  - radius: 400
     damage: 5
     slow: .699999988
     attackSlow: .699999988
     duration: 24
-  - radius: 45
+    cooldown: 26
+  - radius: 450
     damage: 6
     slow: .800000012
     attackSlow: .800000012
     duration: 26
-  - radius: 50
+    cooldown: 24
+  - radius: 500
     damage: 7
     slow: .899999976
     attackSlow: .899999976
     duration: 30
+    cooldown: 22
   ArcherFirePeriod: .200000003
 --- !u!4 &457023028
 Transform:
@@ -1411,7 +1416,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planePrefab: {fileID: 188628, guid: 08999e3308d224006ba34aeee0ba1ee7, type: 2}
-  iceCursorTexture: {fileID: 10900, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!4 &1932303811
 Transform:
   m_ObjectHideFlags: 0

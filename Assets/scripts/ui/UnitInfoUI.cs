@@ -22,7 +22,7 @@ public class UnitInfoUI : MonoBehaviour {
 
 	private void OnUnitSelected(Unit unit, bool isSelected) {
 		if (this.unit == unit && this.isSelected == isSelected
-		    || this.unit != unit && !isSelected) {
+			|| this.unit != unit && !isSelected) {
 			return;
 		}
 		this.unit = unit;
@@ -33,7 +33,7 @@ public class UnitInfoUI : MonoBehaviour {
 	}
 
 	private void SetText() {
-		text.text = string.Format("Тип: {0}\nУровень: {1}\nЗдоровье: {2}\nСкорость: {3}\nАтака: {4}\nСкорость атаки: {5}\nЗона атаки: {6}\nЗащита: {7}",
+		var txt = string.Format("Тип: {0}\nУровень: {1}\nЗдоровье: {2}\nСкорость: {3}\nАтака: {4}\nСкорость атаки: {5}\nЗона атаки: {6}\nЗащита: {7}",
 			unit.PrettyType(),
 			unit.level,
 			unit.Health(),
@@ -43,6 +43,10 @@ public class UnitInfoUI : MonoBehaviour {
 			unit.Settings.AttackRange,
 			unit.Settings.Armor
 		);
+		if (unit.IsPlayer) {
+			txt = string.Format("\nЦель: {0}\nМетеор. дождь: {1}\nЛедяная стрела: {2}", unit.target.aim, ((MainCharacter)unit).MeteoRainTimerString, ((MainCharacter)unit).IceArrowTimerString);
+		}
+		text.text = txt;
 	}
 
 	private void Update() {
@@ -54,5 +58,5 @@ public class UnitInfoUI : MonoBehaviour {
 	private void OnDestroy() {
 		SpawnersManager.Instance.onUnitSelected -= OnUnitSelected;
 	}
-	
+
 }
