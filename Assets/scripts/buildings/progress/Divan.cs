@@ -36,7 +36,7 @@ namespace Progress {
 			return 0;
 		}
 
-		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow) {
+		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration) {
 			return TakeDamage(unit, damage);
 		}
 

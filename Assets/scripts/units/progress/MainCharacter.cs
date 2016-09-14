@@ -71,7 +71,7 @@ namespace Progress {
 			meteoRainTimer -= Time.deltaTime;
 
 			if (Input.GetKeyDown(KeyCode.L)) {
-				if (iceArrowTimer <= 0f) {
+				if (iceArrowTimer <= 0f && IsSelected) {
 					IceArrowMode(attackMode != AttackMode.IceArrow);
 				}
 			} else if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -138,7 +138,7 @@ namespace Progress {
 			case AttackMode.MeteoRain:
 				break;
 			case AttackMode.IceArrow:
-				target.aim.TakeDamage(this, Settings.Attack, LevelEditor.Instance.iceArrow[level].slow, LevelEditor.Instance.iceArrow[level].attackSlow);
+				target.aim.TakeDamage(this, Settings.Attack, LevelEditor.Instance.iceArrow[level].slow, LevelEditor.Instance.iceArrow[level].attackSlow, LevelEditor.Instance.iceArrow[level].duration);
 				IceArrowMode(false);
 				break;
 			default:

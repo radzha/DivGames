@@ -176,7 +176,7 @@ MonoBehaviour:
   level: 0
   gun: {fileID: 446280}
   IsEnemy: 0
-  iceCursorTexture: {fileID: 10900, guid: 0000000000000000f000000000000000, type: 0}
+  iceCursorTexture: {fileID: 2800000, guid: b1770eaa91f7849e7a11ed2c9913c063, type: 3}
 --- !u!114 &11413362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -214,7 +214,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: iceCursorTexture
       value: 
-      objectReference: {fileID: 10900, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2800000, guid: b1770eaa91f7849e7a11ed2c9913c063, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 150410}

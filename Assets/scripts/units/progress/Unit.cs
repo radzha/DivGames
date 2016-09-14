@@ -1,4 +1,5 @@
-﻿using Settings;
+﻿using System.Collections;
+using Settings;
 using UnityEngine;
 using System.Linq;
 using UnityEditor;
@@ -205,11 +206,48 @@ namespace Progress {
 		/// <param name="damage">Урон.</param>
 		/// <param name="slow">Коэффициент замедления.</param>
 		/// <param name="attackSlow">Коэффициент замедления атаки.</param>
+		/// <param name="duration"></param>
 		/// <returns></returns>
-		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow) {
+		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration) {
 			speed *= 1 - slow;
 			attackSpeed *= 1 - attackSlow;
+			FreezeVisually(true);
+			StartCoroutine(Defreeze(duration));
 			return TakeDamage(unit, damage);
+		}
+
+		private Color unitColor;
+
+		/// <summary>
+		/// Сменить/вернуть юниту цвет заморозки.
+		/// </summary>
+		/// <param name="freeze"></param>
+		private void FreezeVisually(bool freeze) {
+			var material = GetComponent<Renderer>().material;
+			var color = unitColor;
+			if (freeze) {
+				unitColor = material.GetColor("_EmissionColor");
+				color = Color.white;
+			}
+			material.SetColor("_EmissionColor", color);
+		}
+
+		/// <summary>
+		/// Разморозить юнит после ледяной стрелы
+		/// </summary>
+		/// <param name="duration">Продолжительность заморозки.</param>
+		/// <returns></returns>
+		private IEnumerator Defreeze(float duration) {
+			while (duration >= 0f) {
+				duration -= Time.deltaTime;
+				yield return null;
+			}
+			if (gameObject == null) {
+				yield break;
+			}
+			speed = Settings.Speed;
+			attackSpeed = Settings.AttackSpeed;
+			FreezeVisually(false);
 		}
 
 		/// <summary>
