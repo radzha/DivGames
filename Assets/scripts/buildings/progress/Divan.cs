@@ -18,25 +18,25 @@ namespace Progress {
 		}
 
 		public int Health() {
-			return health; 
+			return health;
 		}
 
 		public int MaxHealth() {
-			return settings.Hp; 
+			return settings.Hp;
 		}
 
-		public int TakeDamage(Unit unit, float damage) {
+		public Unit.Profit TakeDamage(Unit unit, float damage) {
 			if (IsDead()) {
-				return 0;
+				return new Unit.Profit(0, 0, 0);
 			}
 			health -= (int)damage;
 			if (health <= 0) {
 				Die();
 			}
-			return 0;
+			return new Unit.Profit(0, 0, 0);
 		}
 
-		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration) {
+		public Unit.Profit TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration) {
 			return TakeDamage(unit, damage);
 		}
 

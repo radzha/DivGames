@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using Progress;
 
+/// <summary>
+/// Отображение информаци о юните.
+/// </summary>
 public class UnitInfoUI : MonoBehaviour {
 
 	public GameObject background;
-	private Text text;
-	private Unit unit;
-	private bool isSelected;
+	protected Text text;
+	protected Unit unit;
+	protected bool isSelected;
 
 	void Start() {
 		text = GetComponent<Text>();
@@ -20,7 +22,7 @@ public class UnitInfoUI : MonoBehaviour {
 		SpawnersManager.Instance.onUnitSelected += OnUnitSelected;
 	}
 
-	private void OnUnitSelected(Unit unit, bool isSelected) {
+	protected virtual void OnUnitSelected(Unit unit, bool isSelected) {
 		if (this.unit == unit && this.isSelected == isSelected
 			|| this.unit != unit && !isSelected) {
 			return;
@@ -32,7 +34,7 @@ public class UnitInfoUI : MonoBehaviour {
 		SetText();
 	}
 
-	private void SetText() {
+	protected virtual void SetText() {
 		var txt = string.Format("Тип: {0}\nУровень: {1}\nЗдоровье: {2}\nСкорость: {3}\nАтака: {4}\nСкорость атаки: {5}\nЗона атаки: {6}\nЗащита: {7}",
 			unit.PrettyType(),
 			unit.level,
@@ -43,9 +45,6 @@ public class UnitInfoUI : MonoBehaviour {
 			unit.Settings.AttackRange,
 			unit.Settings.Armor
 		);
-		if (unit.IsPlayer) {
-			txt = string.Format("\nЦель: {0}\nМетеор. дождь: {1}\nЛедяная стрела: {2}", unit.target.aim, ((MainCharacter)unit).MeteoRainTimerString, ((MainCharacter)unit).IceArrowTimerString);
-		}
 		text.text = txt;
 	}
 

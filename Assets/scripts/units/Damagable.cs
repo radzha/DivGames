@@ -5,6 +5,6 @@ public interface Damagable {
 	int MaxHealth();
 	void Die();
 	bool IsDead();
-	int TakeDamage(Unit unit, float damage);
-	int TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration);
+	Unit.Profit TakeDamage(Unit unit, float damage);
+	Unit.Profit TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration);
 }

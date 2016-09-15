@@ -132,6 +132,8 @@
 			AttackSpeed = unit.attackSpeed;
 			Speed = unit.speed;
 			AttackRange = unit.attackRange;
+			Xp = unit.xp;
+			Gold = unit.gold;
 		}
 
 		/// <summary>

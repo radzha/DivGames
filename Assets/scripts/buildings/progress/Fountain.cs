@@ -9,11 +9,11 @@ namespace Progress {
 			settings = new Settings.Fountain();
 		}
 
-		public int TakeDamage(Unit unit, float damage) {
-			return unit is MainCharacter ? settings.PlayerCureSpeed : settings.MignonCureSpeed;
+		public Unit.Profit TakeDamage(Unit unit, float damage) {
+			return unit is MainCharacter ? new Unit.Profit(settings.PlayerCureSpeed, 0, 0) : new Unit.Profit(settings.MignonCureSpeed, 0, 0);
 		}
 
-		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration) {
+		public Unit.Profit TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration) {
 			return TakeDamage(unit, damage);
 		}
 

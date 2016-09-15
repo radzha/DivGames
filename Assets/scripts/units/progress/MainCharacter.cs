@@ -32,6 +32,20 @@ namespace Progress {
 			set;
 		}
 
+		/// <summary>
+		/// Текущий опыт.
+		/// </summary>
+		public static int Experience {
+			get; set;
+		}
+
+		/// <summary>
+		/// Текущий уровень золота.
+		/// </summary>
+		public static int GoldAmount {
+			get; set;
+		}
+
 		private float iceArrowTimer;
 		private float meteoRainTimer;
 

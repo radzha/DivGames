@@ -31,6 +31,22 @@ namespace Progress {
 			}
 		}
 
+		/// <summary>
+		/// Золото и опыт, получаемые за убийство юнита.
+		/// Здоровье, получаемые при "атаке" фонтана.
+		/// </summary>
+		public class Profit {
+			public int health;
+			public int gold;
+			public int xp;
+
+			public Profit(int health, int gold, int xp) {
+				this.health = health;
+				this.gold = gold;
+				this.xp = xp;
+			}
+		}
+
 		// Тип юнита.
 		public Settings.Unit.UnitType unitType;
 		// Префаб маркера выбора.
@@ -197,9 +213,15 @@ namespace Progress {
 		/// <returns>Юниты всегда возвращают ноль.</returns>
 		/// <param name="unit">Юнит.</param>
 		/// <param name="damage">Урон.</param>
-		public int TakeDamage(Unit unit, float damage) {
+		public Profit TakeDamage(Unit unit, float damage) {
+			var oldHealth = health;
 			health -= (int)(damage * (1f - Settings.Armor));
-			return 0;
+			var killedEnemy = IsEnemy && health <= 0 && oldHealth > 0;
+			return new Profit(
+				0,
+				killedEnemy ? Settings.Gold : 0,
+				killedEnemy ? Settings.Xp : 0
+				);
 		}
 
 		/// <summary>
@@ -211,7 +233,7 @@ namespace Progress {
 		/// <param name="attackSlow">Коэффициент замедления атаки.</param>
 		/// <param name="duration"></param>
 		/// <returns></returns>
-		public int TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration) {
+		public Profit TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration) {
 			speed *= 1 - slow;
 			attackSpeed *= 1 - attackSlow;
 			FreezeVisually(true);
@@ -371,7 +393,10 @@ namespace Progress {
 			if (target.aim == null) {
 				return;
 			}
-			health += target.aim.TakeDamage(this, Settings.Attack);
+			var profit = target.aim.TakeDamage(this, Settings.Attack);
+			health += profit.health;
+			MainCharacter.GoldAmount += profit.gold;
+			MainCharacter.Experience += profit.xp;
 		}
 
 		public bool AimTriggered {
