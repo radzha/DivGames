@@ -18,7 +18,6 @@ public class MeteoRainMarkerManager : Singleton<MeteoRainMarkerManager> {
 	void Awake() {
 		marker = Instantiate(meteoRainMarkerPrefab);
 		meteoRainMarker = marker.GetComponent<Image>();
-		marker.transform.position = new Vector3(0f, 0.2f, 0f);
 		marker.SetActive(false);
 	}
 
@@ -32,7 +31,7 @@ public class MeteoRainMarkerManager : Singleton<MeteoRainMarkerManager> {
 				return;
 			}
 
-			marker.transform.position = new Vector3(hit.point.x, marker.transform.position.y, hit.point.z);
+			marker.transform.position = new Vector3(hit.point.x, 0.06f, hit.point.z);
 		}
 	}
 }
