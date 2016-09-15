@@ -60,6 +60,9 @@ namespace Progress {
 		// Контроллер аниматора.
 		private Animator animator;
 
+		// Основной цвет юнита.
+		private Color unitColor;
+
 		// Набор настроек юнита.
 		public Settings.Unit Settings {
 			get;
@@ -216,10 +219,8 @@ namespace Progress {
 			return TakeDamage(unit, damage);
 		}
 
-		private Color unitColor;
-
 		/// <summary>
-		/// Сменить/вернуть юниту цвет заморозки.
+		/// Сменить/вернуть юниту цвет после заморозки.
 		/// </summary>
 		/// <param name="freeze"></param>
 		private void FreezeVisually(bool freeze) {
@@ -248,6 +249,39 @@ namespace Progress {
 			speed = Settings.Speed;
 			attackSpeed = Settings.AttackSpeed;
 			FreezeVisually(false);
+		}
+
+		/// <summary>
+		/// Сменить/вернуть юниту цвет после атаки метеоритным дождем.
+		/// </summary>
+		/// <param name="enable"></param>
+		public void MeteoRainVisually(bool enable) {
+			var material = GetComponent<Renderer>().material;
+			var color = unitColor;
+			if (enable) {
+				unitColor = material.GetColor("_EmissionColor");
+				color = Color.magenta;
+			}
+			material.SetColor("_EmissionColor", color);
+			if (enable) {
+				StartCoroutine(DeRain(1f));
+			}
+		}
+
+		/// <summary>
+		/// Визуально вернуть состояние юнита после атаки метеоритным дождем.
+		/// </summary>
+		/// <param name="duration">Продолжительность.</param>
+		/// <returns></returns>
+		private IEnumerator DeRain(float duration) {
+			while (duration >= 0f) {
+				duration -= Time.deltaTime;
+				yield return null;
+			}
+			if (gameObject == null) {
+				yield break;
+			}
+			MeteoRainVisually(false);
 		}
 
 		/// <summary>
@@ -299,6 +333,15 @@ namespace Progress {
 			return xDist * xDist + zDist + zDist;
 		}
 
+		/// <summary>
+		/// Квадрат расстояния в двух нужных координатах.
+		/// </summary>
+		public float DistanceSqr(Vector2 v1, Vector2 v2) {
+			var xDist = v1.x - v2.x;
+			var zDist = v1.y - v2.y;
+			return xDist * xDist + zDist + zDist;
+		}
+
 		protected virtual void Fire() {
 			animator.SetTrigger("fire");
 		}
@@ -306,7 +349,7 @@ namespace Progress {
 		/// <summary>
 		/// Атака противника.
 		/// </summary>
-		protected virtual void Attack() {
+		public virtual void Attack() {
 			if (AttackTimer > 0f) {
 				return;
 			}
@@ -324,7 +367,7 @@ namespace Progress {
 		/// <summary>
 		/// Непосредственный ущерб юниту, дивану или подпитка жизни из фонтана.
 		/// </summary>
-		protected virtual void MakeDamage() {
+		public virtual void MakeDamage() {
 			if (target.aim == null) {
 				return;
 			}
@@ -346,10 +389,23 @@ namespace Progress {
 		}
 
 		/// <summary>
-		/// Попал ли юнит в зону атаки.
+		/// Попал ли юнит, удалённый на расстояние distance в зону атаки.
 		/// </summary>
 		protected virtual bool IsInRange(float distance) {
 			return distance <= Settings.AttackRange || AimTriggered;
+		}
+
+		/// <summary>
+		/// Попал ли юнит в зону поражения метеоритным дождем.
+		/// </summary>
+		public bool IsInMeteoRainRange(float radius) {
+			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+			Physics.Raycast(ray, out hit);
+			var mousePoint = new Vector2(hit.point.x, hit.point.z);
+			var unitPoint = new Vector2(transform.position.x, transform.position.z);
+			var distance = DistanceSqr(mousePoint, unitPoint);
+			return distance <= radius;
 		}
 
 		/// <summary>

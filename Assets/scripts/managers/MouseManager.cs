@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using Progress;
 using System.Linq;
@@ -8,7 +9,7 @@ public class MouseManager : MonoBehaviour {
 
 	private Vector3 clickedPoint = Vector3.zero;
 	private Transform plane;
-	private	RaycastHit hit;
+	private RaycastHit hit;
 	private bool planeMode;
 
 	void Update() {
@@ -29,25 +30,59 @@ public class MouseManager : MonoBehaviour {
 
 	/// <summary>
 	/// Нажатие левой кнопки мыши.
+	/// Используется для:
+	/// - выделения одного юнита
+	/// - атаки в режиме абилок главного персонажа.
 	/// </summary>
 	private void LeftButtonAction() {
 		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		// Если плоскости еще нет нужно проверить ткнули в юнит или нет.
 		Physics.Raycast(ray, out hit);
-		if (hit.collider == null) {
+		var selected = SpawnersManager.Instance.UnitsSelected;
+		var player = selected.FirstOrDefault(u => u.unitType == Settings.Unit.UnitType.Player);
+		if (player == null || (player as MainCharacter).attackMode == MainCharacter.AttackMode.Normal) {
+			if (hit.collider != null) {
+				planeMode = !hit.collider.gameObject.CompareTag("Unit");
+				// Режим одиночного выделения кликом.
+				if (!planeMode) {
+					foreach (var unit in SpawnersManager.Instance.Units) {
+						unit.SetSelected(unit.gameObject.Equals(hit.collider.gameObject));
+					}
+				}
+			}
 			return;
 		}
-		planeMode = !hit.collider.gameObject.CompareTag("Unit");
-		// Режим одиночного выделения кликом.
-		if (!planeMode) {
-			foreach (var unit in SpawnersManager.Instance.Units) {
-				unit.SetSelected(unit.gameObject.Equals(hit.collider.gameObject));
+
+		// Режим абилок.
+		var hero = player as MainCharacter;
+		switch (hero.attackMode) {
+		case MainCharacter.AttackMode.IceArrow:
+			if (hit.collider != null) {
+				// Клик по юниту или зданию
+				var clicked = hit.collider.gameObject;
+				var damagable = clicked.GetComponent<Damagable>();
+				if (damagable != null) {
+					var isUnit = damagable is Unit;
+					if (!(isUnit && !(damagable as Unit).IsEnemy)) {
+						hero.target.SetTarget(damagable, isUnit);
+						hero.PositionTargetMode = false;
+						return;
+					}
+				}
 			}
+			break;
+		case MainCharacter.AttackMode.MeteoRain:
+				hero.Attack();
+			break;
+		default:
+			throw new ArgumentOutOfRangeException();
 		}
 	}
 
+	/// <summary>
+	/// Удерживание левой кнопки мыши.
+	/// Используется для множественного выделения юнитов.
+	/// </summary>
 	private void LeftButtonHoldAction() {
-		// Удерживание левой кнопки мыши.
 		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		if (planeMode) {
 			Physics.Raycast(ray, out hit, Mathf.Infinity, Constants.FLOOR_LAYER);
@@ -68,8 +103,10 @@ public class MouseManager : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Нажатие правой кнопки мыши.
+	/// </summary>
 	private void RightButtonAction() {
-		// Нажатие правой кнопки мыши.
 		var selected = SpawnersManager.Instance.UnitsSelected;
 		var player = selected.FirstOrDefault(u => u.unitType == Settings.Unit.UnitType.Player);
 		if (selected != null) {
@@ -83,18 +120,24 @@ public class MouseManager : MonoBehaviour {
 			// Если выделен единственный юнит - главный персонаж.
 			if (selected.Count() == 1 && player != null) {
 				var hero = player as MainCharacter;
-				// Клик по юниту или зданию
-				if (damagable != null) {
-					var isUnit = damagable is Unit;
-					if (!(isUnit && !(damagable as Unit).IsEnemy)) {
-						hero.target.SetTarget(damagable, isUnit);
-						hero.PositionTargetMode = false;
-						return;
+				// Если не включены абилки, то можно атаковать или перемещать героя
+				if (hero.attackMode == MainCharacter.AttackMode.Normal) {
+					// Клик по юниту или зданию
+					if (damagable != null) {
+						var isUnit = damagable is Unit;
+						if (!(isUnit && !(damagable as Unit).IsEnemy)) {
+							hero.target.SetTarget(damagable, isUnit);
+							hero.PositionTargetMode = false;
+							return;
+						}
+					} else {
+						hero.target.SetTarget(null);
+						hero.PositionTargetMode = true;
+						hero.PositionTarget = new Vector2(hit.point.x, hit.point.z);
 					}
 				} else {
-					hero.target.SetTarget(null);
-					hero.PositionTargetMode = true;
-					hero.PositionTarget = new Vector2(hit.point.x, hit.point.z);
+					// Иначе - выключить абилки.
+					hero.TurnOffAbilities();
 				}
 			} else {
 				// Выделена группа юнитов.
@@ -143,5 +186,4 @@ public class MouseManager : MonoBehaviour {
 			Destroy(plane.gameObject);
 		}
 	}
-
 }

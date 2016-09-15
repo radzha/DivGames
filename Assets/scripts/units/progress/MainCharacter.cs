@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 using UnityEditor;
 using UnityEngine.UI;
 
@@ -70,15 +71,32 @@ namespace Progress {
 			iceArrowTimer -= Time.deltaTime;
 			meteoRainTimer -= Time.deltaTime;
 
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				TurnOffAbilities();
+			}
 			if (Input.GetKeyDown(KeyCode.L)) {
 				if (iceArrowTimer <= 0f && IsSelected) {
 					IceArrowMode(attackMode != AttackMode.IceArrow);
 				}
-			} else if (Input.GetKeyDown(KeyCode.Escape)) {
-				IceArrowMode(false);
+			}
+			if (Input.GetKeyDown(KeyCode.M)) {
+				if (meteoRainTimer <= 0f && IsSelected) {
+					MeteoRainMode(attackMode != AttackMode.MeteoRain);
+				}
 			}
 		}
 
+		/// <summary>
+		/// Отключить все абилки.
+		/// </summary>
+		public void TurnOffAbilities() {
+			IceArrowMode(false);
+			MeteoRainMode(false);
+		}
+
+		/// <summary>
+		/// Включить/выключить абилку ледяной стрелы.
+		/// </summary>
 		private void IceArrowMode(bool enable) {
 			attackMode = enable ? AttackMode.IceArrow : AttackMode.Normal;
 			if (!enable) {
@@ -89,11 +107,27 @@ namespace Progress {
 			Cursor.SetCursor(iceCursorTexture, Vector2.zero, CursorMode.Auto);
 		}
 
+		/// <summary>
+		/// Включить/выключить абилку метеоритного дождя.
+		/// </summary>
+		private void MeteoRainMode(bool enable) {
+			var marker = MeteoRainMarkerManager.Instance.meteoRainMarker;
+			if (marker == null) {
+				return;
+			}
+			marker.gameObject.SetActive(enable);
+			attackMode = enable ? AttackMode.MeteoRain : AttackMode.Normal;
+			if (enable) {
+				var x = LevelEditor.Instance.meteoRain[level].radius;
+				marker.rectTransform.sizeDelta = new Vector2(x, x);
+				marker.transform.position = transform.position;
+			}
+		}
+
 		protected override bool IsInRange(float distance) {
 			var normalAttack = attackMode == AttackMode.Normal && base.IsInRange(distance);
 			var iceArrowAttack = attackMode == AttackMode.IceArrow && distance <= LevelEditor.Instance.iceArrow[level].radius;
-			var meteoRainAttack = attackMode == AttackMode.MeteoRain && distance <= LevelEditor.Instance.meteoRain[level].radius;
-			return normalAttack || iceArrowAttack || meteoRainAttack;
+			return normalAttack || iceArrowAttack;
 		}
 
 		public override float CoolDown {
@@ -126,24 +160,36 @@ namespace Progress {
 		/// <summary>
 		/// Непосредственный ущерб юниту, дивану или подпитка жизни из фонтана.
 		/// </summary>
-		protected override void MakeDamage() {
-			if (target.aim == null) {
-				return;
-			}
-
+		public override void MakeDamage() {
 			switch (attackMode) {
 			case AttackMode.Normal:
 				base.MakeDamage();
 				break;
 			case AttackMode.MeteoRain:
+				MakeMeteoRainDamage();
 				break;
 			case AttackMode.IceArrow:
-				target.aim.TakeDamage(this, Settings.Attack, LevelEditor.Instance.iceArrow[level].slow, LevelEditor.Instance.iceArrow[level].attackSlow, LevelEditor.Instance.iceArrow[level].duration);
-				IceArrowMode(false);
+				if (target.aim != null) {
+					target.aim.TakeDamage(
+						this,
+						Settings.Attack,
+						LevelEditor.Instance.iceArrow[level].slow,
+						LevelEditor.Instance.iceArrow[level].attackSlow,
+						LevelEditor.Instance.iceArrow[level].duration);
+					IceArrowMode(false);
+				}
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();
 			}
+		}
+
+		private void MakeMeteoRainDamage() {
+			foreach (var enemy in SpawnersManager.Instance.Enemies().Where(enemy => enemy.IsInMeteoRainRange(LevelEditor.Instance.meteoRain[level].radius))) {
+				enemy.TakeDamage(this, Settings.Attack);
+				enemy.MeteoRainVisually(true);
+			}
+			MeteoRainMode(false);
 		}
 
 		protected override void PrepareSelectMarker() {
@@ -158,26 +204,29 @@ namespace Progress {
 
 		protected override void Move() {
 			base.Move();
-			if (PositionTargetMode) {
-				var myPos = new Vector2(transform.position.x, transform.position.z);
-				var distance = Vector2.Distance(myPos, PositionTarget);
-				var moveTo = Vector2.Lerp(myPos, PositionTarget, Settings.Speed * Time.deltaTime / distance);
-				var y = transform.position.y;
-				transform.position = new Vector3(moveTo.x, y, moveTo.y);
-
-				// Повернуться в сторону цели.
-				transform.LookAt(new Vector3(PositionTarget.x, y, PositionTarget.y));
-				transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
+			if (!PositionTargetMode) {
+				return;
 			}
+			var myPos = new Vector2(transform.position.x, transform.position.z);
+			var distance = Vector2.Distance(myPos, PositionTarget);
+			var moveTo = Vector2.Lerp(myPos, PositionTarget, Settings.Speed * Time.deltaTime / distance);
+			var y = transform.position.y;
+			transform.position = new Vector3(moveTo.x, y, moveTo.y);
+
+			// Повернуться в сторону цели.
+			transform.LookAt(new Vector3(PositionTarget.x, y, PositionTarget.y));
+			transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
 		}
 
 		public void OnEnable() {
 			CameraManager.Instance.AutoMove = true;
+			SetSelected(true);
 		}
 
 		public void OnDisable() {
 			CameraManager.Instance.AutoMove = false;
 			IceArrowMode(false);
+			MeteoRainMode(false);
 		}
 	}
 }
