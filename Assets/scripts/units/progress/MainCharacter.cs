@@ -89,14 +89,25 @@ namespace Progress {
 				TurnOffAbilities();
 			}
 			if (Input.GetKeyDown(KeyCode.L)) {
-				if (iceArrowTimer <= 0f && IsSelected) {
-					IceArrowMode(attackMode != AttackMode.IceArrow);
-				}
+				PerformAbility(AttackMode.IceArrow);
 			}
 			if (Input.GetKeyDown(KeyCode.M)) {
+				PerformAbility(AttackMode.MeteoRain);
+			}
+		}
+
+		public void PerformAbility(AttackMode mode) {
+			switch (mode) {
+			case AttackMode.MeteoRain:
 				if (meteoRainTimer <= 0f && IsSelected) {
 					MeteoRainMode(attackMode != AttackMode.MeteoRain);
 				}
+				break;
+			case AttackMode.IceArrow:
+				if (iceArrowTimer <= 0f && IsSelected) {
+					IceArrowMode(attackMode != AttackMode.IceArrow);
+				}
+				break;
 			}
 		}
 

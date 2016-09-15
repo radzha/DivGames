@@ -85,6 +85,9 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 		}
 	}
 
+	/// <summary>
+	/// Возвращает главного персонажа или null, если он не создан.
+	/// </summary>
 	public MainCharacter MainCharacter() { 
 		return Units.FirstOrDefault(u => u.unitType == Settings.Unit.UnitType.Player) as MainCharacter;
 	}
@@ -94,7 +97,7 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	}
 
 	public int MignonsCount() {
-		return Units.Where(u => !u.IsEnemy).Count();
+		return Units.Count(u => !u.IsEnemy);
 	}
 
 	public HashSet<Unit> Enemies() {
