@@ -2,9 +2,16 @@
 using UnityEngine;
 using Progress;
 using System.Linq;
+using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MouseManager : MonoBehaviour {
 	public GameObject planePrefab;
+	public GraphicRaycaster uiRaycaster;
+	public GameObject CameraSwitchUI;
+	public GameObject IceArrowClickUI;
+	public GameObject MeteoRainClickUI;
 
 	private Vector3 clickedPoint = Vector3.zero;
 	private Transform plane;
@@ -15,7 +22,7 @@ public class MouseManager : MonoBehaviour {
 		if (Divan.gameStop) {
 			return;
 		}
-		if (Input.GetMouseButtonDown(0)) {
+		if (Input.GetMouseButtonDown(0) && !UIClickHandle()) {
 			LeftButtonAction();
 		} else if (Input.GetMouseButton(0)) {
 			LeftButtonHoldAction();
@@ -75,6 +82,37 @@ public class MouseManager : MonoBehaviour {
 		default:
 			throw new ArgumentOutOfRangeException();
 		}
+	}
+
+	/// <summary>
+	/// Обработка клика по UI интерфейсу выбора абилки.
+	/// </summary>
+	/// <returns>true, если был клик по абилке</returns>
+	private bool UIClickHandle() {
+		// Обрабатывается только левая кнопка мыши.
+		if (!Input.GetMouseButtonDown(0)) {
+			return false;
+		}
+
+		var ped = new PointerEventData(null) { position = Input.mousePosition };
+		var results = new List<RaycastResult>();
+		uiRaycaster.Raycast(ped, results);
+		if (results.Count != 1) {
+			return false;
+		}
+
+		var player = SpawnersManager.Instance.MainCharacter();
+		if (player == null) {
+			return false;
+		}
+		if (results[0].gameObject.Equals(IceArrowClickUI)) {
+			player.PerformAbility(MainCharacter.AttackMode.IceArrow);
+		} else if (results[0].gameObject.Equals(MeteoRainClickUI)) {
+			player.PerformAbility(MainCharacter.AttackMode.MeteoRain);
+		} else if (results[0].gameObject.Equals(CameraSwitchUI)) {
+			CameraManager.Instance.SwitchCameraMode();
+		}
+		return true;
 	}
 
 	/// <summary>

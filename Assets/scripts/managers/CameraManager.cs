@@ -14,10 +14,19 @@ public class CameraManager : Singleton<CameraManager> {
 	public float switchCameraDelay = 0.2f;
 
 	// Включен ли режим автоматического слежения камерой за игроком.
-	public bool AutoMove { 
-		get;
-		set;
+	public bool AutoMove {
+		get {
+			return _autoMove;
+		}
+		set {
+			_autoMove = value;
+			onSwitch();
+		}
 	}
+
+	public delegate void OnSwitch();
+
+	public event OnSwitch onSwitch = delegate { };
 
 	// Центр экрана.
 	private Vector3 screenCenter;
@@ -25,6 +34,7 @@ public class CameraManager : Singleton<CameraManager> {
 	private float switchTimer;
 	// Игрок, за которым следит камера.
 	private GameObject player;
+	private bool _autoMove;
 
 	void Start() {
 		screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
@@ -36,8 +46,7 @@ public class CameraManager : Singleton<CameraManager> {
 			switchTimer -= Time.deltaTime;
 		}
 		if (Input.GetKey("c") && switchTimer <= 0f) {
-			AutoMove = !AutoMove;
-			switchTimer = switchCameraDelay;
+			SwitchCameraMode();
 		}
 
 		if (AutoMove) {
@@ -59,5 +68,13 @@ public class CameraManager : Singleton<CameraManager> {
 				transform.position = Vector3.Lerp(transform.position, targetPosition, mouseSmoothness * Time.deltaTime);
 			}
 		}
+	}
+
+	/// <summary>
+	/// Меняет режим камеры.
+	/// </summary>
+	public void SwitchCameraMode() {
+		AutoMove = !AutoMove;
+		switchTimer = switchCameraDelay;
 	}
 }
