@@ -6,7 +6,7 @@ using System.Linq;
 /// <summary>
 /// Производитель юнитов.
 /// </summary>
-class Spawner : MonoBehaviour {
+public class Spawner : MonoBehaviour, Selectable {
 	// Скорость тренировки - юнитов в секунду.
 	public float trainingSpeed;
 
@@ -82,4 +82,7 @@ class Spawner : MonoBehaviour {
 		return spawnUnitTypes.Last();
 	}
 
+	public void SetSelected(bool selected) {
+		
+	}
 }

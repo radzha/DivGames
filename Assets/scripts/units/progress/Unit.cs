@@ -6,7 +6,7 @@ namespace Progress {
 	/// <summary>
 	/// Юнит - базовый класс для всех субъектов игры.
 	/// </summary>
-	public class Unit : MonoBehaviour, Damagable {
+	public class Unit : MonoBehaviour, Damagable, Selectable {
 		/// <summary>
 		/// Класс, описывающий цель юнита.
 		/// Целью может быть юнит противника или строение:

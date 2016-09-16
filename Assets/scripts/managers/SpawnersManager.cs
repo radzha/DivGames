@@ -37,8 +37,6 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	public delegate void OnUnitSelected(Unit unit, bool isSelected);
 
 	public OnUnitSelected onUnitSelected = delegate { };
-	// Все созданные юниты игры.
-	private HashSet<Unit> units;
 
 	public HashSet<Unit> Units {
 		get {
@@ -53,11 +51,19 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 		}
 	}
 
+	/// <summary>
+	/// Все казармы.
+	/// </summary>
+	public Spawner[] spawners;
+
+	// Все созданные юниты игры.
+	private HashSet<Unit> units;
 	private float delayTimer;
 	private float waveTimer = -1f;
 
 	protected void Awake() {
-		units = new HashSet<Progress.Unit>();
+		units = new HashSet<Unit>();
+		spawners = FindObjectsOfType<Spawner>();
 		StartCoroutine(TimeControl());
 	}
 
@@ -104,7 +110,7 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	}
 
 	public int EnemiesCount() {
-		return Units.Where(u => u.IsEnemy).Count();
+		return Units.Count(u => u.IsEnemy);
 	}
 
 	public void AddUnit(Unit unit) {

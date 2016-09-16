@@ -50,14 +50,20 @@ public class MouseManager : MonoBehaviour {
 			if (hit.collider == null) {
 				return;
 			}
-			planeMode = !hit.collider.gameObject.CompareTag("Unit");
-			if (planeMode) {
+			var isSpawner = hit.collider.gameObject.CompareTag("Spawner");
+			if (!isSpawner) {
+				planeMode = !hit.collider.gameObject.CompareTag("Unit");
+				if (planeMode) {
+					return;
+				}
+				foreach (var unit in SpawnersManager.Instance.Units) {
+					unit.SetSelected(unit.gameObject.Equals(hit.collider.gameObject));
+				}
 				return;
+			} else {
+				planeMode = false;
+				var spawner = SpawnersManager.Instance.spawners.First(s => s.gameObject.Equals(hit.collider.gameObject));
 			}
-			foreach (var unit in SpawnersManager.Instance.Units) {
-				unit.SetSelected(unit.gameObject.Equals(hit.collider.gameObject));
-			}
-			return;
 		}
 
 		// Режим абилок.
