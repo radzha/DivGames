@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using System.Linq;
-using UnityEditor;
 using UnityEngine.UI;
 
 namespace Progress {
@@ -33,17 +31,15 @@ namespace Progress {
 		}
 
 		/// <summary>
-		/// Текущий опыт.
+		/// У основного персонажа уровень статический.
 		/// </summary>
-		public static int Experience {
-			get; set;
-		}
-
-		/// <summary>
-		/// Текущий уровень золота.
-		/// </summary>
-		public static int GoldAmount {
-			get; set;
+		public override int Level {
+			get {
+				return Player.Level;
+			}
+			set {
+				Player.Level = value;
+			}
 		}
 
 		private float iceArrowTimer;
@@ -143,7 +139,7 @@ namespace Progress {
 			marker.gameObject.SetActive(enable);
 			attackMode = enable ? AttackMode.MeteoRain : AttackMode.Normal;
 			if (enable) {
-				var x = LevelEditor.Instance.meteoRain[level].radius;
+				var x = LevelEditor.Instance.meteoRain[Player.Level].radius;
 				marker.rectTransform.sizeDelta = new Vector2(x, x);
 				marker.transform.position = transform.position;
 			}
@@ -151,7 +147,7 @@ namespace Progress {
 
 		protected override bool IsInRange(float distance) {
 			var normalAttack = attackMode == AttackMode.Normal && base.IsInRange(distance);
-			var iceArrowAttack = attackMode == AttackMode.IceArrow && distance <= LevelEditor.Instance.iceArrow[level].radius;
+			var iceArrowAttack = attackMode == AttackMode.IceArrow && distance <= LevelEditor.Instance.iceArrow[Player.Level].radius;
 			return normalAttack || iceArrowAttack;
 		}
 
@@ -161,9 +157,9 @@ namespace Progress {
 				case AttackMode.Normal:
 					return 1f / attackSpeed;
 				case AttackMode.MeteoRain:
-					return LevelEditor.Instance.meteoRain[level].cooldown;
+					return LevelEditor.Instance.meteoRain[Player.Level].cooldown;
 				case AttackMode.IceArrow:
-					return LevelEditor.Instance.iceArrow[level].cooldown;
+					return LevelEditor.Instance.iceArrow[Player.Level].cooldown;
 				default:
 					throw new ArgumentOutOfRangeException();
 				}
@@ -198,9 +194,9 @@ namespace Progress {
 					target.aim.TakeDamage(
 						this,
 						Settings.Attack,
-						LevelEditor.Instance.iceArrow[level].slow,
-						LevelEditor.Instance.iceArrow[level].attackSlow,
-						LevelEditor.Instance.iceArrow[level].duration);
+						LevelEditor.Instance.iceArrow[Player.Level].slow,
+						LevelEditor.Instance.iceArrow[Player.Level].attackSlow,
+						LevelEditor.Instance.iceArrow[Player.Level].duration);
 					IceArrowMode(false);
 				}
 				break;
@@ -210,7 +206,7 @@ namespace Progress {
 		}
 
 		private void MakeMeteoRainDamage() {
-			foreach (var enemy in SpawnersManager.Instance.Enemies().Where(enemy => enemy.IsInMeteoRainRange(LevelEditor.Instance.meteoRain[level].radius))) {
+			foreach (var enemy in SpawnersManager.Instance.Enemies().Where(enemy => enemy.IsInMeteoRainRange(LevelEditor.Instance.meteoRain[Player.Level].radius))) {
 				enemy.TakeDamage(this, Settings.Attack);
 				enemy.MeteoRainVisually(true);
 			}
@@ -252,6 +248,14 @@ namespace Progress {
 			CameraManager.Instance.AutoMove = false;
 			IceArrowMode(false);
 			MeteoRainMode(false);
+		}
+
+		/// <summary>
+		/// Вызывается при повышения уровня.
+		/// </summary>
+		public void DoLevelUp() {
+			SettingsRead();
+			animator.SetTrigger("levelup");
 		}
 	}
 }

@@ -16,6 +16,9 @@ public class UpdateText : MonoBehaviour {
 	}
 
 	private void OnCameraSwitch() {
+		if (text == null) {
+			return;
+		}
 		text.text = CameraManager.Instance.AutoMove ? "Режим слежения" : "Свободный режим";
 	}
 }

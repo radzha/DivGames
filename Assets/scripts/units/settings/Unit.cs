@@ -108,7 +108,8 @@
 		}
 
 		/// <summary>
-		/// Количество опыта (XP) — количество опыта, которое получает главный персонаж игрока за убийство юнита
+		/// Количество опыта (XP) — количество опыта, которое получает главный персонаж игрока за убийство юнита.
+		/// Для главного персонажа это кол-во опыта, необходимое для увеличения уровня.
 		/// </summary>
 		public int Xp {
 			get {
@@ -139,30 +140,30 @@
 		/// <summary>
 		/// Первичное заполнение настроек в зависимости от типа и принадлежности юнита.
 		/// </summary>
-		public Unit(UnitType type, bool isEnemy) {
+		public Unit(UnitType type, bool isEnemy, int level = 0) {
 			if (isEnemy) {
 				switch (type) {
-					case UnitType.Warrior:
-						ReadSettings(LevelEditor.Instance.enemyWarrior, 0);
-						break;
-					case UnitType.Archer:
-						ReadSettings(LevelEditor.Instance.enemyArcher, 0);
-						break;
-					case UnitType.Boss:
-						ReadSettings(LevelEditor.Instance.boss, 0);
-						break;
+				case UnitType.Warrior:
+					ReadSettings(LevelEditor.Instance.enemyWarrior, level);
+					break;
+				case UnitType.Archer:
+					ReadSettings(LevelEditor.Instance.enemyArcher, level);
+					break;
+				case UnitType.Boss:
+					ReadSettings(LevelEditor.Instance.boss, level);
+					break;
 				}
 			} else {
 				switch (type) {
-					case UnitType.Warrior:
-						ReadSettings(LevelEditor.Instance.warrior, 0);
-						break;
-					case UnitType.Archer:
-						ReadSettings(LevelEditor.Instance.archer, 0);
-						break;
-					case UnitType.Player:
-						ReadSettings(LevelEditor.Instance.player, 0);
-						break;
+				case UnitType.Warrior:
+					ReadSettings(LevelEditor.Instance.warrior, level);
+					break;
+				case UnitType.Archer:
+					ReadSettings(LevelEditor.Instance.archer, level);
+					break;
+				case UnitType.Player:
+					ReadSettings(LevelEditor.Instance.player, level);
+					break;
 				}
 			}
 		}

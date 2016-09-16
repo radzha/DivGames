@@ -34,10 +34,9 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 
 	public unitPrefabs[] UnitPrefabs;
 
-	public delegate void OnUnitSelected(Unit unit,bool isSelected);
+	public delegate void OnUnitSelected(Unit unit, bool isSelected);
 
-	public OnUnitSelected onUnitSelected;
-
+	public OnUnitSelected onUnitSelected = delegate { };
 	// Все созданные юниты игры.
 	private HashSet<Unit> units;
 
@@ -88,7 +87,7 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	/// <summary>
 	/// Возвращает главного персонажа или null, если он не создан.
 	/// </summary>
-	public MainCharacter MainCharacter() { 
+	public MainCharacter MainCharacter() {
 		return Units.FirstOrDefault(u => u.unitType == Settings.Unit.UnitType.Player) as MainCharacter;
 	}
 
@@ -112,11 +111,11 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 		units.Add(unit);
 	}
 
-	public bool CanSpawn(bool isEnemy) {	
+	public bool CanSpawn(bool isEnemy) {
 		return waveTimer > 0f && (isEnemy ? EnemiesCount() < enemySpawnLimit : MignonsCount() < mignonSpawnLimit);
 	}
 
 	public bool CanSpawnType(Settings.Unit.UnitType type) {
-		return false;	
+		return false;
 	}
 }

@@ -37,7 +37,7 @@ public class UnitInfoUI : MonoBehaviour {
 	protected virtual void SetText() {
 		var txt = string.Format("Тип: {0}\nУровень: {1}\nЗдоровье: {2}\nСкорость: {3}\nАтака: {4}\nСкорость атаки: {5}\nЗона атаки: {6}\nЗащита: {7}",
 			unit.PrettyType(),
-			unit.level,
+			unit.Level + 1,
 			unit.Health(),
 			unit.Settings.Speed,
 			unit.Settings.Attack,

@@ -56,7 +56,7 @@ namespace Progress {
 		// Мертв ли юнит.
 		public bool isDead;
 		// Уровень юнита.
-		public int level;
+		public int _level;
 		// Орудие юнита.
 		public Transform gun;
 		// Враг ли юнит.
@@ -72,7 +72,7 @@ namespace Progress {
 		protected float attackTimer;
 
 		// Контроллер аниматора.
-		private Animator animator;
+		protected Animator animator;
 
 		// Основной цвет юнита.
 		private Color unitColor;
@@ -117,11 +117,11 @@ namespace Progress {
 		}
 
 		/// <summary>
-		/// Чтение первоначальных настроек юнита.
+		/// Чтение настроек юнита.
 		/// </summary>
-		private void SettingsRead() {
-			Settings = new Settings.Unit(unitType, IsEnemy);
-			health = Settings.Hp;
+		protected void SettingsRead() {
+			Settings = new Settings.Unit(unitType, IsEnemy, Level);
+			health = Level == 0 ? Settings.Hp : health;
 			speed = Settings.Speed;
 			attackSpeed = Settings.AttackSpeed;
 		}
@@ -393,8 +393,8 @@ namespace Progress {
 			}
 			var profit = target.aim.TakeDamage(this, Settings.Attack);
 			health += profit.health;
-			MainCharacter.GoldAmount += profit.gold;
-			MainCharacter.Experience += profit.xp;
+			Player.GoldAmount += profit.gold;
+			Player.Experience += profit.xp;
 		}
 
 		public bool AimTriggered {
@@ -408,6 +408,15 @@ namespace Progress {
 			}
 			set {
 				attackTimer = value;
+			}
+		}
+
+		public virtual int Level {
+			get {
+				return _level;
+			}
+			set {
+				_level = value;
 			}
 		}
 

@@ -559,7 +559,7 @@ MonoBehaviour:
     speed: 10
     attackRange: 5
     gold: 0
-    xp: 0
+    xp: 10
   - hp: 550
     armor: .100000001
     attack: 12
@@ -567,7 +567,7 @@ MonoBehaviour:
     speed: 12
     attackRange: 11
     gold: 0
-    xp: 100
+    xp: 20
   - hp: 600
     armor: .150000006
     attack: 15
@@ -575,7 +575,7 @@ MonoBehaviour:
     speed: 14
     attackRange: 12
     gold: 0
-    xp: 200
+    xp: 30
   - hp: 700
     armor: .200000003
     attack: 17
@@ -583,7 +583,7 @@ MonoBehaviour:
     speed: 15
     attackRange: 13
     gold: 0
-    xp: 300
+    xp: 40
   - hp: 800
     armor: .25
     attack: 20
@@ -591,7 +591,7 @@ MonoBehaviour:
     speed: 19
     attackRange: 14
     gold: 0
-    xp: 400
+    xp: 0
   playerRespawnTime:
   - .100000001
   - .0799999982

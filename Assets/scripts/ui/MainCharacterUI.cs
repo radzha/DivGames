@@ -13,9 +13,9 @@ public class MainCharacterUI : UnitInfoUI {
 
 	protected override void SetText() {
 		var txt = string.Format("Уровень: {0}\nОпыт: {1}\nЗолото: {2}\nМетеор. дождь: {3}\nЛедяная стрела: {4}",
-			((MainCharacter)unit).level + 1,
-			MainCharacter.Experience,
-			MainCharacter.GoldAmount,
+			((MainCharacter)unit).Level + 1,
+			Player.Experience,
+			Player.GoldAmount,
 			((MainCharacter)unit).MeteoRainTimerString,
 			((MainCharacter)unit).IceArrowTimerString);
 		text.text = txt;
