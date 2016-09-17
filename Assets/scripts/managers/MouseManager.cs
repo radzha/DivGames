@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MouseManager : MonoBehaviour {
+public class MouseManager : Singleton<MouseManager> {
 	public GameObject planePrefab;
 	public GraphicRaycaster uiRaycaster;
 	public GameObject CameraSwitchUI;

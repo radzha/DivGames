@@ -219,7 +219,7 @@ namespace Progress {
 				0,
 				killedEnemy ? Settings.Gold : 0,
 				killedEnemy ? Settings.Xp : 0
-				);
+			);
 		}
 
 		/// <summary>
@@ -307,7 +307,7 @@ namespace Progress {
 		/// <summary>
 		/// Назначить/снять выделение юнита.
 		/// </summary>
-		public void SetSelected(bool selected) {
+		public virtual void SetSelected(bool selected) {
 			if (IsSelected == selected) {
 				return;
 			}
@@ -350,7 +350,7 @@ namespace Progress {
 		public float DistanceSqr(GameObject g1, GameObject g2) {
 			var xDist = g1.transform.position.x - g2.transform.position.x;
 			var zDist = g1.transform.position.z - g2.transform.position.z;
-			return xDist * xDist + zDist + zDist;
+			return xDist * xDist + zDist * zDist;
 		}
 
 		/// <summary>
@@ -359,7 +359,7 @@ namespace Progress {
 		public float DistanceSqr(Vector2 v1, Vector2 v2) {
 			var xDist = v1.x - v2.x;
 			var zDist = v1.y - v2.y;
-			return xDist * xDist + zDist + zDist;
+			return xDist * xDist + zDist * zDist;
 		}
 
 		protected virtual void Fire() {
@@ -433,11 +433,11 @@ namespace Progress {
 		public bool IsInMeteoRainRange(float radius) {
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
-			Physics.Raycast(ray, out hit);
+			Physics.Raycast(ray, out hit, int.MaxValue, Constants.FLOOR_LAYER);
 			var mousePoint = new Vector2(hit.point.x, hit.point.z);
 			var unitPoint = new Vector2(transform.position.x, transform.position.z);
 			var distance = DistanceSqr(mousePoint, unitPoint);
-			return distance <= radius;
+			return distance <= radius * radius;
 		}
 
 		/// <summary>
@@ -493,18 +493,18 @@ namespace Progress {
 		public string PrettyType() {
 			var type = "";
 			switch (unitType) {
-			case global::Settings.Unit.UnitType.Archer:
-				type = "стрелок";
-				break;
-			case global::Settings.Unit.UnitType.Warrior:
-				type = "воин";
-				break;
-			case global::Settings.Unit.UnitType.Boss:
-				type = "босс";
-				break;
-			case global::Settings.Unit.UnitType.Player:
-				type = "герой";
-				break;
+				case global::Settings.Unit.UnitType.Archer:
+					type = "стрелок";
+					break;
+				case global::Settings.Unit.UnitType.Warrior:
+					type = "воин";
+					break;
+				case global::Settings.Unit.UnitType.Boss:
+					type = "босс";
+					break;
+				case global::Settings.Unit.UnitType.Player:
+					type = "герой";
+					break;
 			}
 			var own = IsEnemy ? "Вражеский" : "Наш";
 			return own + " " + type;

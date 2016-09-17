@@ -26,7 +26,7 @@ public class MeteoRainMarkerManager : Singleton<MeteoRainMarkerManager> {
 	void Update() {
 		if (marker.activeSelf) {
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			Physics.Raycast(ray, out hit);
+			Physics.Raycast(ray, out hit, int.MaxValue, Constants.FLOOR_LAYER);
 			if (hit.collider == null) {
 				return;
 			}

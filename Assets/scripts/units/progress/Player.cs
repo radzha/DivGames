@@ -15,7 +15,7 @@
 			}
 			set {
 				_experience = value;
-				if (value > LevelEditor.Instance.player[Level].xp) {
+				if (value > LevelEditor.Instance.player [Level].xp) {
 					Level++;
 				}
 			}
@@ -29,7 +29,8 @@
 		/// Текущий уровень золота.
 		/// </summary>
 		public static int GoldAmount {
-			get; set;
+			get;
+			set;
 		}
 
 		/// <summary>
@@ -46,7 +47,9 @@
 				var oldValue = _level;
 				_level = value;
 				if (value > oldValue) {
-					SpawnersManager.Instance.MainCharacter().DoLevelUp();
+					if (SpawnersManager.Instance.MainCharacter() != null) {
+						SpawnersManager.Instance.MainCharacter().DoLevelUp();
+					}
 				}
 			}
 		}

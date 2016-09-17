@@ -48,29 +48,29 @@ namespace Progress {
 		protected override float AttackTimer {
 			get {
 				switch (attackMode) {
-				case AttackMode.Normal:
-					return base.AttackTimer;
-				case AttackMode.MeteoRain:
-					return meteoRainTimer;
-				case AttackMode.IceArrow:
-					return iceArrowTimer;
-				default:
-					throw new ArgumentOutOfRangeException();
+					case AttackMode.Normal:
+						return base.AttackTimer;
+					case AttackMode.MeteoRain:
+						return meteoRainTimer;
+					case AttackMode.IceArrow:
+						return iceArrowTimer;
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 			}
 			set {
 				switch (attackMode) {
-				case AttackMode.Normal:
-					base.AttackTimer = value;
-					break;
-				case AttackMode.MeteoRain:
-					meteoRainTimer = value;
-					break;
-				case AttackMode.IceArrow:
-					iceArrowTimer = value;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
+					case AttackMode.Normal:
+						base.AttackTimer = value;
+						break;
+					case AttackMode.MeteoRain:
+						meteoRainTimer = value;
+						break;
+					case AttackMode.IceArrow:
+						iceArrowTimer = value;
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 			}
 		}
@@ -94,16 +94,16 @@ namespace Progress {
 
 		public void PerformAbility(AttackMode mode) {
 			switch (mode) {
-			case AttackMode.MeteoRain:
-				if (meteoRainTimer <= 0f && IsSelected) {
-					MeteoRainMode(attackMode != AttackMode.MeteoRain);
-				}
-				break;
-			case AttackMode.IceArrow:
-				if (iceArrowTimer <= 0f && IsSelected) {
-					IceArrowMode(attackMode != AttackMode.IceArrow);
-				}
-				break;
+				case AttackMode.MeteoRain:
+					if (meteoRainTimer <= 0f && IsSelected) {
+						MeteoRainMode(attackMode != AttackMode.MeteoRain);
+					}
+					break;
+				case AttackMode.IceArrow:
+					if (iceArrowTimer <= 0f && IsSelected) {
+						IceArrowMode(attackMode != AttackMode.IceArrow);
+					}
+					break;
 			}
 		}
 
@@ -140,7 +140,7 @@ namespace Progress {
 			attackMode = enable ? AttackMode.MeteoRain : AttackMode.Normal;
 			if (enable) {
 				var x = LevelEditor.Instance.meteoRain[Player.Level].radius;
-				marker.rectTransform.sizeDelta = new Vector2(x, x);
+				marker.rectTransform.sizeDelta = new Vector2(2f * x, 2f * x);
 				marker.transform.position = transform.position;
 			}
 		}
@@ -154,14 +154,14 @@ namespace Progress {
 		public override float CoolDown {
 			get {
 				switch (attackMode) {
-				case AttackMode.Normal:
-					return 1f / attackSpeed;
-				case AttackMode.MeteoRain:
-					return LevelEditor.Instance.meteoRain[Player.Level].cooldown;
-				case AttackMode.IceArrow:
-					return LevelEditor.Instance.iceArrow[Player.Level].cooldown;
-				default:
-					throw new ArgumentOutOfRangeException();
+					case AttackMode.Normal:
+						return 1f / attackSpeed;
+					case AttackMode.MeteoRain:
+						return LevelEditor.Instance.meteoRain[Player.Level].cooldown;
+					case AttackMode.IceArrow:
+						return LevelEditor.Instance.iceArrow[Player.Level].cooldown;
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 			}
 		}
@@ -183,25 +183,25 @@ namespace Progress {
 		/// </summary>
 		public override void MakeDamage() {
 			switch (attackMode) {
-			case AttackMode.Normal:
-				base.MakeDamage();
-				break;
-			case AttackMode.MeteoRain:
-				MakeMeteoRainDamage();
-				break;
-			case AttackMode.IceArrow:
-				if (target.aim != null) {
-					target.aim.TakeDamage(
+				case AttackMode.Normal:
+					base.MakeDamage();
+					break;
+				case AttackMode.MeteoRain:
+					MakeMeteoRainDamage();
+					break;
+				case AttackMode.IceArrow:
+					if (target.aim != null) {
+						target.aim.TakeDamage(
 						this,
 						Settings.Attack,
 						LevelEditor.Instance.iceArrow[Player.Level].slow,
 						LevelEditor.Instance.iceArrow[Player.Level].attackSlow,
 						LevelEditor.Instance.iceArrow[Player.Level].duration);
-					IceArrowMode(false);
-				}
-				break;
-			default:
-				throw new ArgumentOutOfRangeException();
+						IceArrowMode(false);
+					}
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
 			}
 		}
 
@@ -248,6 +248,15 @@ namespace Progress {
 			CameraManager.Instance.AutoMove = false;
 			IceArrowMode(false);
 			MeteoRainMode(false);
+		}
+
+		/// <summary>
+		/// Назначить/снять выделение юнита.
+		/// </summary>
+		public override void SetSelected(bool selected) {
+			base.SetSelected(selected);
+			MouseManager.Instance.IceArrowClickUI.SetActive(selected);
+			MouseManager.Instance.MeteoRainClickUI.SetActive(selected);
 		}
 
 		/// <summary>

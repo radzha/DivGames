@@ -626,7 +626,7 @@ MonoBehaviour:
     gold: 10
     xp: 10
   meteoRain:
-  - radius: 30
+  - radius: 5
     damage: 5
     cooldown: 30
   - radius: 35
@@ -2143,6 +2143,7 @@ MonoBehaviour:
     type: 3
     weight: 0
     prefab: {fileID: 150410, guid: 1b80b3de08bdf4fd3979228ea082f6aa, type: 2}
+  spawners: []
 --- !u!114 &1932303813
 MonoBehaviour:
   m_ObjectHideFlags: 0
