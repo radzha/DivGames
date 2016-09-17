@@ -84,10 +84,7 @@ namespace Progress {
 		}
 
 		// Выделен ли юнит мышью.
-		public bool IsSelected {
-			get;
-			set;
-		}
+		private bool selected;
 
 		// Находится ли юнит на ручном управлении.
 		public bool IsHandMoving {
@@ -193,7 +190,7 @@ namespace Progress {
 		/// Определяет является ли юнит целью противника и включает/выключает маркер.
 		/// </summary>
 		private void CheckMarker() {
-			aimMarker.SetActive(SpawnersManager.Instance.Units.FirstOrDefault(u => u.IsEnemy != IsEnemy && u.IsSelected && this.Equals(u.target.aim)) != null);
+			aimMarker.SetActive(SpawnersManager.Instance.Units.FirstOrDefault(u => u.IsEnemy != IsEnemy && u.selected && this.Equals(u.target.aim)) != null);
 		}
 
 		/// <summary>
@@ -307,13 +304,13 @@ namespace Progress {
 		/// <summary>
 		/// Назначить/снять выделение юнита.
 		/// </summary>
-		public virtual void SetSelected(bool selected) {
-			if (IsSelected == selected) {
+		public virtual void SetSelected(bool select) {
+			if (select == IsSelected()) {
 				return;
 			}
-			selectMarker.SetActive(selected);
-			IsSelected = selected;
-			SpawnersManager.Instance.onUnitSelected(this, selected);
+			selectMarker.SetActive(select);
+			selected = select;
+			SpawnersManager.Instance.onUnitSelected(this);
 		}
 
 		/// <summary>
@@ -508,6 +505,10 @@ namespace Progress {
 			}
 			var own = IsEnemy ? "Вражеский" : "Наш";
 			return own + " " + type;
+		}
+
+		public bool IsSelected() {
+			return selected;
 		}
 	}
 }

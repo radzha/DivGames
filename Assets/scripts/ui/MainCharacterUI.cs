@@ -5,19 +5,19 @@
 /// </summary>
 public class MainCharacterUI : UnitInfoUI {
 
-	protected override void OnUnitSelected(Unit unit, bool isSelected) {
-		if (unit.IsPlayer) {
-			base.OnUnitSelected(unit, isSelected);
+	protected override void OnUnitSelected(Selectable unit) {
+		if (unit is Unit && (unit as Unit).IsPlayer) {
+			base.OnUnitSelected(unit);
 		}
 	}
 
 	protected override void SetText() {
 		var txt = string.Format("Уровень: {0}\nОпыт: {1}\nЗолото: {2}\nМетеор. дождь: {3}\nЛедяная стрела: {4}",
-			((MainCharacter)unit).Level + 1,
+			((MainCharacter)thing).Level + 1,
 			Player.Experience,
 			Player.GoldAmount,
-			((MainCharacter)unit).MeteoRainTimerString,
-			((MainCharacter)unit).IceArrowTimerString);
+			((MainCharacter)thing).MeteoRainTimerString,
+			((MainCharacter)thing).IceArrowTimerString);
 		text.text = txt;
 	}
 }

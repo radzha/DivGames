@@ -95,12 +95,12 @@ namespace Progress {
 		public void PerformAbility(AttackMode mode) {
 			switch (mode) {
 				case AttackMode.MeteoRain:
-					if (meteoRainTimer <= 0f && IsSelected) {
+					if (meteoRainTimer <= 0f && IsSelected()) {
 						MeteoRainMode(attackMode != AttackMode.MeteoRain);
 					}
 					break;
 				case AttackMode.IceArrow:
-					if (iceArrowTimer <= 0f && IsSelected) {
+					if (iceArrowTimer <= 0f && IsSelected()) {
 						IceArrowMode(attackMode != AttackMode.IceArrow);
 					}
 					break;

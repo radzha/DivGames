@@ -34,9 +34,10 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 
 	public unitPrefabs[] UnitPrefabs;
 
-	public delegate void OnUnitSelected(Unit unit, bool isSelected);
+	public delegate void OnUnitSelected(Selectable thing);
 
-	public OnUnitSelected onUnitSelected = delegate { };
+	public OnUnitSelected onUnitSelected = delegate {
+	};
 
 	public HashSet<Unit> Units {
 		get {
@@ -47,14 +48,30 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	// Возвращает все выделенные юниты.
 	public IEnumerable<Unit> UnitsSelected {
 		get {
-			return units.Where(u => u.IsSelected);
+			return units.Where(u => u.IsSelected());
 		}
 	}
 
 	/// <summary>
 	/// Все казармы.
 	/// </summary>
-	public Spawner[] spawners;
+	public HashSet<Spawner> spawners;
+
+	/// <summary>
+	/// Все объекты, доступные для выделения.
+	/// </summary>
+	public HashSet<Selectable> AllSelectable {
+		get {
+			var set = new HashSet<Selectable>();
+			foreach (var unit in units) {
+				set.Add(unit);
+			}
+			foreach (var spawner in spawners) {
+				set.Add(spawner);
+			}
+			return set;
+		}
+	}
 
 	// Все созданные юниты игры.
 	private HashSet<Unit> units;
@@ -63,7 +80,7 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 
 	protected void Awake() {
 		units = new HashSet<Unit>();
-		spawners = FindObjectsOfType<Spawner>();
+		spawners = new HashSet<Spawner>(FindObjectsOfType<Spawner>());
 		StartCoroutine(TimeControl());
 	}
 

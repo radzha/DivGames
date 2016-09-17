@@ -6,4 +6,5 @@ using System.Collections;
 /// </summary>
 public interface Selectable {
 	void SetSelected(bool selected);
+	bool IsSelected();
 }

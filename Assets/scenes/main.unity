@@ -255,7 +255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &301315727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,7 +301,7 @@ RectTransform:
   m_Children:
   - {fileID: 797057129}
   m_Father: {fileID: 1355388105}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: 202.080002, y: -17.1000004}
@@ -459,15 +459,15 @@ MonoBehaviour:
     playerCureSpeed: 10
     mignonCureSpeed: 5
   spawner:
-  - gold: 0
-    spawnSpeed: .5
   - gold: 100
-    spawnSpeed: .800000012
+    spawnSpeed: .5
   - gold: 200
-    spawnSpeed: 1.20000005
+    spawnSpeed: .800000012
   - gold: 300
-    spawnSpeed: 1.5
+    spawnSpeed: 1.20000005
   - gold: 400
+    spawnSpeed: 1.5
+  - gold: 0
     spawnSpeed: 2
   warrior:
   - hp: 40
@@ -626,7 +626,7 @@ MonoBehaviour:
     gold: 10
     xp: 10
   meteoRain:
-  - radius: 5
+  - radius: 30
     damage: 5
     cooldown: 30
   - radius: 35
@@ -1079,13 +1079,13 @@ RectTransform:
   m_GameObject: {fileID: 782987269}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: .35207969, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1044005801}
-  m_RootOrder: 0
+  m_Father: {fileID: 1355388105}
+  m_RootOrder: 1
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 0, y: -2.71000004}
+  m_AnchoredPosition: {x: 59.25, y: 23.5029221}
   m_SizeDelta: {x: 194.960007, y: 129.210007}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &782987271
@@ -1416,7 +1416,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1044005801
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1426,8 +1426,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 2.84026599, z: 1}
-  m_Children:
-  - {fileID: 782987270}
+  m_Children: []
   m_Father: {fileID: 1355388105}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
@@ -1484,7 +1483,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1077969045
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1497,7 +1496,7 @@ RectTransform:
   m_Children:
   - {fileID: 1483643064}
   m_Father: {fileID: 1355388105}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: 202.080002, y: 76.8000031}
@@ -1679,6 +1678,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1044005801}
+  - {fileID: 782987270}
   - {fileID: 301315729}
   - {fileID: 1077969045}
   m_Father: {fileID: 998306472}
@@ -1950,6 +1950,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 156018, guid: be01a37ef78324793b384578d4573207, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: be01a37ef78324793b384578d4573207, type: 2}
   m_IsPrefabParent: 0
@@ -2143,7 +2147,6 @@ MonoBehaviour:
     type: 3
     weight: 0
     prefab: {fileID: 150410, guid: 1b80b3de08bdf4fd3979228ea082f6aa, type: 2}
-  spawners: []
 --- !u!114 &1932303813
 MonoBehaviour:
   m_ObjectHideFlags: 0

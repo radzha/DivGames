@@ -33,7 +33,7 @@ public class HealthControl : MonoBehaviour {
 		} else {
 			// Настройки для здания.
 			healthControl.transform.SetParent(transform);
-			healthControl.transform.position = transform.position + new Vector3(0f, 1.9f, 0f);
+			healthControl.transform.position = transform.position + new Vector3(0f, 0.57f, 0f);
 			healthControl.transform.localScale = new Vector3(0.15f, 0.23f, 1f);
 			healthControl.transform.rotation = Quaternion.Euler(new Vector3(90f, 135f, 0f));
 		}

@@ -12,7 +12,6 @@ public class MouseManager : Singleton<MouseManager> {
 	public GameObject CameraSwitchUI;
 	public GameObject IceArrowClickUI;
 	public GameObject MeteoRainClickUI;
-
 	private Vector3 clickedPoint = Vector3.zero;
 	private Transform plane;
 	private RaycastHit hit;
@@ -51,42 +50,37 @@ public class MouseManager : Singleton<MouseManager> {
 				return;
 			}
 			var isSpawner = hit.collider.gameObject.CompareTag("Spawner");
-			if (!isSpawner) {
-				planeMode = !hit.collider.gameObject.CompareTag("Unit");
-				if (planeMode) {
-					return;
-				}
-				foreach (var unit in SpawnersManager.Instance.Units) {
-					unit.SetSelected(unit.gameObject.Equals(hit.collider.gameObject));
-				}
+			planeMode = !hit.collider.gameObject.CompareTag("Unit") && !isSpawner;
+			if (planeMode) {
 				return;
-			} else {
-				planeMode = false;
-				var spawner = SpawnersManager.Instance.spawners.First(s => s.gameObject.Equals(hit.collider.gameObject));
 			}
+			foreach (var thing in SpawnersManager.Instance.AllSelectable) {
+				thing.SetSelected((thing as MonoBehaviour).gameObject.Equals(hit.collider.gameObject));
+			}
+			return;
 		}
 
 		// Режим абилок.
 		switch (player.attackMode) {
-		case MainCharacter.AttackMode.IceArrow:
-			if (hit.collider != null) {
-				// Клик по юниту или зданию
-				var clicked = hit.collider.gameObject;
-				var damagable = clicked.GetComponent<Damagable>();
-				if (damagable != null) {
-					var isUnit = damagable is Unit;
-					if (!(isUnit && !(damagable as Unit).IsEnemy)) {
-						player.target.SetTarget(damagable, isUnit);
-						player.PositionTargetMode = false;
+			case MainCharacter.AttackMode.IceArrow:
+				if (hit.collider != null) {
+					// Клик по юниту или зданию
+					var clicked = hit.collider.gameObject;
+					var damagable = clicked.GetComponent<Damagable>();
+					if (damagable != null) {
+						var isUnit = damagable is Unit;
+						if (!(isUnit && !(damagable as Unit).IsEnemy)) {
+							player.target.SetTarget(damagable, isUnit);
+							player.PositionTargetMode = false;
+						}
 					}
 				}
-			}
-			break;
-		case MainCharacter.AttackMode.MeteoRain:
-			player.Attack();
-			break;
-		default:
-			throw new ArgumentOutOfRangeException();
+				break;
+			case MainCharacter.AttackMode.MeteoRain:
+				player.Attack();
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
 		}
 	}
 
@@ -204,8 +198,9 @@ public class MouseManager : Singleton<MouseManager> {
 	/// <param name="start">Начальная точка выделения.</param>
 	/// <param name="end">Конечная точка выделения.</param>
 	private void SelectUnits(Vector3 start, Vector3 end) {
-		foreach (Unit unit in SpawnersManager.Instance.Units) {
-			unit.SetSelected(unit.IsEnemy ? false : IsInArea(unit.transform.position, start, end));
+		foreach (var thing in SpawnersManager.Instance.AllSelectable) {
+			thing.SetSelected(thing is Unit ? (thing as Unit).IsEnemy ? false : IsInArea((thing as Unit).transform.position, start, end) 
+			                  : false);
 		}
 	}
 
