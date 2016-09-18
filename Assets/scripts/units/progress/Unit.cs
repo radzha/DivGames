@@ -119,11 +119,21 @@ namespace Progress {
 		protected void SettingsRead() {
 			Settings = new Settings.Unit(unitType, IsEnemy, Level);
 			health = Level == 0 ? Settings.Hp : health;
-			speed = Settings.Speed;
+			Speed = Settings.Speed;
 			attackSpeed = Settings.AttackSpeed;
 		}
 
-		protected float speed;
+		protected float tempSpeed;
+
+		public float Speed {
+			get {
+				return tempSpeed;
+			}
+			set {
+				tempSpeed = value;
+			}
+		}
+
 		protected float attackSpeed;
 
 		private void OnDestroy() {
@@ -229,7 +239,7 @@ namespace Progress {
 		/// <param name="duration"></param>
 		/// <returns></returns>
 		public Profit TakeDamage(Unit unit, float damage, float slow, float attackSlow, float duration) {
-			speed *= 1 - slow;
+			Speed *= 1 - slow;
 			attackSpeed *= 1 - attackSlow;
 			FreezeVisually(true);
 			StartCoroutine(Defreeze(duration));
@@ -263,7 +273,7 @@ namespace Progress {
 			if (gameObject == null) {
 				yield break;
 			}
-			speed = Settings.Speed;
+			Speed = Settings.Speed;
 			attackSpeed = Settings.AttackSpeed;
 			FreezeVisually(false);
 		}
@@ -413,7 +423,11 @@ namespace Progress {
 				return _level;
 			}
 			set {
+				if (value <= _level || value > LevelEditor.Instance.spawner.Length - 1) {
+					return;
+				}
 				_level = value;
+				Settings = new Settings.Unit(unitType, IsEnemy, Level);
 			}
 		}
 
@@ -454,7 +468,7 @@ namespace Progress {
 				Attack();
 				return;
 			}
-			var moveTo = Vector2.Lerp(myPos, targetPos, speed * Time.deltaTime / distance);
+			var moveTo = Vector2.Lerp(myPos, targetPos, Speed * Time.deltaTime / distance);
 			var y = transform.position.y;
 			transform.position = new Vector3(moveTo.x, y, moveTo.y);
 

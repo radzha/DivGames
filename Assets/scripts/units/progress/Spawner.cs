@@ -13,12 +13,27 @@ public class Spawner : MonoBehaviour, Selectable {
 	// Типы юнитов, которые можно здесь производить.
 	public Settings.Unit.UnitType[] spawnUnitTypes = null;
 	public bool isEnemy = false;
-	public int Level;
+
+	public int Level {
+		get {
+			return level;
+		}
+		set {
+			if (value <= level || value > LevelEditor.Instance.spawner.Length - 1) {
+				return;
+			}
+			level = value;
+			OnLevelUp();
+		}
+	}
+
 	public Settings.Spawner settings;
 	private Dictionary<Settings.Unit.UnitType,float> typeChances;
 	private readonly float length = 25f / Mathf.Sqrt(2);
 	private float trainingTimer;
 	private bool selected;
+	private int level;
+
 	// Основной цвет казармы.
 	private Color defaultColor;
 
@@ -66,13 +81,21 @@ public class Spawner : MonoBehaviour, Selectable {
 			return;
 		}
 
+		MakeUnit();
+	}
+
+	void MakeUnit() {
 		var type = RandomType();
-		var rand = Random.Range(-length, length); // случайный разброс 
-		var spawnPoint = new Vector3(transform.position.x + rand, 0f, transform.position.z + rand); // рождение юнита в случайном месте споунера
+		var rand = Random.Range(-length, length);
+		// случайный разброс 
+		var spawnPoint = new Vector3(transform.position.x + rand, 0f, transform.position.z + rand);
+		// рождение юнита в случайном месте споунера
 		var prefab = SpawnersManager.Instance.UnitPrefabs.First(u => u.isEnemy == isEnemy && u.type == type).prefab;
 		var unit = (GameObject)Instantiate(prefab, spawnPoint, Quaternion.identity);
+		var unitComp = unit.GetComponent<Unit>();
+		unitComp.Level = Level;
 		unit.transform.position = new Vector3(unit.transform.position.x, unit.transform.localScale.y, unit.transform.position.z);
-		SpawnersManager.Instance.AddUnit(unit.GetComponent<Unit>());
+		SpawnersManager.Instance.AddUnit(unitComp);
 	}
 
 	private Settings.Unit.UnitType RandomType() {
@@ -140,5 +163,12 @@ public class Spawner : MonoBehaviour, Selectable {
 				throw new System.ArgumentOutOfRangeException();
 		}
 		return  "Казарма " + type;
+	}
+
+	private void OnLevelUp() {
+		var units = SpawnersManager.Instance.Units.Where(u => u.IsEnemy == isEnemy && spawnUnitTypes.Contains(u.unitType));
+		foreach(var unit in units){
+			unit.Level++;
+		}
 	}
 }
