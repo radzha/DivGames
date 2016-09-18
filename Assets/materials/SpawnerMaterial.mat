@@ -8,11 +8,10 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: SpawnerMaterial
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
-  m_LightmapFlags: 5
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_ShaderKeywords: _EMISSION
+  m_LightmapFlags: 1
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -87,23 +86,23 @@ Material:
       data:
         first:
           name: _DstBlend
-        second: 10
-      data:
-        first:
-          name: _Cutoff
-        second: 0.5
-      data:
-        first:
-          name: _Parallax
-        second: 0.02
-      data:
-        first:
-          name: _ZWrite
         second: 0
       data:
         first:
+          name: _Cutoff
+        second: .5
+      data:
+        first:
+          name: _Parallax
+        second: .0199999996
+      data:
+        first:
+          name: _ZWrite
+        second: 1
+      data:
+        first:
           name: _Glossiness
-        second: 0.5
+        second: .5
       data:
         first:
           name: _BumpScale
@@ -123,7 +122,7 @@ Material:
       data:
         first:
           name: _Mode
-        second: 3
+        second: 0
       data:
         first:
           name: _Metallic
@@ -132,8 +131,8 @@ Material:
       data:
         first:
           name: _EmissionColor
-        second: {r: 0, g: 0, b: 0, a: 1}
+        second: {r: .375, g: .28125, b: .28125, a: 1}
       data:
         first:
           name: _Color
-        second: {r: 0.8235294, g: 0.29065743, b: 0.29065743, a: 0.209}
+        second: {r: .536764741, g: .149978399, b: .149978399, a: 1}

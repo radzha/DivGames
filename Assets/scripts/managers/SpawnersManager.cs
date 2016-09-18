@@ -141,4 +141,10 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	public bool CanSpawnType(Settings.Unit.UnitType type) {
 		return false;
 	}
+
+	public void Select(Selectable thing) {
+		foreach (var t in SpawnersManager.Instance.AllSelectable) {
+			t.SetSelected(t.Equals(thing));
+		}
+	}
 }

@@ -110,6 +110,14 @@ public class Spawner : MonoBehaviour, Selectable {
 		return selected;
 	}
 
+	public void Upgrade() {
+		if (settings.Gold <= Player.GoldAmount) {
+			Level++;
+			Player.GoldAmount -= settings.Gold;
+			settings = new Settings.Spawner(Level);
+		}
+	}
+
 	/// <summary>
 	/// Строка, описывающая тип и принадлежность казармы.
 	/// </summary>

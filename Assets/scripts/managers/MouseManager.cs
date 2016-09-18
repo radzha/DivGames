@@ -12,6 +12,7 @@ public class MouseManager : Singleton<MouseManager> {
 	public GameObject CameraSwitchUI;
 	public GameObject IceArrowClickUI;
 	public GameObject MeteoRainClickUI;
+	public GameObject SpawnerUpgradeClickUI;
 	private Vector3 clickedPoint = Vector3.zero;
 	private Transform plane;
 	private RaycastHit hit;
@@ -54,9 +55,11 @@ public class MouseManager : Singleton<MouseManager> {
 			if (planeMode) {
 				return;
 			}
-			foreach (var thing in SpawnersManager.Instance.AllSelectable) {
-				thing.SetSelected((thing as MonoBehaviour).gameObject.Equals(hit.collider.gameObject));
-			}
+//			var selectable = SpawnersManager.Instance.AllSelectable.FirstOrDefault(thing => (thing as MonoBehaviour).gameObject.Equals(hit.collider.gameObject));
+//			if (selectable != null) {
+//				selectable.SetSelected(true);
+//			}
+			SpawnersManager.Instance.Select(hit.collider.gameObject.GetComponent<Selectable>());
 			return;
 		}
 
@@ -101,16 +104,23 @@ public class MouseManager : Singleton<MouseManager> {
 			return false;
 		}
 
-		var player = SpawnersManager.Instance.MainCharacter();
-		if (player == null) {
-			return false;
-		}
-		if (results[0].gameObject.Equals(IceArrowClickUI)) {
-			player.PerformAbility(MainCharacter.AttackMode.IceArrow);
-		} else if (results[0].gameObject.Equals(MeteoRainClickUI)) {
-			player.PerformAbility(MainCharacter.AttackMode.MeteoRain);
-		} else if (results[0].gameObject.Equals(CameraSwitchUI)) {
-			CameraManager.Instance.SwitchCameraMode();
+		if (results[0].gameObject.Equals(SpawnerUpgradeClickUI)) {
+			var spawner = SpawnersManager.Instance.spawners.FirstOrDefault(s => s.IsSelected());
+			if (spawner != null) {
+				spawner.Upgrade();
+			}
+		} else {
+			var player = SpawnersManager.Instance.MainCharacter();
+			if (player == null) {
+				return false;
+			}
+			if (results[0].gameObject.Equals(IceArrowClickUI)) {
+				player.PerformAbility(MainCharacter.AttackMode.IceArrow);
+			} else if (results[0].gameObject.Equals(MeteoRainClickUI)) {
+				player.PerformAbility(MainCharacter.AttackMode.MeteoRain);
+			} else if (results[0].gameObject.Equals(CameraSwitchUI)) {
+				CameraManager.Instance.SwitchCameraMode();
+			} 
 		}
 		return true;
 	}

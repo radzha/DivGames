@@ -8,15 +8,21 @@ namespace Progress {
 	public class UnitInfoUI : MonoBehaviour {
 
 		public GameObject background;
+		public GameObject upgradeButton;
 		protected Text text;
 		protected Selectable thing;
 		protected bool isSelected;
+		private Color buttonColor;
 
 		void Start() {
 			text = GetComponent<Text>();
 
 			text.enabled = false;
 			background.SetActive(false);
+			if (upgradeButton != null) {
+				upgradeButton.SetActive(false);
+				buttonColor = upgradeButton.GetComponent<Image>().color;
+			}
 
 			SpawnersManager.Instance.onUnitSelected -= OnUnitSelected;
 			SpawnersManager.Instance.onUnitSelected += OnUnitSelected;
@@ -31,7 +37,12 @@ namespace Progress {
 			this.isSelected = thing.IsSelected();
 			text.enabled = isSelected;
 			background.SetActive(isSelected);
-			SetText();
+			if (isSelected) {
+				SetText();
+			}
+			if (upgradeButton != null) {
+				upgradeButton.SetActive(thing is Spawner && isSelected);
+			}
 		}
 
 		protected virtual void SetText() {
@@ -63,7 +74,21 @@ namespace Progress {
 		private void Update() {
 			if (isSelected && thing != null) {
 				SetText();
+				if (upgradeButton != null && upgradeButton.activeSelf) {
+					var color = EnoughGoldToUpgrade() ? buttonColor : Color.gray;
+					if (color != upgradeButton.GetComponent<Image>().color) {
+						upgradeButton.GetComponent<Image>().color = color;
+					}
+				}
 			}
+		}
+
+		private bool EnoughGoldToUpgrade() {
+			var spawner = thing as Spawner;
+			if (spawner != null && spawner.settings.Gold <= Player.GoldAmount) {
+				return true;
+			}
+			return false;
 		}
 
 		private void OnDestroy() {
