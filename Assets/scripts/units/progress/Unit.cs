@@ -187,6 +187,7 @@ namespace Progress {
 		/// </summary>
 		private void Hurray() {
 			animator.applyRootMotion = false;
+			animator.ResetTrigger("fire");
 			animator.SetTrigger("hurray");
 		}
 
@@ -244,6 +245,10 @@ namespace Progress {
 		public void OnDie() {
 			SpawnersManager.Instance.Units.Remove(this);
 			SetSelected(false);
+			if (SpawnersManager.Instance.IsLastWave && SpawnersManager.Instance.EnemiesCount() == 0) {
+				Divan.Instance.OnGameEnd(true);
+				Divan.gameStop = true;
+			}
 			Destroy(gameObject);
 		}
 

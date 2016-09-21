@@ -21,7 +21,7 @@ public class GameEndUI : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Действие в вомент конца игры.
+	/// Действие в момент конца игры.
 	/// </summary>
 	/// <param name="win">Выиграл ли игрок.</param>
 	private void OnGameEnd(bool win) {

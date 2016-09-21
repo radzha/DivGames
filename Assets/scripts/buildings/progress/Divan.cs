@@ -9,8 +9,7 @@
 
 		public delegate void onGameEnd(bool win);
 
-		// Событие, вызываемое по окончании игры.
-		public event onGameEnd OnGameEnd;
+		public onGameEnd OnGameEnd;
 
 		// Настройки дивана.
 		private Settings.Divan settings;

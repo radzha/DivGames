@@ -430,6 +430,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 425702399}
   - 222: {fileID: 425702400}
+  - 114: {fileID: 425702401}
   m_Layer: 0
   m_Name: TopCenter
   m_TagString: Untagged
@@ -461,6 +462,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 425702398}
+--- !u!114 &425702401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 425702398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b52509a1954814894f82f63904b2df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &453908959
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .20588237, g: .183174759, b: .183174759, a: .527999997}
+  m_Color: {r: .20588237, g: .183174759, b: .183174759, a: .791000009}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2144,11 +2156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4c99d972791845da9384bc5f2c2c5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySpawnLimit: 10
-  mignonSpawnLimit: 3
-  startDelay: 0
-  enemyWaveDuration: 20
-  enemyWaveDelay: 10
   UnitPrefabs:
   - isEnemy: 1
     type: 0
@@ -2174,6 +2181,13 @@ MonoBehaviour:
     type: 3
     weight: 0
     prefab: {fileID: 150410, guid: 1b80b3de08bdf4fd3979228ea082f6aa, type: 2}
+  enemySpawnLimit: 5
+  mignonSpawnLimit: 5
+  startDelay: 30
+  enemyWavesCount: 3
+  enemyWaveDuration: 20
+  enemyWaveDelay: 10
+  waveTimer: -1
 --- !u!114 &1932303813
 MonoBehaviour:
   m_ObjectHideFlags: 0

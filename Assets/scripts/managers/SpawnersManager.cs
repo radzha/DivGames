@@ -8,21 +8,6 @@ using System.Linq;
 /// Менеджер производителей юнитов.
 /// </summary>
 public class SpawnersManager : Singleton<SpawnersManager> {
-	// Максимум врагов на поле.
-	public int enemySpawnLimit = 10;
-
-	// Максимум миньонов на поле.
-	public int mignonSpawnLimit = 10;
-
-	// Стартовая задержка производства юнитов.
-	public int startDelay = 10;
-
-	// Длительность одной волны врагов.
-	public int enemyWaveDuration = 20;
-
-	// Промежуток между волнами врагов.
-	public int enemyWaveDelay = 10;
-
 	// Префабы юнитов.
 	[System.Serializable]
 	public struct unitPrefabs {
@@ -34,10 +19,40 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 
 	// Массив префабов юнитов.
 	public unitPrefabs[] UnitPrefabs;
+	// Максимум врагов на поле.
+	public int enemySpawnLimit = 10;
+	// Максимум миньонов на поле.
+	public int mignonSpawnLimit = 10;
+	// Стартовая задержка производства юнитов.
+	public int startDelay = 10;
+	// Количество волн врагов.
+	public int enemyWavesCount = 3;
+	// Длительность одной волны врагов.
+	public int enemyWaveDuration = 20;
+	// Промежуток между волнами врагов.
+	public int enemyWaveDelay = 10;
+	// Все казармы.
+	public HashSet<Spawner> spawners;
 
-	// Выделен юнит.
+	// Если выделен юнит.
 	public delegate void OnUnitSelected(Selectable thing);
 	public OnUnitSelected onUnitSelected = delegate { };
+
+	// Текущая волна атаки.
+	private int currentWave;
+	// Таймер стартового ожидания и паузы между волнами врагов.
+	private float delayTimer;
+	// Таймер продолжительности волн.
+	private float waveTimer = -1f;
+
+	/// <summary>
+	/// Является ли волна атаки последней.
+	/// </summary>
+	public bool IsLastWave {
+		get {
+			return currentWave >= enemyWavesCount - 1;
+		}
+	}
 
 	// Произведенные юниты.
 	public HashSet<Unit> Units {
@@ -50,11 +65,6 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 			return Units.Where(u => u.IsSelected());
 		}
 	}
-
-	/// <summary>
-	/// Все казармы.
-	/// </summary>
-	public HashSet<Spawner> spawners;
 
 	/// <summary>
 	/// Все объекты, доступные для выделения.
@@ -72,11 +82,6 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 		}
 	}
 
-	// Таймер стартового ожидания и паузы между волнами врагов.
-	private float delayTimer;
-	// Таймер продолжительности волн.
-	private float waveTimer = -1f;
-
 	protected void Awake() {
 		Units = new HashSet<Unit>();
 		spawners = new HashSet<Spawner>(FindObjectsOfType<Spawner>());
@@ -92,7 +97,7 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 			delayTimer -= Time.deltaTime;
 			yield return null;
 		}
-		while (true) {
+		while (currentWave < enemyWavesCount) {
 			waveTimer = enemyWaveDuration;
 			while (waveTimer > 0f) {
 				waveTimer -= Time.deltaTime;
@@ -103,6 +108,7 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 				delayTimer -= Time.deltaTime;
 				yield return null;
 			}
+			currentWave++;
 		}
 	}
 
