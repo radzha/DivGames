@@ -9,11 +9,27 @@ using System.Linq;
 public class Spawner : MonoBehaviour, Selectable {
 	// Скорость тренировки - юнитов в секунду.
 	public float trainingSpeed;
-
 	// Типы юнитов, которые можно здесь производить.
 	public Settings.Unit.UnitType[] spawnUnitTypes = null;
+	// Производить врагов или миньонов.
 	public bool isEnemy = false;
+	// Настройки.
+	public Settings.Spawner settings;
 
+	// Веса, определяющие шансы производства того или иного типа юнита.
+	private Dictionary<Settings.Unit.UnitType, float> typeChances;
+	// Разброс расстояния точки появления юнита от базы.
+	private readonly float length = 25f / Mathf.Sqrt(2);
+	// Таймер длительности тренировки юнита.
+	private float trainingTimer;
+	// Выделена ли казарма.
+	private bool selected;
+	// Уровень казармы.
+	private int level;
+	// Основной цвет казармы.
+	private Color defaultColor;
+
+	// Уровень казармы.
 	public int Level {
 		get {
 			return level;
@@ -26,16 +42,6 @@ public class Spawner : MonoBehaviour, Selectable {
 			OnLevelUp();
 		}
 	}
-
-	public Settings.Spawner settings;
-	private Dictionary<Settings.Unit.UnitType,float> typeChances;
-	private readonly float length = 25f / Mathf.Sqrt(2);
-	private float trainingTimer;
-	private bool selected;
-	private int level;
-
-	// Основной цвет казармы.
-	private Color defaultColor;
 
 	private void Awake() {
 		settings = new Settings.Spawner(Level);
@@ -51,6 +57,9 @@ public class Spawner : MonoBehaviour, Selectable {
 		defaultColor = material.GetColor("_EmissionColor");
 	}
 
+	/// <summary>
+	/// Вычислияет время тренировки юнита.
+	/// </summary>
 	public int RespawnTime() {
 		if (spawnUnitTypes[0] == Settings.Unit.UnitType.Player) {
 			return SpawnersManager.Instance.MainCharacter() != null ? 0 : trainingTimer > 0f ? (int)trainingTimer : 0;
@@ -58,6 +67,10 @@ public class Spawner : MonoBehaviour, Selectable {
 		return 0;
 	}
 
+	/// <summary>
+	/// Является ли казарма - производителем героя. Он всегда единственный тип.
+	/// </summary>
+	/// <returns></returns>
 	private bool IsMainCharacterSpawner() {
 		return spawnUnitTypes[0] == Settings.Unit.UnitType.Player;
 	}
@@ -84,7 +97,10 @@ public class Spawner : MonoBehaviour, Selectable {
 		MakeUnit();
 	}
 
-	void MakeUnit() {
+	/// <summary>
+	/// Создать юнит.
+	/// </summary>
+	private void MakeUnit() {
 		var type = RandomType();
 		var rand = Random.Range(-length, length);
 		// случайный разброс 
@@ -98,6 +114,10 @@ public class Spawner : MonoBehaviour, Selectable {
 		SpawnersManager.Instance.AddUnit(unitComp);
 	}
 
+	/// <summary>
+	/// Возвратить случайный тип юнита на основе весов.
+	/// </summary>
+	/// <returns></returns>
 	private Settings.Unit.UnitType RandomType() {
 		var randForType = Random.Range(0, 1f);
 		var sum = 0f;
@@ -110,8 +130,11 @@ public class Spawner : MonoBehaviour, Selectable {
 		return spawnUnitTypes.Last();
 	}
 
-	public void SetSelected(bool selected) {
-		this.selected = selected;
+	/// <summary>
+	/// Выделить казарму.
+	/// </summary>
+	public void SetSelected(bool select) {
+		selected = select;
 		SpawnersManager.Instance.onUnitSelected(this);
 		SelectVisually(selected);
 	}
@@ -129,10 +152,16 @@ public class Spawner : MonoBehaviour, Selectable {
 		material.SetColor("_EmissionColor", color);
 	}
 
+	/// <summary>
+	/// Выделена ли казарма.
+	/// </summary>
 	public bool IsSelected() {
 		return selected;
 	}
 
+	/// <summary>
+	/// Улучшить казарму, потратив золото.
+	/// </summary>
 	public void Upgrade() {
 		if (settings.Gold <= Player.GoldAmount) {
 			Level++;
@@ -142,33 +171,38 @@ public class Spawner : MonoBehaviour, Selectable {
 	}
 
 	/// <summary>
+	/// Срабатыает при повышении уровня казармы. 
+	/// Вызывает повышения уровней уже сделанных юнитов.
+	/// </summary>
+	private void OnLevelUp() {
+		var units = SpawnersManager.Instance.Units.Where(u => u.IsEnemy == isEnemy && spawnUnitTypes.Contains(u.unitType));
+		foreach (var unit in units) {
+			unit.Level++;
+		}
+	}
+
+	/// <summary>
 	/// Строка, описывающая тип и принадлежность казармы.
 	/// </summary>
 	public string PrettyType() {
 		var type = "";
 		switch (spawnUnitTypes[0]) {
-			case Settings.Unit.UnitType.Archer:
-				type = "стрелков";
-				break;
-			case Settings.Unit.UnitType.Warrior:
-				type = "воинов";
-				break;
-			case Settings.Unit.UnitType.Boss:
-				type = "босса";
-				break;
-			case Settings.Unit.UnitType.Player:
-				type = "героя";
-				break;
-			default:
-				throw new System.ArgumentOutOfRangeException();
+		case Settings.Unit.UnitType.Archer:
+			type = "стрелков";
+			break;
+		case Settings.Unit.UnitType.Warrior:
+			type = "воинов";
+			break;
+		case Settings.Unit.UnitType.Boss:
+			type = "босса";
+			break;
+		case Settings.Unit.UnitType.Player:
+			type = "героя";
+			break;
+		default:
+			throw new System.ArgumentOutOfRangeException();
 		}
-		return  "Казарма " + type;
+		return "Казарма " + type;
 	}
 
-	private void OnLevelUp() {
-		var units = SpawnersManager.Instance.Units.Where(u => u.IsEnemy == isEnemy && spawnUnitTypes.Contains(u.unitType));
-		foreach(var unit in units){
-			unit.Level++;
-		}
-	}
 }

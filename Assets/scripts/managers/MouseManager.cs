@@ -6,17 +6,31 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// Контроль кликов мыши.
+/// </summary>
 public class MouseManager : Singleton<MouseManager> {
+
+	// Префаб плоскости выделения юнитов.
 	public GameObject planePrefab;
+	// Рэйкастер интерфейса.
 	public GraphicRaycaster uiRaycaster;
+	// UI камеры.
 	public GameObject CameraSwitchUI;
+	// UI абилки ледяной стрелы.
 	public GameObject IceArrowClickUI;
+	// UI абилки метеоритного дождя. 
 	public GameObject MeteoRainClickUI;
+	// UI апгрейда казармы.
 	public GameObject SpawnerUpgradeClickUI;
+
+	// Точка клика мышью.
 	private Vector3 clickedPoint = Vector3.zero;
+	// Плоскость выделения.
 	private Transform plane;
-	private RaycastHit hit;
+	// Если true, то идет выделение нескольких юнитов плоскостью.
 	private bool planeMode;
+	private RaycastHit hit;
 
 	void Update() {
 		if (Divan.gameStop) {
@@ -55,35 +69,31 @@ public class MouseManager : Singleton<MouseManager> {
 			if (planeMode) {
 				return;
 			}
-//			var selectable = SpawnersManager.Instance.AllSelectable.FirstOrDefault(thing => (thing as MonoBehaviour).gameObject.Equals(hit.collider.gameObject));
-//			if (selectable != null) {
-//				selectable.SetSelected(true);
-//			}
 			SpawnersManager.Instance.Select(hit.collider.gameObject.GetComponent<Selectable>());
 			return;
 		}
 
 		// Режим абилок.
 		switch (player.attackMode) {
-			case MainCharacter.AttackMode.IceArrow:
-				if (hit.collider != null) {
-					// Клик по юниту или зданию
-					var clicked = hit.collider.gameObject;
-					var damagable = clicked.GetComponent<Damagable>();
-					if (damagable != null) {
-						var isUnit = damagable is Unit;
-						if (!(isUnit && !(damagable as Unit).IsEnemy)) {
-							player.target.SetTarget(damagable, isUnit);
-							player.PositionTargetMode = false;
-						}
+		case MainCharacter.AttackMode.IceArrow:
+			if (hit.collider != null) {
+				// Клик по юниту или зданию
+				var clicked = hit.collider.gameObject;
+				var damagable = clicked.GetComponent<Damagable>();
+				if (damagable != null) {
+					var isUnit = damagable is Unit;
+					if (!(isUnit && !(damagable as Unit).IsEnemy)) {
+						player.target.SetTarget(damagable, isUnit);
+						player.PositionTargetMode = false;
 					}
 				}
-				break;
-			case MainCharacter.AttackMode.MeteoRain:
-				player.Attack();
-				break;
-			default:
-				throw new ArgumentOutOfRangeException();
+			}
+			break;
+		case MainCharacter.AttackMode.MeteoRain:
+			player.Attack();
+			break;
+		default:
+			throw new ArgumentOutOfRangeException();
 		}
 	}
 
@@ -120,7 +130,7 @@ public class MouseManager : Singleton<MouseManager> {
 				player.PerformAbility(MainCharacter.AttackMode.MeteoRain);
 			} else if (results[0].gameObject.Equals(CameraSwitchUI)) {
 				CameraManager.Instance.SwitchCameraMode();
-			} 
+			}
 		}
 		return true;
 	}
@@ -131,39 +141,46 @@ public class MouseManager : Singleton<MouseManager> {
 	/// </summary>
 	private void LeftButtonHoldAction() {
 		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		if (planeMode) {
-			Physics.Raycast(ray, out hit, Mathf.Infinity, Constants.FLOOR_LAYER);
+		if (!planeMode) {
+			return;
 		}
-		// Режим множественного выделения плоскостью.
-		if (planeMode) {
-			hit.point = new Vector3(hit.point.x, 0.1f, hit.point.z);
-			if (clickedPoint == Vector3.zero) {
-				clickedPoint = hit.point;
-				plane = (GameObject.Instantiate(planePrefab, clickedPoint, Quaternion.identity) as GameObject).transform;
-				plane.localScale = Vector3.zero;
-			} else {
-				var direction = hit.point - clickedPoint;
-				plane.position = clickedPoint + 0.5f * direction;
-				plane.localScale = new Vector3(direction.x / 10f, 1f, direction.z / 10f);
-			}
-			SelectUnits(clickedPoint, hit.point);
+		Physics.Raycast(ray, out hit, Mathf.Infinity, Constants.FLOOR_LAYER);
+		hit.point = new Vector3(hit.point.x, 0.1f, hit.point.z);
+		
+		// Если еще не выделяли создать плоскость.
+		if (clickedPoint == Vector3.zero) {
+			clickedPoint = hit.point;
+			plane = (Instantiate(planePrefab, clickedPoint, Quaternion.identity) as GameObject).transform;
+			plane.localScale = Vector3.zero;
+		} else {
+			// Иначе растянуть зону выделения.
+			var direction = hit.point - clickedPoint;
+			plane.position = clickedPoint + 0.5f * direction;
+			plane.localScale = new Vector3(direction.x / 10f, 1f, direction.z / 10f);
 		}
+		// Выделить попавших в зону выделения юнитов.
+		SelectUnits(clickedPoint, hit.point);
 	}
 
 	/// <summary>
 	/// Нажатие правой кнопки мыши.
+	/// Используется для задания цели миньонам, а также координаты перемещния герою.
 	/// </summary>
 	private void RightButtonAction() {
 		var selected = SpawnersManager.Instance.UnitsSelected;
+		// Если ничего не выделено.
 		if (selected == null) {
 			return;
 		}
+
 		var player = SpawnersManager.Instance.MainCharacter();
 		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		Physics.Raycast(ray, out hit);
+		// Если кликнули в пустоту.
 		if (hit.collider == null) {
 			return;
 		}
+
 		var clicked = hit.collider.gameObject;
 		var damagable = clicked.GetComponent<Damagable>();
 		// Если выделен единственный юнит - главный персонаж.
@@ -209,15 +226,14 @@ public class MouseManager : Singleton<MouseManager> {
 	/// <param name="end">Конечная точка выделения.</param>
 	private void SelectUnits(Vector3 start, Vector3 end) {
 		foreach (var thing in SpawnersManager.Instance.AllSelectable) {
-			thing.SetSelected(thing is Unit ? (thing as Unit).IsEnemy ? false : IsInArea((thing as Unit).transform.position, start, end) 
-			                  : false);
+			thing.SetSelected(thing is Unit && !(thing as Unit).IsEnemy && IsInArea((thing as Unit).transform.position, start, end));
 		}
 	}
 
 	/// <summary>
 	/// Попал ли юнит в область выделения.
 	/// </summary>
-	private bool IsInArea(Vector3 position, Vector3 start, Vector3 end) {
+	private static bool IsInArea(Vector3 position, Vector3 start, Vector3 end) {
 		var leftX = Mathf.Min(start.x, end.x);
 		var rightX = Mathf.Max(start.x, end.x);
 		var leftZ = Mathf.Min(start.z, end.z);

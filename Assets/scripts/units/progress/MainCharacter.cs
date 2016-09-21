@@ -4,27 +4,42 @@ using System.Linq;
 using UnityEngine.UI;
 
 namespace Progress {
+	/// <summary>
+	/// Класс главного персонажа.
+	/// </summary>
 	public class MainCharacter : Unit {
 
-		public Texture2D iceCursorTexture;
-
-		// У главного персонажа целью может быть просто точка (x,z).
-		public Vector2 PositionTarget {
-			get;
-			set;
-		}
-
-		public bool PositionTargetMode {
-			get;
-			set;
-		}
-
+		/// <summary>
+		/// Перечень режимов атаки.
+		/// </summary>
 		public enum AttackMode {
 			Normal,
 			MeteoRain,
 			IceArrow
 		}
 
+		// Иконка курсора ледяной стрелы.
+		public Texture2D iceCursorTexture;
+
+		/// <summary>
+		/// У главного персонажа целью может быть просто точка (x,z).
+		/// </summary>
+		public Vector2 PositionTarget {
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Режим цели - не юнит, а позиция.
+		/// </summary>
+		public bool PositionTargetMode {
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Режим атаки - нормальный или абилкой.
+		/// </summary>
 		public AttackMode attackMode {
 			get;
 			set;
@@ -42,38 +57,43 @@ namespace Progress {
 			}
 		}
 
-		private float iceArrowTimer;
-		private float meteoRainTimer;
-
+		/// <summary>
+		/// Автоматически выбираемый таймер.
+		/// </summary>
 		protected override float AttackTimer {
 			get {
 				switch (attackMode) {
-					case AttackMode.Normal:
-						return base.AttackTimer;
-					case AttackMode.MeteoRain:
-						return meteoRainTimer;
-					case AttackMode.IceArrow:
-						return iceArrowTimer;
-					default:
-						throw new ArgumentOutOfRangeException();
+				case AttackMode.Normal:
+					return base.AttackTimer;
+				case AttackMode.MeteoRain:
+					return meteoRainTimer;
+				case AttackMode.IceArrow:
+					return iceArrowTimer;
+				default:
+					throw new ArgumentOutOfRangeException();
 				}
 			}
 			set {
 				switch (attackMode) {
-					case AttackMode.Normal:
-						base.AttackTimer = value;
-						break;
-					case AttackMode.MeteoRain:
-						meteoRainTimer = value;
-						break;
-					case AttackMode.IceArrow:
-						iceArrowTimer = value;
-						break;
-					default:
-						throw new ArgumentOutOfRangeException();
+				case AttackMode.Normal:
+					base.AttackTimer = value;
+					break;
+				case AttackMode.MeteoRain:
+					meteoRainTimer = value;
+					break;
+				case AttackMode.IceArrow:
+					iceArrowTimer = value;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
 				}
 			}
 		}
+
+		// Таймер абилки ледяной стрелы.
+		private float iceArrowTimer;
+		// Таймер абилки метеоритного дождя.
+		private float meteoRainTimer;
 
 		protected override void Update() {
 			base.Update();
@@ -92,18 +112,22 @@ namespace Progress {
 			}
 		}
 
+		/// <summary>
+		/// Выполнить абилку.
+		/// </summary>
+		/// <param name="mode">Абилка</param>
 		public void PerformAbility(AttackMode mode) {
 			switch (mode) {
-				case AttackMode.MeteoRain:
-					if (meteoRainTimer <= 0f && IsSelected()) {
-						MeteoRainMode(attackMode != AttackMode.MeteoRain);
-					}
-					break;
-				case AttackMode.IceArrow:
-					if (iceArrowTimer <= 0f && IsSelected()) {
-						IceArrowMode(attackMode != AttackMode.IceArrow);
-					}
-					break;
+			case AttackMode.MeteoRain:
+				if (meteoRainTimer <= 0f && IsSelected()) {
+					MeteoRainMode(attackMode != AttackMode.MeteoRain);
+				}
+				break;
+			case AttackMode.IceArrow:
+				if (iceArrowTimer <= 0f && IsSelected()) {
+					IceArrowMode(attackMode != AttackMode.IceArrow);
+				}
+				break;
 			}
 		}
 
@@ -145,36 +169,30 @@ namespace Progress {
 			}
 		}
 
+		/// <summary>
+		/// В зоне ли поражения юнит, в зависимости от дистанции и режиме атаки.
+		/// </summary>
 		protected override bool IsInRange(float distance) {
 			var normalAttack = attackMode == AttackMode.Normal && base.IsInRange(distance);
 			var iceArrowAttack = attackMode == AttackMode.IceArrow && distance <= LevelEditor.Instance.iceArrow[Player.Level].radius;
 			return normalAttack || iceArrowAttack;
 		}
 
+		/// <summary>
+		/// Возвращает время перезарядки оружия.
+		/// </summary>
 		public override float CoolDown {
 			get {
 				switch (attackMode) {
-					case AttackMode.Normal:
-						return 1f / attackSpeed;
-					case AttackMode.MeteoRain:
-						return LevelEditor.Instance.meteoRain[Player.Level].cooldown;
-					case AttackMode.IceArrow:
-						return LevelEditor.Instance.iceArrow[Player.Level].cooldown;
-					default:
-						throw new ArgumentOutOfRangeException();
+				case AttackMode.Normal:
+					return 1f / attackSpeed;
+				case AttackMode.MeteoRain:
+					return LevelEditor.Instance.meteoRain[Player.Level].cooldown;
+				case AttackMode.IceArrow:
+					return LevelEditor.Instance.iceArrow[Player.Level].cooldown;
+				default:
+					throw new ArgumentOutOfRangeException();
 				}
-			}
-		}
-
-		public string IceArrowTimerString {
-			get {
-				return iceArrowTimer <= 0f ? "Готово" : string.Format("{0:###.#}", iceArrowTimer);
-			}
-		}
-
-		public string MeteoRainTimerString {
-			get {
-				return meteoRainTimer <= 0f ? "Готово" : string.Format("{0:###.#}", meteoRainTimer);
 			}
 		}
 
@@ -183,28 +201,31 @@ namespace Progress {
 		/// </summary>
 		public override void MakeDamage() {
 			switch (attackMode) {
-				case AttackMode.Normal:
-					base.MakeDamage();
-					break;
-				case AttackMode.MeteoRain:
-					MakeMeteoRainDamage();
-					break;
-				case AttackMode.IceArrow:
-					if (target.aim != null) {
-						target.aim.TakeDamage(
-						this,
-						Settings.Attack,
-						LevelEditor.Instance.iceArrow[Player.Level].slow,
-						LevelEditor.Instance.iceArrow[Player.Level].attackSlow,
-						LevelEditor.Instance.iceArrow[Player.Level].duration);
-						IceArrowMode(false);
-					}
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
+			case AttackMode.Normal:
+				base.MakeDamage();
+				break;
+			case AttackMode.MeteoRain:
+				MakeMeteoRainDamage();
+				break;
+			case AttackMode.IceArrow:
+				if (target.aim != null) {
+					target.aim.TakeDamage(
+					this,
+					Settings.Attack,
+					LevelEditor.Instance.iceArrow[Player.Level].slow,
+					LevelEditor.Instance.iceArrow[Player.Level].attackSlow,
+					LevelEditor.Instance.iceArrow[Player.Level].duration);
+					IceArrowMode(false);
+				}
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
 			}
 		}
 
+		/// <summary>
+		/// Нанести урон абилкой метеоритного дождя.
+		/// </summary>
 		private void MakeMeteoRainDamage() {
 			foreach (var enemy in SpawnersManager.Instance.Enemies().Where(enemy => enemy.IsInMeteoRainRange(LevelEditor.Instance.meteoRain[Player.Level].radius))) {
 				enemy.TakeDamage(this, Settings.Attack);
@@ -213,21 +234,32 @@ namespace Progress {
 			MeteoRainMode(false);
 		}
 
+		/// <summary>
+		/// Подготовить маркер выделения героя.
+		/// </summary>
 		protected override void PrepareSelectMarker() {
 			base.PrepareSelectMarker();
 			var image = selectMarker.transform.GetChild(0).GetComponent<Image>();
 			image.color = Color.cyan;
 		}
 
+		/// <summary>
+		/// Определить цель.
+		/// </summary>
 		protected override void DefineTarget() {
 			// Главный персонаж не определяет цель автоматически.
 		}
 
+		/// <summary>
+		/// Переместить юнит.
+		/// </summary>
 		protected override void Move() {
 			base.Move();
 			if (!PositionTargetMode) {
 				return;
 			}
+
+			// Перемещение в режиме цели - не юнита, а точки.
 			var myPos = new Vector2(transform.position.x, transform.position.z);
 			var distance = Vector2.Distance(myPos, PositionTarget);
 			var moveTo = Vector2.Lerp(myPos, PositionTarget, Settings.Speed * Time.deltaTime / distance);
@@ -239,11 +271,17 @@ namespace Progress {
 			transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
 		}
 
+		/// <summary>
+		/// При создании героя направить камеру на него и выделить.
+		/// </summary>
 		public void OnEnable() {
 			CameraManager.Instance.AutoMove = true;
 			SetSelected(true);
 		}
 
+		/// <summary>
+		/// При смерти героя сменить режим камеры и выключить абилки.
+		/// </summary>
 		public void OnDisable() {
 			CameraManager.Instance.AutoMove = false;
 			IceArrowMode(false);
@@ -266,5 +304,24 @@ namespace Progress {
 			SettingsRead();
 			animator.SetTrigger("levelup");
 		}
+
+		/// <summary>
+		/// Текст абилки для UI.
+		/// </summary>
+		public string IceArrowTimerString {
+			get {
+				return iceArrowTimer <= 0f ? "Готово" : string.Format("{0:###.#}", iceArrowTimer);
+			}
+		}
+
+		/// <summary>
+		/// Текст абилки для UI.
+		/// </summary>
+		public string MeteoRainTimerString {
+			get {
+				return meteoRainTimer <= 0f ? "Готово" : string.Format("{0:###.#}", meteoRainTimer);
+			}
+		}
+
 	}
 }

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
+/// <summary>
+/// Показыет текущее число миньонов.
+/// </summary>
 public class MignonesUI : MonoBehaviour {
 
 	private Text text;

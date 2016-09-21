@@ -1,6 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Progress;
+using UnityEngine;
 
+/// <summary>
+/// Управление камерой.
+/// </summary>
 public class CameraManager : Singleton<CameraManager> {
 	// "Палка", на которой держится камера. Определяет фиксированное расстояние до героя.
 	public Vector3 rod;
@@ -24,8 +27,8 @@ public class CameraManager : Singleton<CameraManager> {
 		}
 	}
 
+	// Вызывается при смене режима камеры.
 	public delegate void OnSwitch();
-
 	public event OnSwitch onSwitch = delegate { };
 
 	// Центр экрана.
@@ -41,11 +44,15 @@ public class CameraManager : Singleton<CameraManager> {
 	}
 
 	void FixedUpdate() {
+		if (Divan.gameStop) {
+			return;
+		}
+
 		// Смена режима камеры.
 		if (switchTimer > 0f) {
 			switchTimer -= Time.deltaTime;
 		}
-		if (Input.GetKey("c") && switchTimer <= 0f) {
+		if (Input.GetKey(KeyCode.C) && switchTimer <= 0f) {
 			SwitchCameraMode();
 		}
 

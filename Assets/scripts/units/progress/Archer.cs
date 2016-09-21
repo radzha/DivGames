@@ -21,6 +21,11 @@ public class Archer : Unit {
 		StartCoroutine(FireForPeriod(LevelEditor.Instance.ArcherFirePeriod));
 	}
 
+	/// <summary>
+	/// Показывает визуалку выстрела некоторое время после логического выстрела.
+	/// </summary>
+	/// <param name="period"></param>
+	/// <returns></returns>
 	private IEnumerator FireForPeriod(float period) {
 		line.enabled = true;
 		while (period > 0f) {
@@ -28,7 +33,7 @@ public class Archer : Unit {
 				line.enabled = false;
 				yield break;
 			}
-			var aim = (target.aim as MonoBehaviour).gameObject;
+			var aim = ((MonoBehaviour) target.aim).gameObject;
 			line.SetPosition(0, transform.position);
 			line.SetPosition(1, aim.transform.position);
 			period -= Time.deltaTime;

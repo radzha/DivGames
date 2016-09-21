@@ -21,6 +21,9 @@
 			}
 		}
 
+		/// <summary>
+		/// Достигнут ли максимальный уровень.
+		/// </summary>
 		private static bool IsLevelMax() {
 			return Level >= LevelEditor.Instance.player.Length - 1;
 		}

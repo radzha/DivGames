@@ -2,22 +2,30 @@
 using UnityEngine.UI;
 
 namespace Progress {
-/// <summary>
-/// Отображение информаци о юните.
-/// </summary>
+	/// <summary>
+	/// Отображение информации о юните/казарме.
+	/// </summary>
 	public class UnitInfoUI : MonoBehaviour {
 
+		// Фон.
 		public GameObject background;
+		// Кнопка апгрейда казармы.
 		public GameObject upgradeButton;
+
+		// Текстовый объект.
 		protected Text text;
+		// То, что сейчас выделено.
 		protected Selectable thing;
+		// Выделено сейчас или выделение уже нужно убрать.
 		protected bool isSelected;
+
+		// Цвет кнопки апгрейда казармы.
 		private Color buttonColor;
 
 		void Start() {
 			text = GetComponent<Text>();
-
 			text.enabled = false;
+
 			background.SetActive(false);
 			if (upgradeButton != null) {
 				upgradeButton.SetActive(false);
@@ -28,13 +36,17 @@ namespace Progress {
 			SpawnersManager.Instance.onUnitSelected += OnUnitSelected;
 		}
 
+		/// <summary>
+		/// Если объект выделен, то включить фон, показать текст и кнопку, если казарма.
+		/// Если нет - убрать выделение.
+		/// </summary>
 		protected virtual void OnUnitSelected(Selectable thing) {
-			if (this.thing == thing && this.isSelected == thing.IsSelected()
+			if (this.thing == thing && isSelected == thing.IsSelected()
 				|| this.thing != thing && !thing.IsSelected()) {
 				return;
 			}
 			this.thing = thing;
-			this.isSelected = thing.IsSelected();
+			isSelected = thing.IsSelected();
 			text.enabled = isSelected;
 			background.SetActive(isSelected);
 			if (isSelected) {
@@ -45,8 +57,11 @@ namespace Progress {
 			}
 		}
 
+		/// <summary>
+		/// Установить текст в интерфейсе.
+		/// </summary>
 		protected virtual void SetText() {
-			string txt = "";
+			var txt = "";
 			if (thing is Unit) {
 				var unit = thing as Unit;
 				txt = string.Format("Тип: {0}\nУровень: {1}\nЗдоровье: {2}\nСкорость: {3}\nАтака: {4}\nСкорость атаки: {5}\nЗона атаки: {6}\nЗащита: {7}",
@@ -72,23 +87,27 @@ namespace Progress {
 		}
 
 		private void Update() {
-			if (isSelected && thing != null) {
-				SetText();
-				if (upgradeButton != null && upgradeButton.activeSelf) {
-					var color = EnoughGoldToUpgrade() ? buttonColor : Color.gray;
-					if (color != upgradeButton.GetComponent<Image>().color) {
-						upgradeButton.GetComponent<Image>().color = color;
-					}
+			if (!isSelected || thing == null) {
+				return;
+			}
+
+			SetText();
+
+			if (upgradeButton != null && upgradeButton.activeSelf) {
+				var color = EnoughGoldToUpgrade() ? buttonColor : Color.gray;
+				if (color != upgradeButton.GetComponent<Image>().color) {
+					upgradeButton.GetComponent<Image>().color = color;
 				}
 			}
 		}
 
+		/// <summary>
+		/// Достаточно ли золота для апгрейда казармы.
+		/// </summary>
+		/// <returns></returns>
 		private bool EnoughGoldToUpgrade() {
 			var spawner = thing as Spawner;
-			if (spawner != null && spawner.settings.Gold <= Player.GoldAmount) {
-				return true;
-			}
-			return false;
+			return spawner != null && spawner.settings.Gold <= Player.GoldAmount;
 		}
 
 		private void OnDestroy() {

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using Progress;
 
 public class GameEndUI : MonoBehaviour {
 
+	// Затеняющий тонер.
 	private Image toner;
+	// Текст выигрыша/поражения.
 	private Text text;
 
 	void Start() {
@@ -19,6 +20,10 @@ public class GameEndUI : MonoBehaviour {
 		Divan.Instance.OnGameEnd += OnGameEnd;
 	}
 
+	/// <summary>
+	/// Действие в вомент конца игры.
+	/// </summary>
+	/// <param name="win">Выиграл ли игрок.</param>
 	private void OnGameEnd(bool win) {
 		toner.enabled = true;
 		text.enabled = true;

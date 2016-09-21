@@ -70,12 +70,22 @@ namespace Progress {
 		protected int health;
 		// Таймер атаки.
 		protected float attackTimer;
-
 		// Контроллер аниматора.
 		protected Animator animator;
+		// Скорость атаки юнита.
+		protected float attackSpeed;
 
 		// Основной цвет юнита.
 		private Color unitColor;
+		// Выделен ли юнит мышью.
+		private bool selected;
+
+		/// <summary>
+		/// Скорость юнита.
+		/// </summary>
+		public float Speed {
+			get; set;
+		}
 
 		// Набор настроек юнита.
 		public Settings.Unit Settings {
@@ -83,18 +93,56 @@ namespace Progress {
 			set;
 		}
 
-		// Выделен ли юнит мышью.
-		private bool selected;
-
-		// Находится ли юнит на ручном управлении.
+		/// <summary>
+		/// Находится ли юнит на ручном управлении.
+		/// </summary>
 		public bool IsHandMoving {
 			get;
 			set;
 		}
 
+		/// <summary>
+		/// Является ли героем.
+		/// </summary>
 		public bool IsPlayer {
 			get {
 				return this is MainCharacter;
+			}
+		}
+
+		/// <summary>
+		/// Триггер попадания в зону фонтана.
+		/// </summary>
+		public bool AimTriggered {
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Таймер атаки.
+		/// </summary>
+		protected virtual float AttackTimer {
+			get {
+				return attackTimer;
+			}
+			set {
+				attackTimer = value;
+			}
+		}
+
+		/// <summary>
+		/// Уровень юнита.
+		/// </summary>
+		public virtual int Level {
+			get {
+				return _level;
+			}
+			set {
+				if (value <= _level || value > LevelEditor.Instance.spawner.Length - 1) {
+					return;
+				}
+				_level = value;
+				Settings = new Settings.Unit(unitType, IsEnemy, Level);
 			}
 		}
 
@@ -123,23 +171,10 @@ namespace Progress {
 			attackSpeed = Settings.AttackSpeed;
 		}
 
-		protected float tempSpeed;
-
-		public float Speed {
-			get {
-				return tempSpeed;
-			}
-			set {
-				tempSpeed = value;
-			}
-		}
-
-		protected float attackSpeed;
-
-		private void OnDestroy() {
-			Divan.Instance.OnGameEnd -= OnGameEnd;
-		}
-
+		/// <summary>
+		/// В конце игры вызывает анимацию.
+		/// </summary>
+		/// <param name="playerWin"></param>
 		private void OnGameEnd(bool playerWin) {
 			target.aim = null;
 			if (playerWin && !IsEnemy || !playerWin && IsEnemy) {
@@ -148,7 +183,7 @@ namespace Progress {
 		}
 
 		/// <summary>
-		/// Анимация радости выигрышной стороны.
+		/// Анимация радости выигравшей стороны.
 		/// </summary>
 		private void Hurray() {
 			animator.applyRootMotion = false;
@@ -183,7 +218,7 @@ namespace Progress {
 			}
 
 			if (health <= 0) {
-				Die();
+				OnDie();
 				return;
 			}
 
@@ -206,7 +241,7 @@ namespace Progress {
 		/// <summary>
 		/// Похоронные процедуры.
 		/// </summary>
-		public void Die() {
+		public void OnDie() {
 			SpawnersManager.Instance.Units.Remove(this);
 			SetSelected(false);
 			Destroy(gameObject);
@@ -369,6 +404,9 @@ namespace Progress {
 			return xDist * xDist + zDist * zDist;
 		}
 
+		/// <summary>
+		/// Срабатывание орудия юнита.
+		/// </summary>
 		protected virtual void Fire() {
 			animator.SetTrigger("fire");
 		}
@@ -385,6 +423,9 @@ namespace Progress {
 			MakeDamage();
 		}
 
+		/// <summary>
+		/// Возвращает время перезарядки орудия.
+		/// </summary>
 		public virtual float CoolDown {
 			get {
 				return 1f / attackSpeed;
@@ -402,33 +443,6 @@ namespace Progress {
 			health += profit.health;
 			Player.GoldAmount += profit.gold;
 			Player.Experience += profit.xp;
-		}
-
-		public bool AimTriggered {
-			get;
-			set;
-		}
-
-		protected virtual float AttackTimer {
-			get {
-				return attackTimer;
-			}
-			set {
-				attackTimer = value;
-			}
-		}
-
-		public virtual int Level {
-			get {
-				return _level;
-			}
-			set {
-				if (value <= _level || value > LevelEditor.Instance.spawner.Length - 1) {
-					return;
-				}
-				_level = value;
-				Settings = new Settings.Unit(unitType, IsEnemy, Level);
-			}
 		}
 
 		/// <summary>
@@ -504,25 +518,32 @@ namespace Progress {
 		public string PrettyType() {
 			var type = "";
 			switch (unitType) {
-				case global::Settings.Unit.UnitType.Archer:
-					type = "стрелок";
-					break;
-				case global::Settings.Unit.UnitType.Warrior:
-					type = "воин";
-					break;
-				case global::Settings.Unit.UnitType.Boss:
-					type = "босс";
-					break;
-				case global::Settings.Unit.UnitType.Player:
-					type = "герой";
-					break;
+			case global::Settings.Unit.UnitType.Archer:
+				type = "стрелок";
+				break;
+			case global::Settings.Unit.UnitType.Warrior:
+				type = "воин";
+				break;
+			case global::Settings.Unit.UnitType.Boss:
+				type = "босс";
+				break;
+			case global::Settings.Unit.UnitType.Player:
+				type = "герой";
+				break;
 			}
 			var own = IsEnemy ? "Вражеский" : "Наш";
 			return own + " " + type;
 		}
 
+		/// <summary>
+		/// Выделен ли юнит.
+		/// </summary>
 		public bool IsSelected() {
 			return selected;
+		}
+
+		private void OnDestroy() {
+			Divan.Instance.OnGameEnd -= OnGameEnd;
 		}
 	}
 }

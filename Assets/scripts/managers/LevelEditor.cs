@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+/// <summary>
+/// Редактор уровней. Заполняется значениями в инспекторе.
+/// </summary>
 public class LevelEditor : Singleton<LevelEditor> {
+
+	// Настройки юнитов.
 	[System.Serializable]
 	public struct UnitSettings {
 		public int hp;
@@ -14,6 +18,7 @@ public class LevelEditor : Singleton<LevelEditor> {
 		public int xp;
 	}
 
+	// Настройки абилки "метеоритный дождь".
 	[System.Serializable]
 	public struct MeteoRain {
 		public float radius;
@@ -21,6 +26,7 @@ public class LevelEditor : Singleton<LevelEditor> {
 		public float cooldown;
 	}
 
+	// Настройки абилки "стрела льда".
 	[System.Serializable]
 	public struct IceArrow {
 		public float radius;
@@ -31,12 +37,14 @@ public class LevelEditor : Singleton<LevelEditor> {
 		public float cooldown;
 	}
 
+	// Настройки фонтана.
 	[System.Serializable]
 	public struct Fountain {
 		public int playerCureSpeed;
 		public int mignonCureSpeed;
 	}
 
+	// Настройки казарм.
 	[System.Serializable]
 	public struct Spawner {
 		public int gold;

@@ -32,23 +32,22 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 		public GameObject prefab;
 	}
 
+	// Массив префабов юнитов.
 	public unitPrefabs[] UnitPrefabs;
 
+	// Выделен юнит.
 	public delegate void OnUnitSelected(Selectable thing);
+	public OnUnitSelected onUnitSelected = delegate { };
 
-	public OnUnitSelected onUnitSelected = delegate {
-	};
-
+	// Произведенные юниты.
 	public HashSet<Unit> Units {
-		get {
-			return units;
-		}
+		get; private set;
 	}
 
 	// Возвращает все выделенные юниты.
 	public IEnumerable<Unit> UnitsSelected {
 		get {
-			return units.Where(u => u.IsSelected());
+			return Units.Where(u => u.IsSelected());
 		}
 	}
 
@@ -63,7 +62,7 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 	public HashSet<Selectable> AllSelectable {
 		get {
 			var set = new HashSet<Selectable>();
-			foreach (var unit in units) {
+			foreach (var unit in Units) {
 				set.Add(unit);
 			}
 			foreach (var spawner in spawners) {
@@ -73,13 +72,13 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 		}
 	}
 
-	// Все созданные юниты игры.
-	private HashSet<Unit> units;
+	// Таймер стартового ожидания и паузы между волнами врагов.
 	private float delayTimer;
+	// Таймер продолжительности волн.
 	private float waveTimer = -1f;
 
 	protected void Awake() {
-		units = new HashSet<Unit>();
+		Units = new HashSet<Unit>();
 		spawners = new HashSet<Spawner>(FindObjectsOfType<Spawner>());
 		StartCoroutine(TimeControl());
 	}
@@ -114,36 +113,54 @@ public class SpawnersManager : Singleton<SpawnersManager> {
 		return Units.FirstOrDefault(u => u.unitType == Settings.Unit.UnitType.Player) as MainCharacter;
 	}
 
+	/// <summary>
+	/// Возвращает миньонов.
+	/// </summary>
 	public HashSet<Unit> Mignons() {
 		return new HashSet<Unit>(Units.Where(u => !u.IsEnemy));
 	}
 
+	/// <summary>
+	/// Количество миньонов.
+	/// </summary>
 	public int MignonsCount() {
 		return Units.Count(u => !u.IsEnemy);
 	}
 
+	/// <summary>
+	/// Возвращает врагов.
+	/// </summary>
 	public HashSet<Unit> Enemies() {
 		return new HashSet<Unit>(Units.Where(u => u.IsEnemy));
 	}
 
+	/// <summary>
+	/// Количество врагов.
+	/// </summary>
 	public int EnemiesCount() {
 		return Units.Count(u => u.IsEnemy);
 	}
 
+	/// <summary>
+	/// Добавить юнит в сет.
+	/// </summary>
+	/// <param name="unit"></param>
 	public void AddUnit(Unit unit) {
-		units.Add(unit);
+		Units.Add(unit);
 	}
 
+	/// <summary>
+	/// Разрешает/запрещает делать юнитов.
+	/// </summary>
 	public bool CanSpawn(bool isEnemy) {
 		return waveTimer > 0f && (isEnemy ? EnemiesCount() < enemySpawnLimit : MignonsCount() < mignonSpawnLimit);
 	}
 
-	public bool CanSpawnType(Settings.Unit.UnitType type) {
-		return false;
-	}
-
+	/// <summary>
+	/// Выделить объект и убрать выделение с других.
+	/// </summary>
 	public void Select(Selectable thing) {
-		foreach (var t in SpawnersManager.Instance.AllSelectable) {
+		foreach (var t in AllSelectable) {
 			t.SetSelected(t.Equals(thing));
 		}
 	}

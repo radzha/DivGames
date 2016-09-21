@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+/// <summary>
+/// Класс, строящий стены, ограничивающие поле боя.
+/// </summary>
 public class WallsInit : MonoBehaviour {
 
 	public Transform wallPrefab;

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
+/// <summary>
+/// Информацию о времени до воскрешения героя, его золоте и опыте.
+/// </summary>
 public class RespawnUI : MonoBehaviour {
 
 	private Text text;

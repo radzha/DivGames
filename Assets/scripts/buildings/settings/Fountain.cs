@@ -1,10 +1,10 @@
 ﻿namespace Settings {
 	/// <summary>
-	/// Фонтан
+	/// Фонтан. Настройки.
 	/// </summary>
 	public class Fountain {
 		/// <summary>
-		/// Скорость восстановления жизней героя
+		/// Скорость восстановления жизней героя.
 		/// </summary>
 		public int PlayerCureSpeed {
 			get;
@@ -12,7 +12,7 @@
 		}
 
 		/// <summary>
-		/// Скорость восстановления жизней миньона
+		/// Скорость восстановления жизней миньона.
 		/// </summary>
 		public int MignonCureSpeed {
 			get;

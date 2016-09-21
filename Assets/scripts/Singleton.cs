@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+// Родитель синглтонов.
 public class Singleton<T>:MonoBehaviour where T : class {
 
 	public static T Instance {

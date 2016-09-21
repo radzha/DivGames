@@ -1,43 +1,26 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace Settings {
+﻿namespace Settings {
 	/// <summary>
 	/// Настройки казарм.
 	/// </summary>
 	public class Spawner {
-
-		private int gold;
-		private float spawnSpeed;
-
 		/// <summary>
 		/// Количество золота (Gold) — количество золота, требуемое для апгрейда казармы.
 		/// </summary>
 		public int Gold {
-			get {
-				return gold;
-			}
-			set {
-				gold = value;
-			}
+			get; set;
 		}
 
 		/// <summary>
 		/// Скорость производства юнитов, шт./сек.
 		/// </summary>
 		public float SpawnSpeed {
-			get {
-				return spawnSpeed;
-			}
-			set {
-				spawnSpeed = value;
-			}
+			get; set;
 		}
 
 		/// <summary>
 		/// Прочитать настройки из редактора уровней.
 		/// </summary>
-		/// <param name="unitSettings">Набор настроек.</param>
+		/// <param name="settings">Набор настроек.</param>
 		/// <param name="level">Уровень.</param>
 		private void ReadSettings(LevelEditor.Spawner[] settings, int level) {
 			var spawner = settings[level];

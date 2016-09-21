@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
+/// <summary>
+/// Показыет текущее число врагов.
+/// </summary>
 public class EnemiesUI : MonoBehaviour {
 
 	private Text text;

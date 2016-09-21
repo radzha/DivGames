@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+/// <summary>
+/// Сохраняет изначальую ориентацию UI здоровья юнита при поворотах последнего.
+/// </summary>
 public class KeepRotation : MonoBehaviour {
+	private Quaternion rotation;
 
-	Quaternion rotation;
-
-	void Start () {
+	private void Start () {
 		rotation = transform.rotation;
 	}
-	
-	void Update () {
+
+	private void Update () {
 		transform.rotation = rotation;
 	}
 }
